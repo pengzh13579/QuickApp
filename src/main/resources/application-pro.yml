@@ -1,4 +1,4 @@
-spring.profiles: local_development
+spring.profiles: pro
 spring.profiles.include: common
 
 app:
@@ -18,10 +18,10 @@ app:
       cachePrepStmts: true
   second:
     datasource:
-      driverClassName: org.postgresql.Driver
-      url: jdbc:postgresql://172.20.68.242:5432/happinet
-      username: postgres
-      password: happinet
+      driverClassName: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/db?characterEncoding=UTF-8
+      username: root
+      password: root
       max-active: 5
       max-idle: 5
       min-idle: 5

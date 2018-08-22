@@ -3,7 +3,7 @@ spring:
     # 应用名称，一般就是项目名称，这个名称在SpringCloud中比较关键
     name: MyApplication
   profiles:
-    active: local_development #指定当前的活动配置文件，主要用于多环境多配置文件的应用中
+    active: dev #指定当前的活动配置文件，主要用于多环境多配置文件的应用中
   thymeleaf:
     prefix: classpath:/pages/
     suffix: .html
