@@ -1,7 +1,8 @@
-package cn.pzh.system.web.project.common.dao.first.datasource;
+package cn.pzh.system.web.project.common.conf.datasource.first.datasource;
 
+import cn.pzh.system.web.project.common.conf.datasource.first.annotation.DatasourceFirstMapper;
 import cn.pzh.system.web.project.common.constant.WebConstants;
-import cn.pzh.system.web.project.common.dao.first.annotation.DatasourceFirstMapper;
+import com.alibaba.druid.pool.DruidDataSource;
 import com.github.pagehelper.PageHelper;
 import java.util.Properties;
 import javax.sql.DataSource;
@@ -27,9 +28,8 @@ public class DataSourceFirstConfiguration {
     @ConfigurationProperties (prefix = "app.first.datasource")
     @Primary
     public DataSource testDataSource() {
-        return DataSourceBuilder.create().build();
+        return new DruidDataSource();
     }
-    @Primary
     @Bean (name = WebConstants.FIRST_SQL_SESSION_FACTORY_ID)
     @Primary
     public SqlSessionFactory testSqlSessionFactory(@Qualifier (WebConstants.FIRST_DATASOURCE_ID) DataSource dataSource)

@@ -4,31 +4,50 @@ spring.profiles.include: common
 app:
   first:
     datasource:
+      type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: com.mysql.jdbc.Driver
       url: jdbc:mysql://localhost:3306/db?characterEncoding=UTF-8
       username: root
       password: root
-      max-active: 5
-      max-idle: 5
-      min-idle: 5
-      initial-size: 5
-      jmx-enabled: true
-      test-on-borrow: true
-      validation-query: select 1
-      cachePrepStmts: true
+      driver-class-name: org.gjt.mm.mysql.Driver
+      filters: stat,wall,log4j
+      minIdle: 5
+      initialSize: 5
+      maxActive: 20
+      maxWait: 200
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      connectionProperties=druid.stat.mergeSql=true;druid.stat.slowSqlMillis: 5000
+      useGlobalDataSourceStat: true
   second:
     datasource:
+      type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: com.mysql.jdbc.Driver
       url: jdbc:mysql://localhost:3306/db?characterEncoding=UTF-8
       username: root
       password: root
-      max-active: 5
-      max-idle: 5
-      min-idle: 5
-      initial-size: 5
-      jmx-enabled: true
-      test-on-borrow: true
-      validation-query: select 1
+      driver-class-name: org.gjt.mm.mysql.Driver
+      filters: stat,wall,log4j
+      minIdle: 5
+      initialSize: 5
+      maxActive: 20
+      maxWait: 200
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      connectionProperties=druid.stat.mergeSql=true;druid.stat.slowSqlMillis: 5000
+      useGlobalDataSourceStat: true
 
 log:
   path:

@@ -1,22 +1,30 @@
 package cn.pzh.system.web.project.common.conf.shiro;
 
-import cn.pzh.system.web.project.common.dao.first.model.SystemUserEntity;
+import cn.pzh.system.web.project.common.model.ShiroUserModel;
+import cn.pzh.system.web.project.sys.shiro.factory.IShiro;
+import cn.pzh.system.web.project.sys.shiro.factory.ShiroFactroy;
+import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
+import cn.pzh.system.web.project.common.utils.ToolUtil;
+import cn.pzh.system.web.project.common.utils.support.ShiroKit;
 import cn.pzh.system.web.project.sys.dao.mapper.UserMapper;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * MyShiroRealm
@@ -37,19 +45,29 @@ public class MyShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        logger.info("##################执行Shiro权限认证##################");
-        // 获取当前登录输入的用户名，等价于(String)
-        // principalCollection.fromRealm(getName()).iterator().next();
-        String loginName = (String) super.getAvailablePrincipal(principalCollection);
-        // 到数据库查是否有此对象
-        SystemUserEntity user = userMapper
-                .getUserNameByName(loginName);// 实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
-        if (user != null) {
-            // 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
-            SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-            return info;
+        IShiro shiroFactory = ShiroFactroy.me();
+        ShiroUserModel shiroUser = (ShiroUserModel) principalCollection.getPrimaryPrincipal();
+        List<Integer> roleList = shiroUser.getRoleList();
+
+        Set<String> permissionSet = new HashSet<>();
+        Set<String> roleNameSet = new HashSet<>();
+
+        for (Integer roleId : roleList) {
+            List<String> permissions = shiroFactory.findPermissionsByRoleId(roleId);
+            if (permissions != null) {
+                for (String permission : permissions) {
+                    if (ToolUtil.isNotEmpty(permission)) {
+                        permissionSet.add(permission);
+                    }
+                }
+            }
+            String roleName = shiroFactory.findRoleNameByRoleId(roleId);
+            roleNameSet.add(roleName);
         }
-        // 返回null的话，就会导致任何用户访问被拦截的请求时，都会自动跳转到unauthorizedUrl指定的地址
+
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        info.addStringPermissions(permissionSet);
+        info.addRoles(roleNameSet);
         return null;
     }
 
@@ -61,30 +79,28 @@ public class MyShiroRealm extends AuthorizingRealm {
             throws AuthenticationException {
         // UsernamePasswordToken对象用来存放提交的登录信息
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-
-        // 查出是否有此用户
-        SystemUserEntity user = userMapper.getUserNameByName(token.getUsername());
+        // 到数据库查是否有此对象
+        // 实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
+        IShiro shiroFactory = ShiroFactroy.me();
+        SystemUserEntity user = shiroFactory.getUser(token.getUsername());
+        ShiroUserModel shiroUser = shiroFactory.shiroUser(user);
         if (user != null) {
-            //用户基本信息存入Cookie
-            AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(),
-                    this.getName());
-            this.setSession("currentUser", user);
-            return authcInfo;
+            // 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
+            SimpleAuthenticationInfo info = shiroFactory.info(shiroUser, user, super.getName());
+            return info;
         }
+        // 返回null的话，就会导致任何用户访问被拦截的请求时，都会自动跳转到unauthorizedUrl指定的地址
         return null;
     }
 
     /**
-     * 将一些数据放到ShiroSession中,以便于其它地方使用
+     * 设置认证加密方式
      */
-    private void setSession(Object key, Object value) {
-        Subject currentUser = SecurityUtils.getSubject();
-        if (null != currentUser) {
-            Session session = currentUser.getSession();
-            System.out.println("Session默认超时时间为[" + session.getTimeout() + "]毫秒");
-            if (null != session) {
-                session.setAttribute(key, value);
-            }
-        }
+    @Override
+    public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
+        HashedCredentialsMatcher md5CredentialsMatcher = new HashedCredentialsMatcher();
+        md5CredentialsMatcher.setHashAlgorithmName(ShiroKit.hashAlgorithmName);
+        md5CredentialsMatcher.setHashIterations(ShiroKit.hashIterations);
+        super.setCredentialsMatcher(md5CredentialsMatcher);
     }
 }

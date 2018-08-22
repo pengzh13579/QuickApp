@@ -3,11 +3,19 @@ package cn.pzh.system.web.project.common.conf.shiro;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,11 +28,55 @@ public class ShiroConfig {
      * 1、配置SecurityManager:需要配置3个属性：CacheManager、Realm
      */
     @Bean
-    public DefaultWebSecurityManager securityManager() {
+    public DefaultWebSecurityManager securityManager(CookieRememberMeManager rememberMeManager, CacheManager cacheShiroManager, SessionManager sessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 设置realm.
         securityManager.setRealm(myShiroRealm());
+        securityManager.setCacheManager(cacheShiroManager);
+        securityManager.setRememberMeManager(rememberMeManager);
+        securityManager.setSessionManager(sessionManager);
         return securityManager;
+    }
+
+//    /**
+//     * spring session管理器（多机环境）
+//     */
+//    @Bean
+//    @ConditionalOnProperty(prefix = "guns", name = "spring-session-open", havingValue = "true")
+//    public ServletContainerSessionManager servletContainerSessionManager() {
+//        return new ServletContainerSessionManager();
+//    }
+
+    /**
+     * 缓存管理器 使用Ehcache实现
+     */
+    @Bean
+    public CacheManager getCacheShiroManager(EhCacheManagerFactoryBean ehcache) {
+        EhCacheManager ehCacheManager = new EhCacheManager();
+        ehCacheManager.setCacheManager(ehcache.getObject());
+        return ehCacheManager;
+    }
+
+    /**
+     * rememberMe管理器, cipherKey生成见{@code Base64Test.java}
+     */
+    @Bean
+    public CookieRememberMeManager rememberMeManager(SimpleCookie rememberMeCookie) {
+        CookieRememberMeManager manager = new CookieRememberMeManager();
+        manager.setCipherKey(Base64.decode("Z3VucwAAAAAAAAAAAAAAAA=="));
+        manager.setCookie(rememberMeCookie);
+        return manager;
+    }
+
+    /**
+     * 记住密码Cookie
+     */
+    @Bean
+    public SimpleCookie rememberMeCookie() {
+        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+        simpleCookie.setHttpOnly(true);
+        simpleCookie.setMaxAge(7 * 24 * 60 * 60);//7天
+        return simpleCookie;
     }
 
     /**
@@ -32,8 +84,7 @@ public class ShiroConfig {
      */
     @Bean
     public MyShiroRealm myShiroRealm() {
-        MyShiroRealm myShiroRealm = new MyShiroRealm();
-        return myShiroRealm;
+        return new MyShiroRealm();
     }
 
     /**
@@ -83,14 +134,10 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
 
         // 配置不会被拦截的链接 顺序判断
-        filterChainDefinitionMap.put("/loginPage", "anon");
-        filterChainDefinitionMap.put("/jquery/**", "anon");
-        filterChainDefinitionMap.put("/bootstrap/**", "anon");
-        filterChainDefinitionMap.put("/ace/**", "anon");
-        filterChainDefinitionMap.put("/pages/**", "anon");
+        filterChainDefinitionMap.put("/druid/**", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
-        filterChainDefinitionMap.put("/system/js/login.js", "anon");
         filterChainDefinitionMap.put("/systemUserController/loginCheck", "anon");
+        filterChainDefinitionMap.put("/loginPage", "anon");
 
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainDefinitionMap.put("/logout", "logout");
@@ -102,5 +149,13 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         System.out.println("Shiro拦截器工厂类注入成功");
         return shiroFilterFactoryBean;
+    }
+
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor =
+                new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
     }
 }

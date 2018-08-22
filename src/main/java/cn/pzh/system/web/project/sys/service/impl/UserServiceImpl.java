@@ -1,8 +1,8 @@
 package cn.pzh.system.web.project.sys.service.impl;
 
 import cn.pzh.system.web.project.common.constant.WebConstants;
-import cn.pzh.system.web.project.common.dao.first.model.SystemContactEntity;
-import cn.pzh.system.web.project.common.dao.first.model.SystemUserEntity;
+import cn.pzh.system.web.project.common.dao.first.entity.SystemContactEntity;
+import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
 import cn.pzh.system.web.project.common.session.LoginUserInfoBean;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
 import cn.pzh.system.web.project.common.utils.IdUtils;
@@ -48,8 +48,8 @@ public class UserServiceImpl implements UserService {
         //联系方式，注册只有邮箱
         SystemContactEntity systemContactEntity = new SystemContactEntity();
         systemContactEntity.setContact(userEntity.getEmail());
-        systemContactEntity.setUserId(userEntity.getIId());
-        systemContactEntity.setTypeDetailId(new Long(1));
+        systemContactEntity.setUserId(userEntity.getId());
+        systemContactEntity.setTypeDetailId(1);
         CommonFieldUtils.setAdminCommon(systemContactEntity, "registration");
 
         userMapper.saveContact(systemContactEntity);
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
      * 将Cookie添加进Session
      */
     private SystemUserEntity setSession(String userName) {
-        SystemUserEntity user = userMapper.getUserNameByName(userName);
+        SystemUserEntity user = userMapper.getUserByUserName(userName);
         Session session = SecurityUtils.getSubject().getSession();
         LoginUserInfoBean loginUserInfoBean = new LoginUserInfoBean();
         loginUserInfoBean.setUserName(user.getUserName());

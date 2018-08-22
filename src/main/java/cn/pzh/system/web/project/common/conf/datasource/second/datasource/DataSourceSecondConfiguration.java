@@ -1,8 +1,9 @@
-package cn.pzh.system.web.project.common.dao.second.datasource;
+package cn.pzh.system.web.project.common.conf.datasource.second.datasource;
 
+import cn.pzh.system.web.project.common.conf.datasource.second.annotation.DatasourceSecondMapper;
 import cn.pzh.system.web.project.common.constant.WebConstants;
-import cn.pzh.system.web.project.common.dao.second.annotation.DatasourceSecondMapper;
 import javax.sql.DataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -22,7 +23,7 @@ public class DataSourceSecondConfiguration {
     @Bean (name = WebConstants.SECOND_DATASOURCE_ID)
     @ConfigurationProperties (prefix = "app.second.datasource")
     public DataSource testDataSource() {
-        return DataSourceBuilder.create().build();
+        return new DruidDataSource();
     }
 
     @Bean (name = WebConstants.SECOND_SQL_SESSION_FACTORY_ID)

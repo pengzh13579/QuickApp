@@ -1,6 +1,6 @@
 package cn.pzh.system.web.project.common.utils;
 
-import cn.pzh.system.web.project.common.dao.first.model.CommonEntity;
+import cn.pzh.system.web.project.common.dao.first.entity.CommonEntity;
 import java.util.Date;
 
 public class CommonFieldUtils {

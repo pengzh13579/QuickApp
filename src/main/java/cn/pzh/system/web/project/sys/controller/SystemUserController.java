@@ -2,7 +2,7 @@ package cn.pzh.system.web.project.sys.controller;
 
 import cn.pzh.system.web.project.common.constant.MessageConstants;
 import cn.pzh.system.web.project.common.constant.WebConstants;
-import cn.pzh.system.web.project.common.dao.first.model.SystemUserEntity;
+import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
 import cn.pzh.system.web.project.common.model.PageInfo;
 import cn.pzh.system.web.project.sys.service.UserService;

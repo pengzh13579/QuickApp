@@ -21,7 +21,7 @@
     </select>
 
     <!--  -->
-    <select id="getUserNameByName" parameterType="String" resultMap="BaseResultMap" useCache="false">
+    <select id="getUserByUserName" parameterType="String" resultMap="BaseResultMap" useCache="false">
         SELECT
             A.USER_NAME,
             A.REAL_NAME,

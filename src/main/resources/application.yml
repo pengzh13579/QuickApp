@@ -24,7 +24,6 @@ spring:
       maxIdle: 10
       maxWaitMillis : 100000
 
-
 server:
   tomcat:
     uri-encoding: UTF-8
