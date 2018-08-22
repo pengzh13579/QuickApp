@@ -1,0 +1,42 @@
+spring:
+  application:
+    # 应用名称，一般就是项目名称，这个名称在SpringCloud中比较关键
+    name: MyApplication
+  profiles:
+    active: local_development #指定当前的活动配置文件，主要用于多环境多配置文件的应用中
+  thymeleaf:
+    prefix: classpath:/pages/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    #开发时关闭缓存,不然没法看到实时页面
+    cache: false
+  mvc:
+    favicon:
+      enabled: false
+  redis:
+    database: 0
+    host: 127.0.0.1
+    password:
+    port: 6379
+    config:
+      maxTotal: 100
+      maxIdle: 10
+      maxWaitMillis : 100000
+
+
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  port: 9090
+
+logging:
+  config: classpath:logback-spring.xml
+  
+log:
+  path:
+    all: log/app.log
+    error: log/error.log
+  level:
+    app: DEBUG
+    root: INFO
