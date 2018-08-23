@@ -5,12 +5,18 @@ import lombok.Data;
 
 @Data
 public class SystemMenuEntity extends CommonEntity implements Serializable {
-    private static final long serialVersionUID = 1435515995276255180L;
 
     private Integer id;
-    private String menuCode;
-    private String parentMenuCode;
-    private String menuName;
-    private String menuUrl;
+    private String code;
+    private String pcode;
+    private String pcodes;
+    private String name;
+    private String icon;
+    private String url;
+    private Integer num;
+    private Integer levels;
+    private Integer isMenu;
+    private String tips;
+    private Integer isOpen;
 
 }

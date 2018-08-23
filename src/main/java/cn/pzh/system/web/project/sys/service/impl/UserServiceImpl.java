@@ -47,10 +47,10 @@ public class UserServiceImpl implements UserService {
 
         //联系方式，注册只有邮箱
         SystemContactEntity systemContactEntity = new SystemContactEntity();
-        systemContactEntity.setContact(userEntity.getEmail());
-        systemContactEntity.setUserId(userEntity.getId());
-        systemContactEntity.setTypeDetailId(1);
-        CommonFieldUtils.setAdminCommon(systemContactEntity, "registration");
+        //TODO
+//        systemContactEntity.setContact(userEntity.getEmail());
+//        systemContactEntity.setUserId(userEntity.getId());
+//        systemContactEntity.setTypeDetailId(1);
 
         userMapper.saveContact(systemContactEntity);
 
@@ -102,7 +102,8 @@ public class UserServiceImpl implements UserService {
         LoginUserInfoBean loginUserInfoBean = new LoginUserInfoBean();
         loginUserInfoBean.setUserName(user.getUserName());
         loginUserInfoBean.setRealName(user.getRealName());
-        loginUserInfoBean.setEmail(user.getEmail());
+        //TODO
+        //loginUserInfoBean.setEmail(user.getEmail());
         loginUserInfoBean.setLoginTime(new Date());
         session.setAttribute("userInfo", loginUserInfoBean);
         return user;

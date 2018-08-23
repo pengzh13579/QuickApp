@@ -30,7 +30,7 @@ public class MenuServiceImpl implements MenuService {
         List<MenuNode> menuNodeList = new ArrayList<>();
         parentMenus.forEach(item->{
             MenuNode menuNode = new MenuNode();
-            map.put("parentMenuCode",item.getMenuCode());
+            map.put("parentMenuCode",item.getCode());
             menuNode.setParent(item);
             menuNode.setChildren(menuMapper.getMenu(map));
             menuNodeList.add(menuNode);
