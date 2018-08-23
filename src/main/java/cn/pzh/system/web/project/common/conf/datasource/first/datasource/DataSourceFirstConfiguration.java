@@ -1,7 +1,7 @@
 package cn.pzh.system.web.project.common.conf.datasource.first.datasource;
 
 import cn.pzh.system.web.project.common.conf.datasource.first.annotation.DatasourceFirstMapper;
-import cn.pzh.system.web.project.common.constant.WebConstants;
+import cn.pzh.system.web.project.common.constant.ConfConstants;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.github.pagehelper.PageHelper;
 import java.util.Properties;
@@ -12,7 +12,6 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,18 +20,18 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 @Configuration
-@MapperScan (basePackages = "cn.pzh.system.web.project", annotationClass = DatasourceFirstMapper.class, sqlSessionTemplateRef = WebConstants.FIRST_SQL_SESSION_ID)
+@MapperScan (basePackages = ConfConstants.MAPPER_SCAN_PACKAGE, annotationClass = DatasourceFirstMapper.class, sqlSessionTemplateRef = ConfConstants.FIRST_SQL_SESSION_ID)
 public class DataSourceFirstConfiguration {
 
-    @Bean (name = WebConstants.FIRST_DATASOURCE_ID)
-    @ConfigurationProperties (prefix = "app.first.datasource")
+    @Bean (name = ConfConstants.FIRST_DATASOURCE_ID)
+    @ConfigurationProperties (prefix = ConfConstants.FIRST_DATASOURCE_YML_CONFIGURATION)
     @Primary
     public DataSource testDataSource() {
         return new DruidDataSource();
     }
-    @Bean (name = WebConstants.FIRST_SQL_SESSION_FACTORY_ID)
+    @Bean (name = ConfConstants.FIRST_SQL_SESSION_FACTORY_ID)
     @Primary
-    public SqlSessionFactory testSqlSessionFactory(@Qualifier (WebConstants.FIRST_DATASOURCE_ID) DataSource dataSource)
+    public SqlSessionFactory testSqlSessionFactory(@Qualifier (ConfConstants.FIRST_DATASOURCE_ID) DataSource dataSource)
             throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
@@ -44,17 +43,17 @@ public class DataSourceFirstConfiguration {
         return bean.getObject();
     }
 
-    @Bean (name = WebConstants.FIRST_DATASOURCE_MBEAN)
+    @Bean (name = ConfConstants.FIRST_DATASOURCE_MBEAN)
 
     public DataSourceTransactionManager testTransactionManager(
-            @Qualifier (WebConstants.FIRST_DATASOURCE_ID) DataSource dataSource) {
+            @Qualifier (ConfConstants.FIRST_DATASOURCE_ID) DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 
-    @Bean (name = WebConstants.FIRST_SQL_SESSION_ID)
+    @Bean (name = ConfConstants.FIRST_SQL_SESSION_ID)
     @Primary
     public SqlSessionTemplate testSqlSessionTemplate(
-            @Qualifier (WebConstants.FIRST_SQL_SESSION_FACTORY_ID) SqlSessionFactory sqlSessionFactory)
+            @Qualifier (ConfConstants.FIRST_SQL_SESSION_FACTORY_ID) SqlSessionFactory sqlSessionFactory)
             throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);
     }

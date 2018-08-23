@@ -7,17 +7,22 @@ import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.Cookie;
+import org.apache.shiro.web.servlet.ShiroHttpSession;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.apache.shiro.web.session.mgt.ServletContainerSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 public class ShiroConfig {
@@ -25,28 +30,60 @@ public class ShiroConfig {
     private Logger log = Logger.getLogger(ShiroConfig.class.getName());
 
     /**
-     * 1、配置SecurityManager:需要配置3个属性：CacheManager、Realm
+     * 配置SecurityManager
      */
     @Bean
-    public DefaultWebSecurityManager securityManager(CookieRememberMeManager rememberMeManager, CacheManager cacheShiroManager, SessionManager sessionManager) {
+    public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 设置realm.
         securityManager.setRealm(myShiroRealm());
-        securityManager.setCacheManager(cacheShiroManager);
-        securityManager.setRememberMeManager(rememberMeManager);
-        securityManager.setSessionManager(sessionManager);
+        securityManager.setCacheManager(getCacheShiroManager(ehcache()));
+        securityManager.setRememberMeManager(rememberMeManager(rememberMeCookie()));
+        securityManager.setSessionManager(defaultWebSessionManager(getCacheShiroManager(ehcache())));
         return securityManager;
     }
+    /**
+     * spring session管理器（多机环境）
+     */
+    @Bean
+    public ServletContainerSessionManager servletContainerSessionManager() {
+        return new ServletContainerSessionManager();
+    }
 
-//    /**
-//     * spring session管理器（多机环境）
-//     */
-//    @Bean
-//    @ConditionalOnProperty(prefix = "guns", name = "spring-session-open", havingValue = "true")
-//    public ServletContainerSessionManager servletContainerSessionManager() {
-//        return new ServletContainerSessionManager();
-//    }
+    /**
+     * session管理器(单机环境)
+     */
+    @Bean
+    public DefaultWebSessionManager defaultWebSessionManager(CacheManager cacheShiroManager) {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setCacheManager(cacheShiroManager);
+        sessionManager.setSessionValidationInterval(900 * 1000);
+        sessionManager.setGlobalSessionTimeout(1800 * 1000);
+        sessionManager.setDeleteInvalidSessions(true);
+        sessionManager.setSessionValidationSchedulerEnabled(true);
+        Cookie cookie = new SimpleCookie(ShiroHttpSession.DEFAULT_SESSION_ID_NAME);
+        cookie.setName("shiroCookie");
+        cookie.setHttpOnly(true);
+        sessionManager.setSessionIdCookie(cookie);
+        return sessionManager;
+    }
+    /**
+     * EhCache的配置
+     */
+    @Bean
+    public EhCacheCacheManager cacheManager(net.sf.ehcache.CacheManager cacheManager) {
+        return new EhCacheCacheManager(cacheManager);
+    }
 
+    /**
+     * EhCache的配置
+     */
+    @Bean
+    public EhCacheManagerFactoryBean ehcache() {
+        EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
+        ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource("ehcache.xml"));
+        return ehCacheManagerFactoryBean;
+    }
     /**
      * 缓存管理器 使用Ehcache实现
      */
@@ -80,7 +117,7 @@ public class ShiroConfig {
     }
 
     /**
-     * 3、配置Realm:身份认证realm (账号密码校验；权限等)
+     * 配置Realm:身份认证realm (账号密码校验；权限等)
      */
     @Bean
     public MyShiroRealm myShiroRealm() {
@@ -88,7 +125,7 @@ public class ShiroConfig {
     }
 
     /**
-     * 4、配置生命周期的Bean后处理器（lifecycleBeanPostProcessor）:可以自动调用配置在Spring IOC容器中ShiroBean的生命周期方法
+     * 配置生命周期的Bean后处理器（lifecycleBeanPostProcessor）:可以自动调用配置在Spring IOC容器中ShiroBean的生命周期方法
      */
     @Bean
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
@@ -96,7 +133,7 @@ public class ShiroConfig {
     }
 
     /**
-     * 5、配置启用IOC容器中使用shiro的注解，但必须在配置了LifecycleBeanPostProcessor后才可以使用
+     * 配置启用IOC容器中使用shiro的注解，但必须在配置了LifecycleBeanPostProcessor后才可以使用
      */
     @Bean
     public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
@@ -106,12 +143,12 @@ public class ShiroConfig {
     }
 
     /**
-     * 6、配置shiroFilter
+     * 配置shiroFilter<br/>
+        Filter Chain定义说明<br/>
+            1、一个URL可以配置多个Filter，使用逗号分隔<br/>
+            2、当设置多个过滤器时，全部验证通过，才视为通过<br/>
+            3、部分过滤器可指定参数，如perms，roles<br/>
      */
-    // Filter Chain定义说明
-    // 1、一个URL可以配置多个Filter，使用逗号分隔
-    // 2、当设置多个过滤器时，全部验证通过，才视为通过
-    // 3、部分过滤器可指定参数，如perms，roles
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         // ShiroFilterFactoryBean 处理拦截资源文件问题。

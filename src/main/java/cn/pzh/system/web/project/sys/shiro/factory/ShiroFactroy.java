@@ -48,7 +48,7 @@ public class ShiroFactroy implements IShiro {
             throw new CredentialsException();
         }
         // 账号被冻结
-        if (user.getStatus() != ManagerStatus.OK.getCode()) {
+        if (user.getDisFlag() != ManagerStatus.OK.getCode()) {
             throw new LockedAccountException();
         }
         return user;
