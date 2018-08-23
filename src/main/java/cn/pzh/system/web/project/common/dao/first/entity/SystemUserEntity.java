@@ -22,4 +22,5 @@ public class SystemUserEntity extends CommonEntity implements Serializable {
     private String roleId;
     private Integer deptId;
     private String deptName;
+    private String email;
 }

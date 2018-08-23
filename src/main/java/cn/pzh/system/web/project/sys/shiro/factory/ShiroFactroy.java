@@ -41,7 +41,7 @@ public class ShiroFactroy implements IShiro {
     @Override
     public SystemUserEntity getUser(String userName) {
 
-        SystemUserEntity user = userMapper.getUserByUserName(userName);
+        SystemUserEntity user = userMapper.getUserByLoginName(userName);
 
         // 账号不存在
         if (null == user) {

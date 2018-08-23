@@ -3,11 +3,23 @@
 <mapper namespace="cn.pzh.system.web.project.sys.dao.mapper.UserMapper">
 
     <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity" >
+        <result column="ID" property="id" jdbcType="INTEGER" />
         <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
         <result column="REAL_NAME" property="realName" jdbcType="VARCHAR" />
         <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
         <result column="SALT" property="salt" jdbcType="VARCHAR" />
+        <result column="SEX" property="sex" jdbcType="INTEGER" />
+        <result column="BIRTHDAY" property="birthday" jdbcType="DATE" />
+        <result column="IS_ONLINE" property="isOnline" jdbcType="INTEGER" />
+        <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+        <result column="DEPT_ID" property="deptId" jdbcType="INTEGER" />
         <result column="CONTACT" property="email" jdbcType="VARCHAR" />
+        <result column="DEPTNAME" property="deptName" jdbcType="VARCHAR" />
+        <result column="dis_Flag" property="disFlag" jdbcType="INTEGER" />
+        <result column="create_User" property="createUser" jdbcType="VARCHAR" />
+        <result column="create_Date" property="createDate" jdbcType="DATE" />
+        <result column="update_User" property="updateUser" jdbcType="VARCHAR" />
+        <result column="update_Date" property="updateDate" jdbcType="DATE" />
     </resultMap>
 
     <!-- 开启基于redis的二级缓存 -->
@@ -17,28 +29,54 @@
     <select id="getAll" resultType="String">
   	     SELECT
   	        user_name
-         FROM t_b_user
+         FROM sys_user
     </select>
 
     <!--  -->
+    <select id="getUserByLoginName" parameterType="String" resultMap="BaseResultMap" useCache="false">
+        SELECT
+            SYS_USER.USER_NAME,
+            SYS_USER.REAL_NAME,
+            SYS_USER.PASSWORD,
+            SYS_USER.SALT,
+            SYS_USER.DIS_FLAG,
+            SYS_CONTACT.CONTACT_INFO
+        FROM SYS_USER SYS_USER
+        LEFT JOIN SYS_CONTACT SYS_CONTACT
+        ON SYS_USER.USER_NAME = SYS_CONTACT.USER_NAME
+        AND (SYS_CONTACT.CONTACT_TYPE = 1 OR SYS_CONTACT.CONTACT_TYPE = 2)
+        WHERE SYS_USER.USER_NAME = #{loginName,jdbcType=VARCHAR}
+        OR SYS_CONTACT.CONTACT_INFO = #{loginName,jdbcType=VARCHAR}
+    </select>
     <select id="getUserByUserName" parameterType="String" resultMap="BaseResultMap" useCache="false">
         SELECT
-            A.USER_NAME,
-            A.REAL_NAME,
-            A.PASSWORD,
-            A.SALT,
-            B.CONTACT
-        FROM t_b_user A
-        INNER JOIN t_b_contact B
-        ON A.I_ID = B.USER_ID
-        AND B.TYPE_DETAIL_ID = 1
-        WHERE A.USER_NAME = #{userName,jdbcType=VARCHAR}
-        OR B.CONTACT = #{userName,jdbcType=VARCHAR}
+            SYS_USER.ID,
+            SYS_USER.USER_NAME,
+            SYS_USER.REAL_NAME,
+            SYS_USER.AVATAR,
+            SYS_USER.SEX,
+            SYS_USER.PASSWORD`,
+            SYS_USER.SALT,
+            SYS_USER.BIRTHDAY,
+            SYS_USER.IS_ONLINE,
+            SYS_USER.ROLE_ID,
+            SYS_USER.DEPT_ID,
+            SYS_USER.DIS_FLAG,
+            SYS_USER.CREATE_DATE,
+            SYS_USER.UPDATE_DATE,
+            SYS_USER.CREATE_USER,
+            SYS_USER.UPDATE_USER,
+            SYS_DEPT.SIMPLE_NAME AS DEPTNAME
+        FROM
+          SYS_USER SYS_USER
+        LEFT JOIN SYS_DEPT SYS_DEPT
+        ON SYS_USER.DEPT_ID = SYS_DEPT.ID
+        WHERE SYS_USER.USER_NAME = #{userName,jdbcType=VARCHAR}
     </select>
 
     <!--  -->
     <insert id="saveUser" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity" useGeneratedKeys="true" keyProperty="iId">
-        insert into t_b_user (
+        insert into sys_user (
             USER_NAME,
             PASSWORD,
             SALT,
@@ -61,7 +99,7 @@
 
     <!--  -->
     <insert id="saveContact" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemContactEntity">
-        insert into t_b_contact (
+        insert into sys_contact (
             USER_ID,
             TYPE_DETAIL_ID,
             CONTACT,

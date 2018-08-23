@@ -17,10 +17,10 @@
             A.MENU_CODE,
             A.MENU_NAME,
             A.MENU_URL
-        FROM t_b_menu A
-        INNER JOIN t_b_role_menu_mapping B
+        FROM sys_menu A
+        INNER JOIN sys_menu_role B
         ON A.I_ID = B.MENU_ID
-        INNER JOIN t_b_role C
+        INNER JOIN sys_role C
         ON B.ROLE_ID = C.I_ID
         AND C.DIS_FLAG = 0
         INNER JOIN t_b_role_user_mapping D

@@ -9,6 +9,8 @@ public interface UserMapper {
 
     SystemUserEntity getUserByUserName(String userName);
 
+    SystemUserEntity getUserByLoginName(String loginName);
+
     void saveUser(SystemUserEntity userEntity);
 
     void saveContact(SystemContactEntity contactEntity);

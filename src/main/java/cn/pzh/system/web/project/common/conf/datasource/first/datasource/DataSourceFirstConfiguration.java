@@ -29,6 +29,7 @@ public class DataSourceFirstConfiguration {
     public DataSource testDataSource() {
         return new DruidDataSource();
     }
+
     @Bean (name = ConfConstants.FIRST_SQL_SESSION_FACTORY_ID)
     @Primary
     public SqlSessionFactory testSqlSessionFactory(@Qualifier (ConfConstants.FIRST_DATASOURCE_ID) DataSource dataSource)
@@ -44,7 +45,7 @@ public class DataSourceFirstConfiguration {
     }
 
     @Bean (name = ConfConstants.FIRST_DATASOURCE_MBEAN)
-
+    @Primary
     public DataSourceTransactionManager testTransactionManager(
             @Qualifier (ConfConstants.FIRST_DATASOURCE_ID) DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
