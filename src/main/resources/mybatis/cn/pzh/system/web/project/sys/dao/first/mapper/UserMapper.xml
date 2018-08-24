@@ -6,6 +6,7 @@
         <result column="ID" property="id" jdbcType="INTEGER" />
         <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
         <result column="REAL_NAME" property="realName" jdbcType="VARCHAR" />
+        <result column="AVATAR" property="avatar" jdbcType="VARCHAR" />
         <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
         <result column="SALT" property="salt" jdbcType="VARCHAR" />
         <result column="SEX" property="sex" jdbcType="INTEGER" />
@@ -15,11 +16,11 @@
         <result column="DEPT_ID" property="deptId" jdbcType="INTEGER" />
         <result column="CONTACT" property="email" jdbcType="VARCHAR" />
         <result column="DEPTNAME" property="deptName" jdbcType="VARCHAR" />
-        <result column="dis_Flag" property="disFlag" jdbcType="INTEGER" />
-        <result column="create_User" property="createUser" jdbcType="VARCHAR" />
-        <result column="create_Date" property="createDate" jdbcType="DATE" />
-        <result column="update_User" property="updateUser" jdbcType="VARCHAR" />
-        <result column="update_Date" property="updateDate" jdbcType="DATE" />
+        <result column="DIS_FLAG" property="disFlag" jdbcType="INTEGER" />
+        <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+        <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+        <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+        <result column="UPDATE_DATE" property="updateDate" jdbcType="DATE" />
     </resultMap>
 
     <!-- 开启基于redis的二级缓存 -->
@@ -28,8 +29,8 @@
     <!--  -->
     <select id="getAll" resultType="String">
   	     SELECT
-  	        user_name
-         FROM sys_user
+  	        USER_NAME
+         FROM SYS_USER
     </select>
 
     <!--  -->
@@ -37,11 +38,19 @@
         SELECT
             SYS_USER.USER_NAME,
             SYS_USER.REAL_NAME,
+            SYS_USER.AVATAR,
             SYS_USER.PASSWORD,
             SYS_USER.SALT,
+            SYS_USER.ROLE_ID,
+            SYS_USER.DEPT_ID,
+            SYS_USER.IS_ONLINE,
             SYS_USER.DIS_FLAG,
-            SYS_CONTACT.CONTACT_INFO
-        FROM SYS_USER SYS_USER
+            SYS_CONTACT.CONTACT_INFO,
+            SYS_DEPT.SIMPLE_NAME AS DEPTNAME
+        FROM
+          SYS_USER SYS_USER
+        LEFT JOIN SYS_DEPT SYS_DEPT
+        ON SYS_USER.DEPT_ID = SYS_DEPT.ID
         LEFT JOIN SYS_CONTACT SYS_CONTACT
         ON SYS_USER.USER_NAME = SYS_CONTACT.USER_NAME
         AND (SYS_CONTACT.CONTACT_TYPE = 1 OR SYS_CONTACT.CONTACT_TYPE = 2)
@@ -75,11 +84,16 @@
     </select>
 
     <!--  -->
-    <insert id="saveUser" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity" useGeneratedKeys="true" keyProperty="iId">
+    <insert id="saveUser" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity" useGeneratedKeys="true" keyProperty="id">
         insert into sys_user (
+
             USER_NAME,
+            REAL_NAME,
+            AVATAR,
+            SEX,
             PASSWORD,
             SALT,
+            BIRTHDAY,
             DIS_FLAG,
             CREATE_USER,
             CREATE_DATE,
@@ -87,8 +101,12 @@
             UPDATE_DATE)
         values (
             #{userName,jdbcType=VARCHAR},
+            #{realName,jdbcType=VARCHAR},
+            #{avatar,jdbcType=VARCHAR},
+            #{sex,jdbcType=VARCHAR},
             #{password,jdbcType=VARCHAR},
             #{salt,jdbcType=VARCHAR},
+            #{birthday,jdbcType=DATE},
             #{disFlag,jdbcType=NUMERIC},
             #{createUser,jdbcType=VARCHAR},
             #{createDate,jdbcType=TIMESTAMP},

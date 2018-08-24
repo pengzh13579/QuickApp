@@ -6,6 +6,6 @@ import java.util.Map;
 
 public interface MenuMapper {
 
-    List<SystemMenuEntity> getMenu(Map<String,Object> map);
+    List<SystemMenuEntity> getMenu(Integer[] roleIds);
 
 }

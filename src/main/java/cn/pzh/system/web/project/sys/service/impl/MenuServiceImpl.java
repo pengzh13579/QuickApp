@@ -22,18 +22,11 @@ public class MenuServiceImpl implements MenuService {
     private MenuMapper menuMapper;
 
     @Override
-    public List<MenuNode> getMenuList() {
-        Map<String,Object> map = new HashMap<>();
-        map.put("userName",SecurityUtils.getSubject().getPrincipal().toString());
-        map.put("parentMenuCode","0");
-        List<SystemMenuEntity> parentMenus = menuMapper.getMenu(map);
+    public List<MenuNode> getMenuList(Integer[] roleIds) {
+        List<SystemMenuEntity> menuList = menuMapper.getMenu(roleIds);
         List<MenuNode> menuNodeList = new ArrayList<>();
-        parentMenus.forEach(item->{
-            MenuNode menuNode = new MenuNode();
-            map.put("parentMenuCode",item.getCode());
-            menuNode.setParent(item);
-            menuNode.setChildren(menuMapper.getMenu(map));
-            menuNodeList.add(menuNode);
+        menuList.forEach(item->{
+
         });
         return menuNodeList;
     }

@@ -13,5 +13,4 @@ public interface UserMapper {
 
     void saveUser(SystemUserEntity userEntity);
 
-    void saveContact(SystemContactEntity contactEntity);
 }

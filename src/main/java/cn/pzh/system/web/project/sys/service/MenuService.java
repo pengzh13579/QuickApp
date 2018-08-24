@@ -4,5 +4,5 @@ import cn.pzh.system.web.project.common.model.MenuNode;
 import java.util.List;
 
 public interface MenuService {
-    List<MenuNode> getMenuList();
+    List<MenuNode> getMenuList(Integer[] roleIds);
 }

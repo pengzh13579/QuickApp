@@ -12,6 +12,7 @@ public class SystemUserEntity extends CommonEntity implements Serializable {
 
     private Integer id;
     private String userName;
+    private String avatar;
     private String realName;
     private String password;
     private String salt;

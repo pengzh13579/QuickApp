@@ -2,34 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.pzh.system.web.project.sys.dao.mapper.MenuMapper">
 
-    <resultMap id="MenuNodeMap" type="cn.pzh.system.web.project.common.dao.first.entity.SystemMenuEntity" >
-        <result column="MENU_CODE" property="menuCode" jdbcType="VARCHAR" />
-        <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR" />
-        <result column="MENU_URL" property="menuUrl" jdbcType="VARCHAR" />
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.common.dao.first.entity.SystemMenuEntity" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="CODE" property="code" jdbcType="VARCHAR" />
+        <result column="PCODE" property="pcode" jdbcType="VARCHAR" />
+        <result column="NAME" property="name" jdbcType="VARCHAR" />
+        <result column="ICON" property="icon" jdbcType="VARCHAR" />
+        <result column="URL" property="url" jdbcType="VARCHAR" />
+        <result column="IS_OPEN" property="isOpen" jdbcType="INTEGER" />
+        <result column="IS_MENU" property="isMenu" jdbcType="INTEGER" />
+        <result column="NUM" property="num" jdbcType="INTEGER" />
+        <result column="TIPS" property="tips" jdbcType="VARCHAR" />
     </resultMap>
 
-    <!-- 开启基于redis的二级缓存 -->
-    <cache type="cn.pzh.system.web.project.common.conf.redis.RedisCache"/>
-
     <!--  -->
-    <select id="getMenu" parameterType="map" resultMap="MenuNodeMap">
+    <select id="getMenuList" parameterType="java.util.ArrayList" resultMap="BaseResultMap">
         SELECT
-            A.MENU_CODE,
-            A.MENU_NAME,
-            A.MENU_URL
-        FROM sys_menu A
-        INNER JOIN sys_menu_role B
-        ON A.I_ID = B.MENU_ID
-        INNER JOIN sys_role C
-        ON B.ROLE_ID = C.I_ID
-        AND C.DIS_FLAG = 0
-        INNER JOIN t_b_role_user_mapping D
-        ON C.I_ID = D.ROLE_ID
-        INNER JOIN t_b_user E
-        ON E.I_ID = D.USER_ID
-        WHERE A.PARENT_MENU_CODE = #{parentMenuCode,jdbcType=VARCHAR}
-        AND A.DIS_FLAG = 0
-        AND E.USER_NAME = #{userName,jdbcType=VARCHAR}
-        ORDER BY MENU_CODE ASC
+            SYS_MENU.ID,
+            SYS_MENU.CODE,
+            SYS_MENU.PCODE,
+            SYS_MENU.NAME,
+            SYS_MENU.ICON,
+            SYS_MENU.URL,
+            SYS_MENU.IS_OPEN,
+            SYS_MENU.IS_MENU,
+            SYS_MENU.NUM,
+            SYS_MENU.TIPS
+        FROM SYS_MENU SYS_MENU
+        INNER JOIN SYS_MENU_ROLE SYS_MENU_ROLE
+        ON SYS_MENU.ID = SYS_MENU_ROLE.MENU_ID
+        WHERE SYS_MENU.DIS_FLAG = 0
+        AND SYS_MENU_ROLE.ROLE_ID in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ORDER BY NUM ASC
     </select>
 </mapper>

@@ -7,8 +7,10 @@ import cn.pzh.system.web.project.common.session.LoginUserInfoBean;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
 import cn.pzh.system.web.project.common.utils.IdUtils;
 import cn.pzh.system.web.project.common.utils.MD5Util;
+import cn.pzh.system.web.project.sys.dao.mapper.ContactMapper;
 import cn.pzh.system.web.project.sys.dao.mapper.UserMapper;
 import cn.pzh.system.web.project.sys.service.UserService;
+import cn.pzh.system.web.project.sys.vo.UserInfo;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -17,6 +19,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ContactMapper contactMapper;
 
     @Override
     public List<SystemUserEntity> getAll() {
@@ -52,13 +58,13 @@ public class UserServiceImpl implements UserService {
 //        systemContactEntity.setUserId(userEntity.getId());
 //        systemContactEntity.setTypeDetailId(1);
 
-        userMapper.saveContact(systemContactEntity);
+        contactMapper.saveContact(systemContactEntity);
 
         return true;
     }
 
     @Override
-    public String loginCheck(String userName, String password, Boolean rememberFlag)
+    public UserInfo userLogin(String userName, String password, Boolean rememberFlag)
             throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
         //if (1 != user.getIsOnline()) {
@@ -74,19 +80,19 @@ public class UserServiceImpl implements UserService {
             //登录验证
             userSub.login(token);
         }catch(Exception e){
-            return WebConstants.LOGIN_ERROR;
+            return null;
         }
         SystemUserEntity user = setSession(userName);
-        user.setIsOnline(1);
-        //user.setLoginTime(new Date());
-        //userMapper.update(user);
-        return WebConstants.LOGIN_SUCCESS;
+
+        UserInfo userInfo = new UserInfo();
+        BeanUtils.copyProperties(user, userInfo);
+        return userInfo;
         //}
         //return WebConstants.IS_ONLINE;
     }
 
     @Override
-    public void updateOnlineStatus(String userName) {
+    public void updateOnlineStatus(String userName, Integer isOnline) {
 
     }
 
