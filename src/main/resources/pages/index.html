@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -9,6 +9,11 @@
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
     123
+    <label th:utext="${info.success}"></label>
+    <label th:utext="${info.msg}"></label>
+    <div th:if="#{info.success} == true" class="alert alert-danger">
+        #{info.msg}
+    </div>
 </body>
 
 </html>

@@ -61,31 +61,28 @@ public class UserServiceImpl implements UserService {
     public String loginCheck(String userName, String password, Boolean rememberFlag)
             throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
-        SystemUserEntity user = setSession(userName);
-        if (null != user) {
-            String loginPass = MD5Util.EncoderStringByMd5(password + user.getSalt());
-            if (loginPass.equals(user.getPassword())) {
-                if (1 != user.getIsOnline()) {
-                    //获取当前登陆者
-                    Subject userSub = SecurityUtils.getSubject();
+        //if (1 != user.getIsOnline()) {
+        //获取当前登陆者
+        Subject userSub = SecurityUtils.getSubject();
 
-                    //创建令牌
-                    UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), loginPass);
+        //创建令牌
+        UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
 
-                    //前台记住我checkbox是否打勾
-                    token.setRememberMe(rememberFlag);
-
-                    //登录验证
-                    userSub.login(token);
-                    user.setIsOnline(1);
-                    //user.setLoginTime(new Date());
-                    //userMapper.update(user);
-                    return WebConstants.LOGIN_SUCCESS;
-                }
-                return WebConstants.IS_ONLINE;
-            }
+        //前台记住我checkbox是否打勾
+        token.setRememberMe(rememberFlag);
+        try {
+            //登录验证
+            userSub.login(token);
+        }catch(Exception e){
+            return WebConstants.LOGIN_ERROR;
         }
-        return WebConstants.LOGIN_ERROR;
+        SystemUserEntity user = setSession(userName);
+        user.setIsOnline(1);
+        //user.setLoginTime(new Date());
+        //userMapper.update(user);
+        return WebConstants.LOGIN_SUCCESS;
+        //}
+        //return WebConstants.IS_ONLINE;
     }
 
     @Override

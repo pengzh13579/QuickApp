@@ -55,7 +55,7 @@
             SYS_USER.REAL_NAME,
             SYS_USER.AVATAR,
             SYS_USER.SEX,
-            SYS_USER.PASSWORD`,
+            SYS_USER.PASSWORD,
             SYS_USER.SALT,
             SYS_USER.BIRTHDAY,
             SYS_USER.IS_ONLINE,

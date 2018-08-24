@@ -11,9 +11,12 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping ("/systemUserController")
@@ -40,20 +43,39 @@ public class SystemUserController {
         return null;
     }
 
-    @RequestMapping ("/loginCheck")
-    public AjaxJson checkUser(String userName, String password, String rememberFlag, HttpServletRequest request)
+    @RequestMapping ("/userLogin")
+    public ModelAndView checkUser(String userName, String password, String rememberFlag, HttpServletRequest request)
             throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        ModelAndView mav = new ModelAndView();
         AjaxJson j = new AjaxJson();
         String flag = userService.loginCheck(userName, password, "on".equals(rememberFlag) ? true : false);
         if (flag.equals(WebConstants.LOGIN_SUCCESS)) {
             j.setMsg(MessageConstants.LOGIN_SUCCESS_MSG);
             j.setSuccess(true);
+            mav.setViewName("index");
         } else {
             j.setMsg(flag.equals(WebConstants.IS_ONLINE)
                     ? MessageConstants.USER_IS_ONLINE_MSG
                     : MessageConstants.LOGIN_ERROR_MSG);
             j.setSuccess(false);
+            mav.setViewName("login");
         }
-        return j;
+        mav.addObject("info", j);
+        return mav;
+    }
+
+    /**
+     * 退出
+     *
+     * @return 退出
+     */
+    @RequestMapping ("/logout")
+    public String logout() {
+        String userName = SecurityUtils.getSubject().getPrincipal().toString();
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.logout();
+        // 修改用户表在线状态
+        userService.updateOnlineStatus(userName);
+        return "login";
     }
 }

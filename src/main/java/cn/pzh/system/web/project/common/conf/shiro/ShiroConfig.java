@@ -3,8 +3,6 @@ package cn.pzh.system.web.project.common.conf.shiro;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
-import org.apache.shiro.cache.CacheManager;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -18,11 +16,8 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.session.mgt.ServletContainerSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
-import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 public class ShiroConfig {
@@ -37,9 +32,8 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 设置realm.
         securityManager.setRealm(myShiroRealm());
-        securityManager.setCacheManager(getCacheShiroManager(ehcache()));
         securityManager.setRememberMeManager(rememberMeManager(rememberMeCookie()));
-        securityManager.setSessionManager(defaultWebSessionManager(getCacheShiroManager(ehcache())));
+        securityManager.setSessionManager(defaultWebSessionManager());
         return securityManager;
     }
     /**
@@ -54,9 +48,8 @@ public class ShiroConfig {
      * session管理器(单机环境)
      */
     @Bean
-    public DefaultWebSessionManager defaultWebSessionManager(CacheManager cacheShiroManager) {
+    public DefaultWebSessionManager defaultWebSessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setCacheManager(cacheShiroManager);
         sessionManager.setSessionValidationInterval(900 * 1000);
         sessionManager.setGlobalSessionTimeout(1800 * 1000);
         sessionManager.setDeleteInvalidSessions(true);
@@ -66,32 +59,6 @@ public class ShiroConfig {
         cookie.setHttpOnly(true);
         sessionManager.setSessionIdCookie(cookie);
         return sessionManager;
-    }
-    /**
-     * EhCache的配置
-     */
-    @Bean
-    public EhCacheCacheManager cacheManager(net.sf.ehcache.CacheManager cacheManager) {
-        return new EhCacheCacheManager(cacheManager);
-    }
-
-    /**
-     * EhCache的配置
-     */
-    @Bean
-    public EhCacheManagerFactoryBean ehcache() {
-        EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
-        ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource("ehcache.xml"));
-        return ehCacheManagerFactoryBean;
-    }
-    /**
-     * 缓存管理器 使用Ehcache实现
-     */
-    @Bean
-    public CacheManager getCacheShiroManager(EhCacheManagerFactoryBean ehcache) {
-        EhCacheManager ehCacheManager = new EhCacheManager();
-        ehCacheManager.setCacheManager(ehcache.getObject());
-        return ehCacheManager;
     }
 
     /**
@@ -172,12 +139,11 @@ public class ShiroConfig {
 
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/druid/**", "anon");
-        filterChainDefinitionMap.put("/static/**", "anon");
-        filterChainDefinitionMap.put("/systemUserController/loginCheck", "anon");
-        filterChainDefinitionMap.put("/loginPage", "anon");
+        filterChainDefinitionMap.put("/assets/**", "anon");
+        filterChainDefinitionMap.put("/systemUserController/userLogin", "anon");
 
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
-        filterChainDefinitionMap.put("/logout", "logout");
+        filterChainDefinitionMap.put("/systemUserController/logout", "logout");
 
         // 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边:这是一个坑呢，一不小心代码就不好使了;
         filterChainDefinitionMap.put("/**", "authc");
