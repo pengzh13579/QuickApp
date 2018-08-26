@@ -21,7 +21,7 @@ public class SystemUserEntity extends CommonEntity implements Serializable {
     private List<SystemContactEntity> contacts;
     private Integer isOnline;
     private String roleId;
+    private String roleName;
     private Integer deptId;
     private String deptName;
-    private String email;
 }

@@ -6,6 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface LoginLogService {
 
-    void insertLoginLog(SystemLoginLogEntity loginLogEntity, AjaxJson j, HttpServletRequest request) ;
+    void insertLoginLog(SystemLoginLogEntity loginLogEntity, AjaxJson j, HttpServletRequest request, String userName) ;
 
 }

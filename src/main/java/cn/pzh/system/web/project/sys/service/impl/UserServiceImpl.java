@@ -7,14 +7,18 @@ import cn.pzh.system.web.project.common.session.LoginUserInfoBean;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
 import cn.pzh.system.web.project.common.utils.IdUtils;
 import cn.pzh.system.web.project.common.utils.MD5Util;
+import cn.pzh.system.web.project.common.utils.support.ShiroKit;
 import cn.pzh.system.web.project.sys.dao.mapper.ContactMapper;
 import cn.pzh.system.web.project.sys.dao.mapper.UserMapper;
 import cn.pzh.system.web.project.sys.service.UserService;
 import cn.pzh.system.web.project.sys.vo.UserInfo;
+
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
@@ -26,7 +30,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional (propagation = Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -36,36 +40,36 @@ public class UserServiceImpl implements UserService {
     private ContactMapper contactMapper;
 
     @Override
-    public List<SystemUserEntity> getAll() {
-        return userMapper.getAll();
+    public List<SystemUserEntity> getUsers() {
+        return userMapper.getUsers();
     }
 
     @Override
-    @Transactional (readOnly = false)
-    public Boolean registration(SystemUserEntity userEntity)
+    @Transactional(readOnly = false)
+    public Boolean registration(UserInfo userInfo)
             throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
+        SystemUserEntity userEntity = new SystemUserEntity();
+        BeanUtils.copyProperties(userInfo, userEntity);
         //用户信息
-        userEntity.setSalt(IdUtils.salt(WebConstants.SALT_SIZE));
-        userEntity.setPassword(MD5Util.EncoderStringByMd5(userEntity.getPassword() + userEntity.getSalt()));
-        CommonFieldUtils.setAdminCommon(userEntity, "registration");
+        userEntity.setSalt(ShiroKit.getRandomSalt(5));
+        userEntity.setPassword(ShiroKit.md5("111111", userEntity.getSalt()));
+        CommonFieldUtils.setAdminCommon(userEntity, true);
         userMapper.saveUser(userEntity);
 
         //联系方式，注册只有邮箱
-        SystemContactEntity systemContactEntity = new SystemContactEntity();
-        //TODO
-//        systemContactEntity.setContact(userEntity.getEmail());
-//        systemContactEntity.setUserId(userEntity.getId());
-//        systemContactEntity.setTypeDetailId(1);
-
-        contactMapper.saveContact(systemContactEntity);
+        List<SystemContactEntity> contacts = userInfo.getContacts().stream().filter(item -> item != null)
+                .collect(Collectors.toList());
+        contacts.forEach(contact -> contact.setUserName(ShiroKit.getUser().getUserName()));
+        contactMapper.saveContact(contacts);
 
         return true;
     }
 
     @Override
+    @Transactional(readOnly = false)
     public UserInfo userLogin(String userName, String password, Boolean rememberFlag)
-            throws UnsupportedEncodingException, NoSuchAlgorithmException {
+            throws Exception {
 
         //if (1 != user.getIsOnline()) {
         //获取当前登陆者
@@ -76,12 +80,9 @@ public class UserServiceImpl implements UserService {
 
         //前台记住我checkbox是否打勾
         token.setRememberMe(rememberFlag);
-        try {
-            //登录验证
-            userSub.login(token);
-        }catch(Exception e){
-            return null;
-        }
+        //登录验证
+        userSub.login(token);
+
         SystemUserEntity user = setSession(userName);
 
         UserInfo userInfo = new UserInfo();
@@ -94,6 +95,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateOnlineStatus(String userName, Integer isOnline) {
 
+    }
+
+    @Override
+    public UserInfo getUser(String userName) {
+        SystemUserEntity systemUserEntity = userMapper.getUserByUserName(userName);
+        UserInfo userInfo = new UserInfo();
+        BeanUtils.copyProperties(systemUserEntity, userInfo);
+        userInfo.setContacts(contactMapper.selectContactByUserName(userInfo.getUserName()));
+        return userInfo;
     }
 
     /**

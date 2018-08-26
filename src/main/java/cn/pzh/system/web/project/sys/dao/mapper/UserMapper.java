@@ -5,7 +5,7 @@ import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
 import java.util.List;
 
 public interface UserMapper {
-    List<SystemUserEntity> getAll();
+    List<SystemUserEntity> getUsers();
 
     SystemUserEntity getUserByUserName(String userName);
 

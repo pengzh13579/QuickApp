@@ -8,12 +8,14 @@ import java.util.List;
 
 public interface UserService {
 
-    List<SystemUserEntity> getAll();
+    List<SystemUserEntity> getUsers();
 
-    Boolean registration(SystemUserEntity userEntity) throws UnsupportedEncodingException, NoSuchAlgorithmException;
+    Boolean registration(UserInfo userInfo) throws UnsupportedEncodingException, NoSuchAlgorithmException;
 
     UserInfo userLogin(String userName, String password, Boolean rememberFlag)
-            throws UnsupportedEncodingException, NoSuchAlgorithmException;
+            throws Exception;
 
     void updateOnlineStatus(String userName, Integer isOnline);
+
+    UserInfo getUser(String userName);
 }

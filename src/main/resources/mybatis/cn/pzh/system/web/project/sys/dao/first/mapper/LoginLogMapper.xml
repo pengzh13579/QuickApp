@@ -13,7 +13,7 @@
     </resultMap>
 
     <insert id="saveLoginLog" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemLoginLogEntity" useGeneratedKeys="true" keyProperty="id">
-        insert into sys_user (
+        insert into sys_login_log (
             LOG_NAME,
             CREATE_USER,
             CREATE_DATE,

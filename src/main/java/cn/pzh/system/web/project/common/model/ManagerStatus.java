@@ -8,7 +8,7 @@ package cn.pzh.system.web.project.common.model;
  */
 public enum ManagerStatus {
 
-    OK(1, "启用"), FREEZED(2, "冻结"), DELETED(3, "被删除");
+    OK(0, "启用"), FREEZED(2, "冻结"), DELETED(1, "被删除");
 
     int code;
     String message;

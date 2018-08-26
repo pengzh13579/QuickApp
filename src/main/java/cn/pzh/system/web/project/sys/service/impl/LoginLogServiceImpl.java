@@ -5,11 +5,13 @@ import cn.pzh.system.web.project.common.dao.first.entity.SystemContactEntity;
 import cn.pzh.system.web.project.common.dao.first.entity.SystemLoginLogEntity;
 import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
+import cn.pzh.system.web.project.common.model.ShiroUserModel;
 import cn.pzh.system.web.project.common.session.LoginUserInfoBean;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
 import cn.pzh.system.web.project.common.utils.IdUtils;
 import cn.pzh.system.web.project.common.utils.IpUtil;
 import cn.pzh.system.web.project.common.utils.MD5Util;
+import cn.pzh.system.web.project.common.utils.support.ShiroKit;
 import cn.pzh.system.web.project.sys.dao.mapper.LoginLogMapper;
 import cn.pzh.system.web.project.sys.dao.mapper.UserMapper;
 import cn.pzh.system.web.project.sys.service.LoginLogService;
@@ -36,10 +38,11 @@ public class LoginLogServiceImpl implements LoginLogService {
     private LoginLogMapper loginLogMapper;
 
     @Override
-    public void insertLoginLog(SystemLoginLogEntity loginLogEntity, AjaxJson j, HttpServletRequest request) {
+    @Transactional (readOnly = false)
+    public void insertLoginLog(SystemLoginLogEntity loginLogEntity, AjaxJson j, HttpServletRequest request, String userName) {
         loginLogEntity.setLogName("用户登录");
         loginLogEntity.setCreateDate(new Date());
-        loginLogEntity.setCreateUser(SecurityUtils.getSubject().getPrincipal().toString());
+        loginLogEntity.setCreateUser(userName);
         loginLogEntity.setSucceed(String.valueOf(j.isSuccess()));
         loginLogEntity.setIp(IpUtil.getIpAddr(request));
         loginLogEntity.setMessage(j.getMsg());

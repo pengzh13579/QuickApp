@@ -10,7 +10,7 @@
     </resultMap>
 
     <!--  -->
-    <select id="getMenu" parameterType="map" resultMap="contactMap">
+    <select id="selectContactByUserName" parameterType="String" resultMap="BaseResultMap">
         SELECT
             SYS_CONTACT.ID,
             SYS_CONTACT.USER_NAME,
@@ -18,18 +18,22 @@
             SYS_CONTACT.CONTACT_INFO
         FROM SYS_CONTACT SYS_CONTACT
         WHERE SYS_CONTACT.USER_NAME = #{userName,jdbcType=VARCHAR}
+        ORDER BY USER_NAME ASC
     </select>
 
     <!--  -->
-    <insert id="saveContact" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemContactEntity">
+    <insert id="saveContact" parameterType="java.util.List">
         insert into sys_contact (
             USER_NAME,
             CONTACT_TYPE,
             CONTACT_INFO)
-        values (
-            #{userName,jdbcType=VARCHAR},
-            #{contactType,jdbcType=NUMERIC},
-            #{contactInfo,jdbcType=VARCHAR}
+        values
+        <foreach collection="list" item="item" index= "index" separator =",">
+        (
+            #{item.userName,jdbcType=VARCHAR},
+            #{item.contactType,jdbcType=NUMERIC},
+            #{item.contactInfo,jdbcType=VARCHAR}
         )
+        </foreach>
     </insert>
 </mapper>

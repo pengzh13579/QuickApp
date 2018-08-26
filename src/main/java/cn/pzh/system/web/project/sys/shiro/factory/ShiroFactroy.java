@@ -59,10 +59,10 @@ public class ShiroFactroy implements IShiro {
         ShiroUserModel shiroUser = new ShiroUserModel();
 
         shiroUser.setId(user.getId());            // 账号id
-        shiroUser.setAccount(user.getUserName());// 账号
+        shiroUser.setUserName(user.getUserName());// 账号
         shiroUser.setDeptId(user.getDeptId());    // 部门id
         shiroUser.setDeptName(user.getDeptName());// 部门名称
-        shiroUser.setName(user.getRealName());        // 用户名称
+        shiroUser.setRealName(user.getRealName());        // 用户名称
 
         Integer[] roleArray = Convert.toIntArray(user.getRoleId());// 角色集合
         List<Integer> roleList = new ArrayList<Integer>();
