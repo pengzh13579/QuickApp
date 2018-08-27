@@ -38,4 +38,38 @@
         </foreach>
         ORDER BY NUM ASC
     </select>
+    <insert id="saveMenu" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemMenuEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO SYS_MENU (
+            CODE,
+            PCODE,
+            'NAME',
+            ICON,
+            URL,
+            IS_OPEN,
+            IS_MENU,
+            NUM,
+            TIPS,
+            DIS_FLAG,
+            CREATE_USER,
+            CREATE_DATE,
+            UPDATE_USER,
+            UPDATE_DATE)
+        VALUES (
+            #{code,jdbcType=VARCHAR},
+            #{pcode,jdbcType=VARCHAR},
+            #{name,jdbcType=VARCHAR},
+            #{icon,jdbcType=VARCHAR},
+            #{url,jdbcType=VARCHAR},
+            #{isOpen,jdbcType=INTEGER},
+            #{isMenu,jdbcType=INTEGER},
+            #{num,jdbcType=INTEGER},
+            #{tips,jdbcType=INTEGER},
+            #{disFlag,jdbcType=INTEGER},
+            #{createUser,jdbcType=VARCHAR},
+            #{createDate,jdbcType=TIMESTAMP},
+            #{updateUser,jdbcType=VARCHAR},
+            #{updateDate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
 </mapper>

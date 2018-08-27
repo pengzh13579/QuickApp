@@ -8,4 +8,7 @@ public interface ContactMapper {
     List<SystemContactEntity> selectContactByUserName(String userName);
 
     void saveContact(List<SystemContactEntity> systemContactEntitys);
+
+    void deleteContactByUserName(String userName);
+
 }

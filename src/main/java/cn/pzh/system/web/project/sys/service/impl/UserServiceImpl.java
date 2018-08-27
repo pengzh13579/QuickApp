@@ -1,24 +1,19 @@
 package cn.pzh.system.web.project.sys.service.impl;
 
-import cn.pzh.system.web.project.common.constant.WebConstants;
 import cn.pzh.system.web.project.common.dao.first.entity.SystemContactEntity;
 import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
 import cn.pzh.system.web.project.common.session.LoginUserInfoBean;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
-import cn.pzh.system.web.project.common.utils.IdUtils;
-import cn.pzh.system.web.project.common.utils.MD5Util;
 import cn.pzh.system.web.project.common.utils.support.ShiroKit;
 import cn.pzh.system.web.project.sys.dao.mapper.ContactMapper;
 import cn.pzh.system.web.project.sys.dao.mapper.UserMapper;
 import cn.pzh.system.web.project.sys.service.UserService;
 import cn.pzh.system.web.project.sys.vo.UserInfo;
-
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
@@ -30,7 +25,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
+@Transactional (propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -45,9 +40,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = false)
-    public Boolean registration(UserInfo userInfo)
-            throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    @Transactional (readOnly = false)
+    public Boolean registration(UserInfo userInfo) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
         SystemUserEntity userEntity = new SystemUserEntity();
         BeanUtils.copyProperties(userInfo, userEntity);
@@ -67,9 +61,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = false)
-    public UserInfo userLogin(String userName, String password, Boolean rememberFlag)
-            throws Exception {
+    @Transactional (readOnly = false)
+    public UserInfo userLogin(String userName, String password, Boolean rememberFlag) throws Exception {
 
         //if (1 != user.getIsOnline()) {
         //获取当前登陆者
@@ -93,8 +86,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateOnlineStatus(String userName, Integer isOnline) {
-
+    public void updateOnlineStatus(Integer isOnline) {
+        SystemUserEntity systemUserEntity = new SystemUserEntity();
+        systemUserEntity.setUserName(ShiroKit.getUser().getUserName());
+        systemUserEntity.setIsOnline(isOnline);
+        CommonFieldUtils.setAdminCommon(systemUserEntity, false);
+        userMapper.updateOnlineStatus(systemUserEntity);
     }
 
     @Override
@@ -106,6 +103,16 @@ public class UserServiceImpl implements UserService {
         return userInfo;
     }
 
+    @Override
+    public void changePassword(String newPwd) {
+        SystemUserEntity systemUserEntity = new SystemUserEntity();
+        systemUserEntity.setUserName(ShiroKit.getUser().getUserName());
+        systemUserEntity.setSalt(ShiroKit.getRandomSalt(5));
+        systemUserEntity.setPassword(ShiroKit.md5(newPwd, systemUserEntity.getSalt()));
+        CommonFieldUtils.setAdminCommon(systemUserEntity, true);
+        userMapper.updatePassword(systemUserEntity);
+    }
+
     /**
      * 将Cookie添加进Session
      */
@@ -115,10 +122,46 @@ public class UserServiceImpl implements UserService {
         LoginUserInfoBean loginUserInfoBean = new LoginUserInfoBean();
         loginUserInfoBean.setUserName(user.getUserName());
         loginUserInfoBean.setRealName(user.getRealName());
-        //TODO
-        //loginUserInfoBean.setEmail(user.getEmail());
         loginUserInfoBean.setLoginTime(new Date());
         session.setAttribute("userInfo", loginUserInfoBean);
         return user;
+    }
+
+    @Override
+    @Transactional (readOnly = false)
+    public Boolean updateUserInfo(UserInfo userInfo) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+
+        SystemUserEntity userEntity = new SystemUserEntity();
+        BeanUtils.copyProperties(userInfo, userEntity);
+        SystemUserEntity user = userMapper.getUserByUserName(userInfo.getUserName());
+        if (null == user) {
+            return false;
+        }
+        //用户信息
+        CommonFieldUtils.setAdminCommon(userEntity, false);
+        userMapper.updateUserInfo(userEntity);
+
+        contactMapper.deleteContactByUserName(userInfo.getUserName());
+        //联系方式，注册只有邮箱
+        List<SystemContactEntity> contacts = userInfo.getContacts().stream().filter(item -> item != null)
+                .collect(Collectors.toList());
+        contacts.forEach(contact -> contact.setUserName(ShiroKit.getUser().getUserName()));
+        contactMapper.saveContact(contacts);
+
+        return true;
+    }
+
+    @Override
+    public void changeUserStatus(String userName, Integer disFlag) {
+        SystemUserEntity userEntity = new SystemUserEntity();
+        userEntity.setUserName(userName);
+        userEntity.setDisFlag(disFlag);
+        CommonFieldUtils.setAdminCommon(userEntity, false);
+        userMapper.updateUserDisFlag(userEntity);
+    }
+
+    @Override
+    public Boolean checkRepeatUserName(String userName) {
+        return null == userMapper.getUserByUserName(userName) ? true : false;
     }
 }

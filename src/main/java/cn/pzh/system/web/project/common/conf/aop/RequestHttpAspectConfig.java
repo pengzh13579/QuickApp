@@ -1,6 +1,9 @@
 package cn.pzh.system.web.project.common.conf.aop;
 
+import cn.pzh.system.web.project.common.dao.first.entity.SystemOperationLogEntity;
 import cn.pzh.system.web.project.common.utils.IpUtil;
+import cn.pzh.system.web.project.sys.service.OperationLogService;
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -10,6 +13,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -19,6 +23,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class RequestHttpAspectConfig {
 
     private final static Logger logger = LoggerFactory.getLogger(RequestHttpAspectConfig.class);
+
+    @Autowired
+    private OperationLogService operationLogService;
+
     /**
      * 定义AOP扫描路径
      * 1）execution(* *(..))
@@ -49,6 +57,11 @@ public class RequestHttpAspectConfig {
         logger.info("class={} and method name = {}",joinPoint.getSignature().getDeclaringTypeName(),joinPoint.getSignature().getName());
         //参数
         logger.info("参数={}",joinPoint.getArgs());
+//        SystemOperationLogEntity operationLogEntity = new SystemOperationLogEntity();
+//        operationLogEntity.setLogName("用户登录");
+//        operationLogEntity.setCreateDate(new Date());
+//        operationLogEntity.setSucceed("true");
+//        operationLogService.insertOperationLog(operationLogEntity);
     }
 
     /**

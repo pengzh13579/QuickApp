@@ -1,13 +1,16 @@
 package cn.pzh.system.web.project.sys.controller;
 
 import cn.pzh.system.web.project.common.constant.MessageConstants;
+import cn.pzh.system.web.project.common.constant.ViewConstants;
 import cn.pzh.system.web.project.common.dao.first.entity.SystemLoginLogEntity;
 import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
 import cn.pzh.system.web.project.common.utils.Convert;
+import cn.pzh.system.web.project.common.utils.support.ShiroKit;
 import cn.pzh.system.web.project.sys.service.LoginLogService;
 import cn.pzh.system.web.project.sys.service.MenuService;
 import cn.pzh.system.web.project.sys.service.UserService;
+import cn.pzh.system.web.project.sys.vo.ChangePasswordInfo;
 import cn.pzh.system.web.project.sys.vo.UserInfo;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
@@ -92,15 +95,20 @@ public class SystemUserController {
     @ResponseBody
     public AjaxJson addUser(UserInfo userInfo, HttpServletRequest request)
             throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        Boolean flag = userService.registration(userInfo);
         AjaxJson j = new AjaxJson();
+        j.setSuccess(false);
+        Boolean checkUserNameFlag = userService.checkRepeatUserName(userInfo.getUserName());
+        if(checkUserNameFlag){
+            j.setMsg("用户名已存在，请换一个！");
+            return j;
+        }
+        Boolean flag = userService.registration(userInfo);
         if(flag){
-            j.setMsg("用户添加成功");
+            j.setMsg("用户添加成功！");
             j.setSuccess(true);
             return j;
         }
         j.setMsg("用户添加失败，请联系管理员");
-        j.setSuccess(false);
         return j;
     }
 
@@ -108,14 +116,14 @@ public class SystemUserController {
     @ResponseBody
     public AjaxJson editUser(UserInfo userInfo, HttpServletRequest request)
             throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        Boolean flag = userService.registration(userInfo);
+        Boolean flag = userService.updateUserInfo(userInfo);
         AjaxJson j = new AjaxJson();
         if(flag){
-            j.setMsg("用户添加成功");
+            j.setMsg("用户修改成功");
             j.setSuccess(true);
             return j;
         }
-        j.setMsg("用户添加失败，请联系管理员");
+        j.setMsg("用户修改失败，请联系管理员");
         j.setSuccess(false);
         return j;
     }
@@ -124,7 +132,7 @@ public class SystemUserController {
     public String userLogin(String userName, String password, String rememberFlag, HttpServletRequest request, Model model)
             throws Exception {
         AjaxJson j = new AjaxJson();
-        String view = "login";
+        String view = ViewConstants.LOGIN;
         j.setSuccess(false);
         if(StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)){
             j.setMsg(MessageConstants.USER_INFO_EMPTY_MSG);
@@ -141,11 +149,11 @@ public class SystemUserController {
         if (userInfo != null && userInfo .getIsOnline() == 0 ) {
             j.setMsg(MessageConstants.LOGIN_SUCCESS_MSG);
             j.setSuccess(true);
-            view = "index";
+            view = ViewConstants.INDEX;
             model.addAttribute("menuInfo",menuService.getMenuList(Convert.toIntArray(userInfo.getRoleId())));
             model.addAttribute("userInfo", userInfo);
             // 修改用户表在线状态
-            userService.updateOnlineStatus(userName, 1);
+            userService.updateOnlineStatus(1);
         }else{
             if (userInfo != null && userInfo .getIsOnline() == 1 ) {
                 j.setMsg(MessageConstants.USER_IS_ONLINE_MSG);
@@ -164,27 +172,73 @@ public class SystemUserController {
      */
     @RequestMapping ("/logout")
     public String logout() {
-        String userName = SecurityUtils.getSubject().getPrincipal().toString();
-        Subject currentUser = SecurityUtils.getSubject();
-        currentUser.logout();
         // 修改用户表在线状态
-        userService.updateOnlineStatus(userName, 0);
-        return "login";
+        userService.updateOnlineStatus( 0);
+        SecurityUtils.getSubject().logout();
+        return ViewConstants.LOGIN;
     }
 
     @RequestMapping ("/userList")
     public String userList() {
-        return "/sys/userList";
+        return ViewConstants.USER_LIST;
     }
 
     @RequestMapping ("/add")
     public String userAdd() {
-        return "/sys/userForm";
+        return ViewConstants.USER_FORM;
+    }
+
+    @RequestMapping ("/userInfo/{userName}")
+    public String userInfo(@PathVariable String userName, Model model) {
+        model.addAttribute("user", userService.getUser(userName));
+        return ViewConstants.USER_READ_FORM;
     }
 
     @RequestMapping ("/edit/{userName}")
     public String userEdit(@PathVariable String userName, Model model) {
         model.addAttribute("user", userService.getUser(userName));
-        return "/sys/userForm";
+        return ViewConstants.USER_FORM;
     }
+
+    @RequestMapping ("/personInfo")
+    public String personInfo(Model model) {
+        model.addAttribute("user", userService.getUser(ShiroKit.getUser().getUserName()));
+        return ViewConstants.USER_READ_FORM;
+    }
+
+    @RequestMapping ("/changePasswordForm")
+    public String changePassword() {
+        return ViewConstants.CHANGE_PASSWORD;
+    }
+
+    @RequestMapping ("/changePassword")
+    public AjaxJson changePassword(ChangePasswordInfo passwordInfo) {
+        AjaxJson j = new AjaxJson();
+        userService.changePassword(passwordInfo.getNewPwd());
+        SecurityUtils.getSubject().logout();
+        j.setMsg("密码修改成功请重新登录!");
+        j.setSuccess(true);
+        return j;
+    }
+
+    @RequestMapping ("/lockUser")
+    public AjaxJson lockUser(String userName) {
+        AjaxJson j = new AjaxJson();
+        userService.changeUserStatus(userName, 2);
+        SecurityUtils.getSubject().logout();
+        j.setMsg("锁定成功!");
+        j.setSuccess(true);
+        return j;
+    }
+
+    @RequestMapping ("/deleteUser")
+    public AjaxJson deleteUser(String userName) {
+        AjaxJson j = new AjaxJson();
+        userService.changeUserStatus(userName, 1);
+        SecurityUtils.getSubject().logout();
+        j.setMsg("删除成功!");
+        j.setSuccess(true);
+        return j;
+    }
+
 }

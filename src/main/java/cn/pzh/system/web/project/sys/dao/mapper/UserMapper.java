@@ -11,6 +11,13 @@ public interface UserMapper {
 
     SystemUserEntity getUserByLoginName(String loginName);
 
+    void updateOnlineStatus(SystemUserEntity systemUserEntity);
+
     void saveUser(SystemUserEntity userEntity);
 
+    void updatePassword(SystemUserEntity systemUserEntity);
+
+    void updateUserInfo(SystemUserEntity userEntity);
+
+    void updateUserDisFlag(SystemUserEntity userEntity);
 }

@@ -96,7 +96,20 @@ $(function () {
                 operateHtml = operateHtml + '<button class="btn btn-info btn-xs" type="button" onclick="grant(\''+row.userName+'\')"><i class="fa fa-arrows"></i>&nbsp;关联角色</button>';
                 return operateHtml;
             }
-        }]
+        }],
+        onDblClickRow: function (row) {
+            layer.open({
+              type: 2,
+              title: '用户信息',
+              shadeClose: true,
+              shade: false,
+              area: ['893px', '600px'],
+              content: '/systemUserController/userInfo/' + row.userName,
+              end: function(index){
+              }
+            });
+            console.log("click:" + row.userName)
+        }
     });
 });
 

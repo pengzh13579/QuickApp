@@ -1,5 +1,6 @@
 package cn.pzh.system.web.project;
 
+import cn.pzh.system.web.project.common.constant.ViewConstants;
 import cn.pzh.system.web.project.sys.service.MenuService;
 import cn.pzh.system.web.project.sys.service.UserService;
 import javax.servlet.http.HttpServletRequest;
@@ -32,11 +33,11 @@ public class Application {
      */
     @RequestMapping ("/login")
     public String login() {
-        return "login";
+        return ViewConstants.LOGIN;
     }
     @RequestMapping ("/index")
     public String index() {
-        return "index";
+        return ViewConstants.INDEX;
     }
 
 }

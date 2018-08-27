@@ -17,10 +17,13 @@ $(function () {
             "                   <option value=\"5\"  >地址</option>\n" +
             "               </select>\n" +
             "           </label>\n" +
-            "           <div class=\"col-sm-8\">\n" +
+            "           <div class=\"col-sm-6\">\n" +
             "               <input type=\"hidden\" id=\"contactType"+itemNum+"\" name=\"contacts["+itemNum+"].contactType\" class=\"form-control\" value=\"1\" />\n" +
-            "               <input  name=\"contacts["+itemNum+"].contactInfo\" class=\"form-control\" value=\"\"/>\n" +
-            "           </div>\n" +
+            "               <input id=\"contactInfo"+itemNum+"\" name=\"contacts["+itemNum+"].contactInfo\" class=\"form-control\" value=\"\"/>\n" +
+            "           </div>\n"
+            + "         <div class=\"col-sm-2\">\n"
+            + "              <button id=\"|contact_del_btn${iter.index}|\" class=\"btn btn-primary\" type=\"button\" onclick=\"del_contact(this)\">删除</button>\n"
+            + "         </div>" +
             "       </div>"
         itemNum = itemNum + 1;
         $("#control_info").after(item);
@@ -69,9 +72,16 @@ $(function () {
 
 });
 function contact_change(index){
-    $('#contactType'+index).val($('#contactTypeSelect'+index).val());
+  $('#contactType'+index).val($('#contactTypeSelect'+index).val());
+  switch($('#contactType'+index).val()) {
+    case '1':
+      $('#contactInfo'+index).attr('type','email');
+      break;
+    case '2':
+    case '3':
+  }
 }
 function del_contact(tag){
-    debugger;
-    $('#'+$(tag).attr('id').replace('del_btn','div')).remove();
+  debugger;
+  $('#'+$(tag).attr('id').replace('del_btn','div')).remove();
 }

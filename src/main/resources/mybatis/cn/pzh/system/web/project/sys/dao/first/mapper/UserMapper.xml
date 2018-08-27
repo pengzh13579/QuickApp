@@ -53,6 +53,7 @@
         FROM SYS_USER SYS_USER
          LEFT JOIN SYS_DEPT SYS_DEPT
          ON SYS_USER.DEPT_ID = SYS_DEPT.ID
+        WHERE SYS_USER.DIS_FLAG <![CDATA[ <> ]]> 1
     </select>
 
     <!--  -->
@@ -74,9 +75,12 @@
         ON SYS_USER.DEPT_ID = SYS_DEPT.ID
         LEFT JOIN SYS_CONTACT SYS_CONTACT
         ON SYS_USER.USER_NAME = SYS_CONTACT.USER_NAME
-        WHERE (SYS_CONTACT.CONTACT_TYPE = 1 OR SYS_CONTACT.CONTACT_TYPE = 2) AND
-        (SYS_USER.USER_NAME = #{loginName,jdbcType=VARCHAR}
-        OR SYS_CONTACT.CONTACT_INFO = #{loginName,jdbcType=VARCHAR})
+        WHERE (SYS_CONTACT.CONTACT_TYPE = 1 OR SYS_CONTACT.CONTACT_TYPE = 2)
+        AND (
+          SYS_USER.USER_NAME = #{loginName,jdbcType=VARCHAR}
+          OR SYS_CONTACT.CONTACT_INFO = #{loginName,jdbcType=VARCHAR}
+        )
+        AND SYS_CONTACT.DIS_FLAG = 0
         LIMIT 1,1
     </select>
     <select id="getUserByUserName" parameterType="String" resultMap="BaseResultMap">
@@ -91,8 +95,7 @@
 
     <!--  -->
     <insert id="saveUser" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity" useGeneratedKeys="true" keyProperty="id">
-        insert into sys_user (
-
+        INSERT INTO SYS_USER (
             USER_NAME,
             REAL_NAME,
             AVATAR,
@@ -105,20 +108,56 @@
             CREATE_DATE,
             UPDATE_USER,
             UPDATE_DATE)
-        values (
+        VALUES (
             #{userName,jdbcType=VARCHAR},
             #{realName,jdbcType=VARCHAR},
             #{avatar,jdbcType=VARCHAR},
-            #{sex,jdbcType=VARCHAR},
+            #{sex,jdbcType=INTEGER},
             #{password,jdbcType=VARCHAR},
             #{salt,jdbcType=VARCHAR},
             #{birthday,jdbcType=DATE},
-            #{disFlag,jdbcType=NUMERIC},
+            #{disFlag,jdbcType=INTEGER},
             #{createUser,jdbcType=VARCHAR},
             #{createDate,jdbcType=TIMESTAMP},
             #{updateUser,jdbcType=VARCHAR},
             #{updateDate,jdbcType=TIMESTAMP}
         )
     </insert>
+
+    <update id="updateOnlineStatus" parameterType="SysUserEntity">
+        UPDATE SYS_USER
+        set IS_ONLINE=#{isOnline,jdbcType=INTEGER},
+            UPDATE_USER=#{updateUser,jdbcType=VARCHAR},
+            UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP}
+        where USER_NAME=#{userName,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updatePassword" parameterType="SysUserEntity">
+        UPDATE SYS_USER
+        set PASSWORD=#{avatar,jdbcType=VARCHAR},
+        SALT=#{salt,jdbcType=VARCHAR},
+        UPDATE_USER=#{updateUser,jdbcType=VARCHAR},
+        UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP}
+        where USER_NAME=#{userName,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateUserInfo" parameterType="SysUserEntity">
+        UPDATE SYS_USER
+        set AVATAR=#{password,jdbcType=VARCHAR},
+        REAL_NAME=#{realName,jdbcType=VARCHAR},
+        SEX=#{sex,jdbcType=VARCHAR},
+        BIRTHDAY=#{birthday,jdbcType=DATE},
+        UPDATE_USER=#{updateUser,jdbcType=VARCHAR},
+        UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP}
+        where USER_NAME=#{userName,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateUserDisFlag" parameterType="SysUserEntity">
+        UPDATE SYS_USER
+        set DIS_FLAG=#{disFlag,jdbcType=NUMERIC},
+        UPDATE_USER=#{updateUser,jdbcType=VARCHAR},
+        UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP}
+        where USER_NAME=#{userName,jdbcType=VARCHAR}
+    </update>
 
 </mapper>

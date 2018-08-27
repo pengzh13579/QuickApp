@@ -18,16 +18,17 @@
             SYS_CONTACT.CONTACT_INFO
         FROM SYS_CONTACT SYS_CONTACT
         WHERE SYS_CONTACT.USER_NAME = #{userName,jdbcType=VARCHAR}
+        AND SYS_CONTACT.DIS_FLAG = 0
         ORDER BY USER_NAME ASC
     </select>
 
     <!--  -->
     <insert id="saveContact" parameterType="java.util.List">
-        insert into sys_contact (
+        INSERT INTO SYS_CONTACT (
             USER_NAME,
             CONTACT_TYPE,
             CONTACT_INFO)
-        values
+        VALUES
         <foreach collection="list" item="item" index= "index" separator =",">
         (
             #{item.userName,jdbcType=VARCHAR},
@@ -36,4 +37,10 @@
         )
         </foreach>
     </insert>
+
+    <delete id="deleteContactByUserName" parameterType="String">
+        DELETE SYS_CONTACT
+        where USER_NAME=#{userName,jdbcType=VARCHAR}
+    </delete>
+
 </mapper>
