@@ -87,7 +87,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-alerts">
                             <li>
-                                <a href="/systemUserController/changePassword">
+                                <a onclick="changePassword()">
                                     <div>
                                         <i class="fa fa-remove"></i> 修改密码
                                         <span class="pull-right text-muted small">
@@ -120,6 +120,7 @@
 
 <!-- 全局js -->
 <script th:src="@{/assets/js/jquery.min.js}"></script>
+<script th:src="@{/assets/js/jquery.form.min.js}"></script>
 <script th:src="@{/assets/js/bootstrap.min.js}"></script>
 <script th:src="@{/assets/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
 <script th:src="@{/assets/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>

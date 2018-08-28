@@ -141,7 +141,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/druid/**", "anon");
         filterChainDefinitionMap.put("/assets/**", "anon");
         filterChainDefinitionMap.put("/systemUserController/userLogin", "anon");
-
+        filterChainDefinitionMap.put("/systemUserController/userOnlineOut", "anon");
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainDefinitionMap.put("/systemUserController/logout", "logout");
 

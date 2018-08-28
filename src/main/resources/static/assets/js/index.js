@@ -7,3 +7,15 @@ $(function(){
         return false;
     });
 });
+function changePassword(){
+  layer.open({
+    type: 2,
+    title: '修改密码',
+    shadeClose: true,
+    shade: false,
+    area: ['400px', '400px'],
+    content: '/systemUserController/changePasswordForm',
+    end: function(index){
+    }
+  });
+}

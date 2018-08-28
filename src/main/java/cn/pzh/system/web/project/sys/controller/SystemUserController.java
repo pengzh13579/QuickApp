@@ -36,6 +36,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping ("/systemUserController")
@@ -129,7 +130,7 @@ public class SystemUserController {
     }
 
     @RequestMapping ("/userLogin")
-    public String userLogin(String userName, String password, String rememberFlag, HttpServletRequest request, Model model)
+    public String userLogin(String userName, String password, String rememberFlag, HttpServletRequest request, RedirectAttributes attr)
             throws Exception {
         AjaxJson j = new AjaxJson();
         String view = ViewConstants.LOGIN;
@@ -150,19 +151,20 @@ public class SystemUserController {
             j.setMsg(MessageConstants.LOGIN_SUCCESS_MSG);
             j.setSuccess(true);
             view = ViewConstants.INDEX;
-            model.addAttribute("menuInfo",menuService.getMenuList(Convert.toIntArray(userInfo.getRoleId())));
-            model.addAttribute("userInfo", userInfo);
+            attr.addFlashAttribute("menuInfo",menuService.getMenuList(Convert.toIntArray(userInfo.getRoleId())));
+            attr.addFlashAttribute("userInfo", userInfo);
             // 修改用户表在线状态
             userService.updateOnlineStatus(1);
         }else{
             if (userInfo != null && userInfo .getIsOnline() == 1 ) {
                 j.setMsg(MessageConstants.USER_IS_ONLINE_MSG);
+                attr.addFlashAttribute("userName", userName);
             }
         }
-        model.addAttribute("info", j);
+        attr.addFlashAttribute("info", j);
         SystemLoginLogEntity loginLogEntity = new SystemLoginLogEntity();
         loginLogService.insertLoginLog(loginLogEntity, j, request, userName);
-        return view;
+        return "redirect:/"+view;
     }
 
     /**
@@ -174,6 +176,14 @@ public class SystemUserController {
     public String logout() {
         // 修改用户表在线状态
         userService.updateOnlineStatus( 0);
+        SecurityUtils.getSubject().logout();
+        return ViewConstants.LOGIN;
+    }
+    @RequestMapping ("/userOnlineOut")
+    @ResponseBody
+    public String userOnlineOut(String userName) {
+        // 修改用户表在线状态
+        userService.updateOnlineStatus( 0, userName);
         SecurityUtils.getSubject().logout();
         return ViewConstants.LOGIN;
     }
@@ -212,12 +222,30 @@ public class SystemUserController {
     }
 
     @RequestMapping ("/changePassword")
+    @ResponseBody
     public AjaxJson changePassword(ChangePasswordInfo passwordInfo) {
         AjaxJson j = new AjaxJson();
-        userService.changePassword(passwordInfo.getNewPwd());
-        SecurityUtils.getSubject().logout();
-        j.setMsg("密码修改成功请重新登录!");
-        j.setSuccess(true);
+        j.setSuccess(false);
+        if(passwordInfo.getNewPwd()!=null && passwordInfo.getAgainPwd()!=null && passwordInfo.getNewPwd().equals(passwordInfo.getAgainPwd())){
+            SystemUserEntity systemUserEntity = userService.getUserEntity(ShiroKit.getUser().getUserName());
+            String oldPassword = ShiroKit.md5(passwordInfo.getOldPwd(), systemUserEntity.getSalt());
+            if(!oldPassword.equals(systemUserEntity.getPassword())){
+                j.setMsg("旧密码不正确!");
+                return j;
+            }
+            if(!oldPassword.equals(systemUserEntity.getPassword())){
+                j.setMsg("旧密码不正确!");
+                return j;
+            }
+            userService.changePassword(passwordInfo.getNewPwd());
+            userService.updateOnlineStatus( 0);
+            SecurityUtils.getSubject().logout();
+            j.setMsg("密码修改成功请重新登录!");
+            j.setSuccess(true);
+
+        }else{
+            j.setMsg("两次新密码不一致!");
+        }
         return j;
     }
 

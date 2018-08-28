@@ -82,6 +82,5 @@ function contact_change(index){
   }
 }
 function del_contact(tag){
-  debugger;
   $('#'+$(tag).attr('id').replace('del_btn','div')).remove();
 }

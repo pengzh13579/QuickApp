@@ -16,7 +16,11 @@ public interface UserService {
     UserInfo userLogin(String userName, String password, Boolean rememberFlag)
             throws Exception;
 
+    void updateOnlineStatus(Integer isOnline, String UserName);
+
     void updateOnlineStatus( Integer isOnline);
+
+    SystemUserEntity getUserEntity(String userName);
 
     UserInfo getUser(String userName);
 

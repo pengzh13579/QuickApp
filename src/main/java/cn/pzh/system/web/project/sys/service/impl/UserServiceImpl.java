@@ -85,15 +85,19 @@ public class UserServiceImpl implements UserService {
         //return WebConstants.IS_ONLINE;
     }
 
+
+    @Override
+    public void updateOnlineStatus(Integer isOnline, String UserName) {
+        updateOnlineStatusByUserName(isOnline, UserName);
+    }
     @Override
     public void updateOnlineStatus(Integer isOnline) {
-        SystemUserEntity systemUserEntity = new SystemUserEntity();
-        systemUserEntity.setUserName(ShiroKit.getUser().getUserName());
-        systemUserEntity.setIsOnline(isOnline);
-        CommonFieldUtils.setAdminCommon(systemUserEntity, false);
-        userMapper.updateOnlineStatus(systemUserEntity);
+        updateOnlineStatusByUserName(isOnline, ShiroKit.getUser().getUserName());
     }
-
+    @Override
+    public SystemUserEntity getUserEntity(String userName) {
+        return userMapper.getUserByUserName(userName);
+    }
     @Override
     public UserInfo getUser(String userName) {
         SystemUserEntity systemUserEntity = userMapper.getUserByUserName(userName);
@@ -125,6 +129,14 @@ public class UserServiceImpl implements UserService {
         loginUserInfoBean.setLoginTime(new Date());
         session.setAttribute("userInfo", loginUserInfoBean);
         return user;
+    }
+
+    private void updateOnlineStatusByUserName(Integer isOnline, String UserName) {
+        SystemUserEntity systemUserEntity = new SystemUserEntity();
+        systemUserEntity.setUserName(UserName);
+        systemUserEntity.setIsOnline(isOnline);
+        CommonFieldUtils.setAdminCommon(systemUserEntity, false);
+        userMapper.updateOnlineStatus(systemUserEntity);
     }
 
     @Override

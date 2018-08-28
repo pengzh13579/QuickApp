@@ -75,13 +75,13 @@
         ON SYS_USER.DEPT_ID = SYS_DEPT.ID
         LEFT JOIN SYS_CONTACT SYS_CONTACT
         ON SYS_USER.USER_NAME = SYS_CONTACT.USER_NAME
-        WHERE (SYS_CONTACT.CONTACT_TYPE = 1 OR SYS_CONTACT.CONTACT_TYPE = 2)
-        AND (
+        AND (SYS_CONTACT.CONTACT_TYPE = 1 OR SYS_CONTACT.CONTACT_TYPE = 2)
+        AND SYS_CONTACT.DIS_FLAG = 0
+        WHERE (
           SYS_USER.USER_NAME = #{loginName,jdbcType=VARCHAR}
           OR SYS_CONTACT.CONTACT_INFO = #{loginName,jdbcType=VARCHAR}
         )
-        AND SYS_CONTACT.DIS_FLAG = 0
-        LIMIT 1,1
+        LIMIT 0,1
     </select>
     <select id="getUserByUserName" parameterType="String" resultMap="BaseResultMap">
         SELECT
@@ -124,7 +124,7 @@
         )
     </insert>
 
-    <update id="updateOnlineStatus" parameterType="SysUserEntity">
+    <update id="updateOnlineStatus" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity">
         UPDATE SYS_USER
         set IS_ONLINE=#{isOnline,jdbcType=INTEGER},
             UPDATE_USER=#{updateUser,jdbcType=VARCHAR},
@@ -132,16 +132,16 @@
         where USER_NAME=#{userName,jdbcType=VARCHAR}
     </update>
 
-    <update id="updatePassword" parameterType="SysUserEntity">
+    <update id="updatePassword" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity">
         UPDATE SYS_USER
-        set PASSWORD=#{avatar,jdbcType=VARCHAR},
+        set PASSWORD=#{password,jdbcType=VARCHAR},
         SALT=#{salt,jdbcType=VARCHAR},
         UPDATE_USER=#{updateUser,jdbcType=VARCHAR},
         UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP}
         where USER_NAME=#{userName,jdbcType=VARCHAR}
     </update>
 
-    <update id="updateUserInfo" parameterType="SysUserEntity">
+    <update id="updateUserInfo" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity">
         UPDATE SYS_USER
         set AVATAR=#{password,jdbcType=VARCHAR},
         REAL_NAME=#{realName,jdbcType=VARCHAR},
@@ -152,7 +152,7 @@
         where USER_NAME=#{userName,jdbcType=VARCHAR}
     </update>
 
-    <update id="updateUserDisFlag" parameterType="SysUserEntity">
+    <update id="updateUserDisFlag" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity">
         UPDATE SYS_USER
         set DIS_FLAG=#{disFlag,jdbcType=NUMERIC},
         UPDATE_USER=#{updateUser,jdbcType=VARCHAR},
