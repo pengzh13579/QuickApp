@@ -72,4 +72,18 @@
         )
     </insert>
 
+    <select id="menuTreeList" resultType="cn.pzh.system.web.project.common.model.ZTreeNode">
+        SELECT
+            m1.id AS id,
+            (CASE WHEN (m2.id = 0 OR m2.id IS NULL) THEN 0
+            ELSE m2.id END ) AS pId,
+            m1.NAME AS NAME,
+            (CASE WHEN (m2.id = 0 OR m2.id IS NULL) THEN 'true'
+            ELSE 'false' END ) as isOpen
+        FROM
+          sys_menu m1
+        LEFT JOIN sys_menu m2 ON m1.pcode = m2. CODE
+        ORDER BY
+          m1.id ASC
+    </select>
 </mapper>

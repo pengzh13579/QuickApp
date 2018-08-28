@@ -2,6 +2,7 @@ package cn.pzh.system.web.project.sys.service.impl;
 
 import cn.pzh.system.web.project.common.dao.first.entity.SystemMenuEntity;
 import cn.pzh.system.web.project.common.model.MenuNode;
+import cn.pzh.system.web.project.common.model.ZTreeNode;
 import cn.pzh.system.web.project.sys.dao.mapper.MenuMapper;
 import cn.pzh.system.web.project.sys.service.MenuService;
 
@@ -37,5 +38,12 @@ public class MenuServiceImpl implements MenuService {
             menuNodeList.add(mn);
         });
         return menuNodeList;
+    }
+
+    @Override
+    public List<ZTreeNode> getMenuTreeList() {
+        List<ZTreeNode> treeList = menuMapper.menuTreeList();
+        treeList.add(ZTreeNode.createParent());
+        return treeList;
     }
 }

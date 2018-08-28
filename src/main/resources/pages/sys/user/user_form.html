@@ -64,11 +64,11 @@
                             <tr th:each="contact,iter : ${user?.contacts}" >
                                 <div th:id="|contact_div${iter.index}|" class="form-group">
                                     <label class="col-sm-3 control-label" th:switch="${contact.contactType}">
-                                    　　<p th:case="1">邮箱</p>
-                                    　　<p th:case="2">电话</p>
-                                    　　<p th:case="3">QQ</p>
-                                    　　<p th:case="4">微信</p>
-                                    　　<p th:case="5">地址</p>
+                                    　　<label th:case="1">邮箱</label>
+                                    　　<label th:case="2">电话</label>
+                                    　　<label th:case="3">QQ</label>
+                                    　　<label th:case="4">微信</label>
+                                    　　<label th:case="5">地址</label>
                                     </label>
                                     <div class="col-sm-6">
                                         <input type="hidden" id="telType1" th:name="|contacts[${iter.index}].contactType|" class="form-control" th:value="${contact.contactType}" />
@@ -123,7 +123,7 @@
     <script th:src="@{/assets/js/plugins/validate/messages_zh.min.js}"></script>
     <script th:src="@{/assets/js/plugins/layer/layer.min.js}"></script>
     <script th:src="@{/assets/js/plugins/layer/laydate/laydate.js}"></script>
-    <script th:src="@{/assets/js/sys/userForm.js}"></script>
+    <script th:src="@{/assets/js/sys/user/user_form.js}"></script>
 
 </body>
 
