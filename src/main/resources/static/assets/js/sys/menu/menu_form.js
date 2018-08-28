@@ -7,9 +7,10 @@ var setting = {
     },
     data: {
         simpleData: {
-            enable: false, //设置是否启用简单数据格式（zTree支持标准数据格式跟简单数据格式，上面例子中是标准数据格式）
+            enable: true, //设置是否启用简单数据格式（zTree支持标准数据格式跟简单数据格式，上面例子中是标准数据格式）
             idKey: "id", //设置启用简单数据格式时id对应的属性名称
-            pidKey: "pId" //设置启用简单数据格式时parentId对应的属性名称,ztree根据id及pid层级关系构建树结构
+            pidKey: "pId", //设置启用简单数据格式时parentId对应的属性名称,ztree根据id及pid层级关系构建树结构
+            rootPid: 0
         }
     },
     check:{
@@ -33,6 +34,6 @@ var setting = {
 
 $(function () {
     $.post("/systemMenuController/selectMenuTreeList",{},function(data){  //id=3是初始输入，确立根节点的id=3
-        zTreeObj=$.fn.zTree.init($("#treeDemo"),setting, data);
+        zTreeObj=$.fn.zTree.init($("#treeDemo"),setting, eval(data));
     });
 });
