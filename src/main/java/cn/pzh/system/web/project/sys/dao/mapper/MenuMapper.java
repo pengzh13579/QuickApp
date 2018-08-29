@@ -11,4 +11,12 @@ public interface MenuMapper {
     List<SystemMenuEntity> getMenuList(Integer[] roleIds);
 
     List<ZTreeNode> menuTreeList();
+
+    List<SystemMenuEntity> getMenus();
+
+    SystemMenuEntity getMenuByMenuCode(String code);
+
+    void saveMenu(SystemMenuEntity menuEntity);
+
+    String selectCodeById(String pId);
 }

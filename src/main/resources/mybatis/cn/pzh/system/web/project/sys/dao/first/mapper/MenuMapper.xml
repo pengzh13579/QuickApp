@@ -14,20 +14,22 @@
         <result column="NUM" property="num" jdbcType="INTEGER" />
         <result column="TIPS" property="tips" jdbcType="VARCHAR" />
     </resultMap>
-
+    <sql id="selectColumn">
+        SYS_MENU.ID,
+        SYS_MENU.CODE,
+        SYS_MENU.PCODE,
+        SYS_MENU.NAME,
+        SYS_MENU.ICON,
+        SYS_MENU.URL,
+        SYS_MENU.IS_OPEN,
+        SYS_MENU.IS_MENU,
+        SYS_MENU.NUM,
+        SYS_MENU.TIPS
+    </sql>
     <!--  -->
     <select id="getMenuList" parameterType="java.util.ArrayList" resultMap="BaseResultMap">
         SELECT
-            SYS_MENU.ID,
-            SYS_MENU.CODE,
-            SYS_MENU.PCODE,
-            SYS_MENU.NAME,
-            SYS_MENU.ICON,
-            SYS_MENU.URL,
-            SYS_MENU.IS_OPEN,
-            SYS_MENU.IS_MENU,
-            SYS_MENU.NUM,
-            SYS_MENU.TIPS
+        <include refid="selectColumn"></include>
         FROM SYS_MENU SYS_MENU
         INNER JOIN SYS_MENU_ROLE SYS_MENU_ROLE
         ON SYS_MENU.ID = SYS_MENU_ROLE.MENU_ID
@@ -38,11 +40,21 @@
         </foreach>
         ORDER BY NUM ASC
     </select>
+    <select id="getMenus" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM SYS_MENU SYS_MENU
+        INNER JOIN SYS_MENU_ROLE SYS_MENU_ROLE
+        ON SYS_MENU.ID = SYS_MENU_ROLE.MENU_ID
+        WHERE SYS_MENU.DIS_FLAG = 0
+        ORDER BY NUM ASC
+    </select>
+
     <insert id="saveMenu" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemMenuEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO SYS_MENU (
             CODE,
             PCODE,
-            'NAME',
+            NAME,
             ICON,
             URL,
             IS_OPEN,
@@ -85,5 +97,19 @@
         LEFT JOIN sys_menu m2 ON m1.pcode = m2. CODE
         ORDER BY
           m1.id ASC
+    </select>
+    <select id="selectCodeById" resultType="String" parameterType="String">
+        SELECT
+          SYS_MENU.CODE
+        FROM SYS_MENU SYS_MENU
+        WHERE SYS_MENU.DIS_FLAG = 0
+        AND SYS_MENU.ID=#{id,jdbcType=VARCHAR}
+    </select>
+    <select id="getMenuByMenuCode" resultType="cn.pzh.system.web.project.common.dao.first.entity.SystemMenuEntity" parameterType="String">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM SYS_MENU SYS_MENU
+        WHERE SYS_MENU.DIS_FLAG = 0
+        AND SYS_MENU.CODE=#{code,jdbcType=VARCHAR}
     </select>
 </mapper>

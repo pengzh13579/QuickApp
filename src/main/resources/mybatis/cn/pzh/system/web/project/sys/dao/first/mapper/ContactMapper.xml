@@ -39,7 +39,7 @@
     </insert>
 
     <delete id="deleteContactByUserName" parameterType="String">
-        DELETE SYS_CONTACT
+        DELETE FROM SYS_CONTACT
         where USER_NAME=#{userName,jdbcType=VARCHAR}
     </delete>
 

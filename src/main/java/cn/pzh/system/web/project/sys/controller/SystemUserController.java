@@ -9,6 +9,7 @@ import cn.pzh.system.web.project.common.utils.Convert;
 import cn.pzh.system.web.project.common.utils.support.ShiroKit;
 import cn.pzh.system.web.project.sys.service.LoginLogService;
 import cn.pzh.system.web.project.sys.service.MenuService;
+import cn.pzh.system.web.project.sys.service.ProvinceAreaService;
 import cn.pzh.system.web.project.sys.service.UserService;
 import cn.pzh.system.web.project.sys.vo.ChangePasswordInfo;
 import cn.pzh.system.web.project.sys.vo.UserInfo;
@@ -50,6 +51,9 @@ public class SystemUserController {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private ProvinceAreaService provinceAreaService;
 
     @RequestMapping ("/getUsers")
     @ResponseBody
@@ -194,7 +198,8 @@ public class SystemUserController {
     }
 
     @RequestMapping ("/add")
-    public String userAdd() {
+    public String userAdd(Model model) {
+        model.addAttribute("provinceList", provinceAreaService.getAllProvince());
         return ViewConstants.USER_FORM;
     }
 
@@ -207,6 +212,7 @@ public class SystemUserController {
     @RequestMapping ("/edit/{userName}")
     public String userEdit(@PathVariable String userName, Model model) {
         model.addAttribute("user", userService.getUser(userName));
+        model.addAttribute("provinceList", provinceAreaService.getAllProvince());
         return ViewConstants.USER_FORM;
     }
 

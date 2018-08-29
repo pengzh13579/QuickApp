@@ -3,6 +3,7 @@ package cn.pzh.system.web.project.sys.controller;
 import cn.pzh.system.web.project.common.constant.MessageConstants;
 import cn.pzh.system.web.project.common.constant.ViewConstants;
 import cn.pzh.system.web.project.common.dao.first.entity.SystemLoginLogEntity;
+import cn.pzh.system.web.project.common.dao.first.entity.SystemMenuEntity;
 import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
 import cn.pzh.system.web.project.common.model.ZTreeNode;
@@ -12,6 +13,7 @@ import cn.pzh.system.web.project.sys.service.LoginLogService;
 import cn.pzh.system.web.project.sys.service.MenuService;
 import cn.pzh.system.web.project.sys.service.UserService;
 import cn.pzh.system.web.project.sys.vo.ChangePasswordInfo;
+import cn.pzh.system.web.project.sys.vo.MenuInfo;
 import cn.pzh.system.web.project.sys.vo.UserInfo;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
@@ -64,5 +66,56 @@ public class SystemMenuController {
     @RequestMapping ("/menuList")
     public String menuList() {
         return ViewConstants.MENU_LIST;
+    }
+
+    @RequestMapping ("/getMenus")
+    @ResponseBody
+    public String getMenus(HttpServletRequest request) {
+        Map<String, String> map = new HashMap<String, String>();
+
+        // page 为easyui分页插件默认传到后台的参数，代表当前的页码，起始页为1
+        Integer pageNo = Integer.valueOf(request.getParameter("pageNumber"));
+
+        // rows为为easyui分页插件默认传到后台的参数，代表当前设置的每页显示的记录条数
+        Integer pageSize = Integer.valueOf(request.getParameter("pageSize"));
+        // 默认从第一页开始，每页五条
+        PageHelper.startPage(pageNo, pageSize);
+        List<SystemMenuEntity> menus = menuService.getMenus();
+        // 将users对象绑定到pageInfo
+        PageInfo<SystemMenuEntity> pageMenu = new PageInfo<SystemMenuEntity>(menus);
+        // 获取总记录数
+
+        // JSONObject
+        JSONObject result = new JSONObject();
+
+        // total 存放总记录数
+        result.put("total", pageMenu.getTotal());
+
+        // rows存放每页记录 ，这里的两个参数名是固定的，必须为 total和 rows
+        result.put("rows", menus);
+        System.out.println(result.toJSONString());
+        return result.toJSONString();
+    }
+
+    @RequestMapping (value= "/addMenu")
+    @ResponseBody
+    public AjaxJson addMenu(MenuInfo menuInfo, HttpServletRequest request)
+            throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        AjaxJson j = new AjaxJson();
+        j.setSuccess(false);
+        String checkName = menuService.checkRepeatMenuCode(menuInfo.getCode());
+        if(null != checkName){
+            j.setMsg("菜单编号已被【"+checkName+"】菜单使用，请换一个！");
+            return j;
+        }
+        Boolean flag = menuService.insertMenu(menuInfo);
+        if(flag){
+            j.setMsg("菜单添加成功！");
+            j.setSuccess(true);
+            return j;
+        }
+        j.setMsg("菜单添加失败，请联系管理员");
+        return j;
+
     }
 }

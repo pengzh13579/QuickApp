@@ -49,7 +49,7 @@ $(function () {
             title: "性别",
             field: "sex",
             formatter: function(value, row, index) {
-                if (value == '0')
+                if (value == '1')
                     return '<span class="label label-warning">女</span>';
                 return '<span class="label label-primary">男</span>';
             }

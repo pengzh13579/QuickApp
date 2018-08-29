@@ -2,11 +2,14 @@ package cn.pzh.system.web.project.sys.service.impl;
 
 import cn.pzh.system.web.project.common.dao.first.entity.SystemContactEntity;
 import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
+import cn.pzh.system.web.project.common.dao.first.entity.SystemUserNativePlaceEntity;
 import cn.pzh.system.web.project.common.session.LoginUserInfoBean;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
+import cn.pzh.system.web.project.common.utils.DateUtil;
 import cn.pzh.system.web.project.common.utils.support.ShiroKit;
 import cn.pzh.system.web.project.sys.dao.mapper.ContactMapper;
 import cn.pzh.system.web.project.sys.dao.mapper.UserMapper;
+import cn.pzh.system.web.project.sys.dao.mapper.UserNativePlaceMapper;
 import cn.pzh.system.web.project.sys.service.UserService;
 import cn.pzh.system.web.project.sys.vo.UserInfo;
 import java.io.UnsupportedEncodingException;
@@ -34,6 +37,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ContactMapper contactMapper;
 
+    @Autowired
+    private UserNativePlaceMapper userNativePlaceMapper;
+
     @Override
     public List<SystemUserEntity> getUsers() {
         return userMapper.getUsers();
@@ -48,6 +54,7 @@ public class UserServiceImpl implements UserService {
         //用户信息
         userEntity.setSalt(ShiroKit.getRandomSalt(5));
         userEntity.setPassword(ShiroKit.md5("111111", userEntity.getSalt()));
+
         CommonFieldUtils.setAdminCommon(userEntity, true);
         userMapper.saveUser(userEntity);
 
@@ -57,6 +64,9 @@ public class UserServiceImpl implements UserService {
         contacts.forEach(contact -> contact.setUserName(ShiroKit.getUser().getUserName()));
         contactMapper.saveContact(contacts);
 
+        List<SystemUserNativePlaceEntity> userNativePlace = userInfo.getUserNativePlace();
+        userNativePlace.forEach(nativePlace -> nativePlace.setUserName(ShiroKit.getUser().getUserName()));
+        userNativePlaceMapper.saveNativePlace(userNativePlace);
         return true;
     }
 
@@ -98,12 +108,15 @@ public class UserServiceImpl implements UserService {
     public SystemUserEntity getUserEntity(String userName) {
         return userMapper.getUserByUserName(userName);
     }
+
     @Override
     public UserInfo getUser(String userName) {
         SystemUserEntity systemUserEntity = userMapper.getUserByUserName(userName);
         UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(systemUserEntity, userInfo);
+        userInfo.setBirthdayRtn(DateUtil.formatDate(userInfo.getBirthday(), "yyyy-MM-dd"));
         userInfo.setContacts(contactMapper.selectContactByUserName(userInfo.getUserName()));
+        userInfo.setUserNativePlace(userNativePlaceMapper.selectNativePlaceByUserName(userInfo.getUserName()));
         return userInfo;
     }
 
@@ -159,6 +172,11 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
         contacts.forEach(contact -> contact.setUserName(ShiroKit.getUser().getUserName()));
         contactMapper.saveContact(contacts);
+
+        userNativePlaceMapper.deleteNativePlaceByUserName(userInfo.getUserName());
+        List<SystemUserNativePlaceEntity> userNativePlace = userInfo.getUserNativePlace();
+        userNativePlace.forEach(nativePlace -> nativePlace.setUserName(ShiroKit.getUser().getUserName()));
+        userNativePlaceMapper.saveNativePlace(userNativePlace);
 
         return true;
     }

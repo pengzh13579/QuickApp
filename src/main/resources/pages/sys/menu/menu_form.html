@@ -46,7 +46,7 @@
                                     <div style="overflow:scroll; height:180px">
                                         <ul id="treeDemo" class="ztree"></ul>
                                     </div>
-                                    <input id="pcode" name="pcode" class="form-control" type="text" th:value="${menu?.pcode}"/>
+                                    <input id="pId" name="pId" class="form-control" type="text" th:value="${menu?.pId}"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -73,6 +73,15 @@
                                     <select name="isMenu" class="form-control">
                                         <option value="0" th:selected="${user?.isMenu=='0'}" >是</option>
                                         <option value="1" th:selected="${user?.isMenu=='1'}" >否</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">是否展开</label>
+                                <div class="col-sm-8">
+                                    <select name="isOpen" class="form-control">
+                                        <option value="0" th:selected="${user?.isOpen=='0'}" >是</option>
+                                        <option value="1" th:selected="${user?.isOpen=='1'}" >否</option>
                                     </select>
                                 </div>
                             </div>

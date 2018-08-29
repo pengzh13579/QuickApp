@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.sys.dao.mapper.UserNativePlaceMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.common.dao.first.entity.SystemUserNativePlaceEntity" >
+        <result column="ID" property="id" jdbcType="INTEGER" />
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+        <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+        <result column="CITY_ID" property="cityId" jdbcType="VARCHAR" />
+        <result column="AREA_ID" property="areaId" jdbcType="VARCHAR" />
+        <result column="NATIVE_TYPE" property="nativeType" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="selectNativePlaceByUserName" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        SYS_CONTACT.ID,
+        SYS_CONTACT.USER_NAME,
+        SYS_CONTACT.PROVINCE_ID,
+        SYS_CONTACT.CITY_ID,
+        SYS_CONTACT.AREA_ID,
+        SYS_CONTACT.NATIVE_TYPE
+        FROM SYS_USER_NATIVE_PLACE SYS_USER_NATIVE_PLACE
+        WHERE SYS_USER_NATIVE_PLACE.USER_NAME = #{userName,jdbcType=VARCHAR}
+        ORDER BY NATIVE_TYPE ASC
+    </select>
+    <!--  -->
+    <insert id="saveNativePlace" parameterType="java.util.List">
+        INSERT INTO SYS_USER_NATIVE_PLACE (
+            USER_NAME,
+            PROVINCE_ID,
+            CITY_ID,
+            AREA_ID,
+            NATIVE_TYPE)
+        VALUES
+        <foreach collection="list" item="item" index= "index" separator =",">
+        (
+            #{item.userName,jdbcType=VARCHAR},
+            #{item.provinceId,jdbcType=VARCHAR},
+            #{item.cityId,jdbcType=VARCHAR},
+            #{item.provinceId,jdbcType=VARCHAR},
+            #{item.areaId,jdbcType=VARCHAR},
+            #{item.nativeType,jdbcType=INTEGER}
+        )
+        </foreach>
+    </insert>
+
+    <delete id="deleteNativePlaceByUserName" parameterType="String">
+        DELETE FROM SYS_USER_NATIVE_PLACE
+        where USER_NAME=#{userName,jdbcType=VARCHAR}
+    </delete>
+
+</mapper>

@@ -1,6 +1,7 @@
 package cn.pzh.system.web.project.sys.vo;
 
 import cn.pzh.system.web.project.common.dao.first.entity.SystemContactEntity;
+import cn.pzh.system.web.project.common.dao.first.entity.SystemUserNativePlaceEntity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,8 @@ public class UserInfo implements Serializable {
     private Integer sex;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
+    private String birthdayRtn;
+    private List<SystemUserNativePlaceEntity> userNativePlace;
     private List<SystemContactEntity> contacts;
     private Integer isOnline;
     private String deptId;
