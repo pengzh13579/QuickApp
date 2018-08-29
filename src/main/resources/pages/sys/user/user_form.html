@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title> - 表单验证 jQuery Validation</title>
@@ -43,8 +42,8 @@
                                 <label class="col-sm-3 control-label">性别</label>
                                 <div class="col-sm-8">
                                 	<select name="sex" class="form-control">
-                                        <option value="0" th:selected="${user?.sex=='0'}">男</option>
-                                		<option value="1" th:selected="${user?.sex=='1'}">女</option>
+                                        <option value="0" th:selected="${user?.sex==0}">男</option>
+                                		<option value="1" th:selected="${user?.sex==1}">女</option>
                                 	</select>
                                 </div>
                             </div>
@@ -59,7 +58,7 @@
                                 <input type="hidden" id="nativeType" name="userNativePlace[0].nativeType" th:value="0"/>
                                 <div class="col-sm-3">
                                     <select id="provinceId" name="userNativePlace[0].provinceId"
-                                            class="form-control" th:value="${user?.userNativePlace[0].provinceId}">
+                                            class="form-control" th:value="${#lists.size(user?.userNativePlace)>0}?${user?.userNativePlace[0].provinceId}">
                                         <tr th:each="province,iter : ${provinceList}" >
                                             <option th:value="${province.provinceId}" th:text="${province.province}"></option>
                                         </tr>
@@ -67,13 +66,13 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <select name="userNativePlace[0].cityId" id="cityId"
-                                            class="form-control" th:value="${user?.userNativePlace[0].cityId}">
+                                            class="form-control" th:value="${#lists.size(user?.userNativePlace)>0}?${user?.userNativePlace[0].cityId}">
                                         <option>选择城市</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-3">
                                     <select name="userNativePlace[0].areaId" id="areaId"
-                                            class="form-control" th:value="${user?.userNativePlace[0].areaId}">
+                                            class="form-control" th:value="${#lists.size(user?.userNativePlace)>0}?${user?.userNativePlace[0].areaId}">
                                         <option>选择区域</option>
                                     </select>
                                 </div>
@@ -83,7 +82,7 @@
                                 <input type="hidden" id="nativeTypeAddr" name="userNativePlace[1].nativeType" th:value="1"/>
                                 <div class="col-sm-3">
                                     <select id="provinceIdAddr" name="userNativePlace[1].provinceId"
-                                            class="form-control" th:value="${user?.userNativePlace[1].provinceId}">
+                                            class="form-control" th:value="${#lists.size(user?.userNativePlace)>0}?${user?.userNativePlace[1].provinceId}">
                                         <tr th:each="province,iter : ${provinceList}" >
                                             <option th:value="${province.provinceId}" th:text="${province.province}"></option>
                                         </tr>
@@ -91,13 +90,13 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <select name="userNativePlace[1].cityId" id="cityIdAddr"
-                                            class="form-control" th:value="${user?.userNativePlace[1].cityId}">
+                                            class="form-control" th:value="${#lists.size(user?.userNativePlace)>0}?${user?.userNativePlace[1].cityId}">
                                         <option>选择城市</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-3">
                                     <select name="userNativePlace[1].areaId" id="areaIdAddr"
-                                            class="form-control" th:value="${user?.userNativePlace[1].areaId}">
+                                            class="form-control" th:value="${#lists.size(user?.userNativePlace)>0}?${user?.userNativePlace[1].areaId}">
                                         <option>选择区域</option>
                                     </select>
                                 </div>
@@ -125,9 +124,9 @@
                                 <label class="col-sm-3 control-label">状态</label>
                                 <div class="col-sm-8">
                                 	<select name="disFlag" class="form-control">
-                                		<option value="0" th:selected="${user?.disFlag=='0'}" >激活</option>
-                                        <option value="2" th:selected="${user?.disFlag=='2'}" >锁定</option>
-                                		<option value="1" th:selected="${user?.disFlag=='1'}" >删除</option>
+                                		<option value="0" th:selected="${user?.disFlag==0}" >激活</option>
+                                        <option value="2" th:selected="${user?.disFlag==2}" >锁定</option>
+                                		<option value="1" th:selected="${user?.disFlag==1}" >删除</option>
                                 	</select>
                                 </div>
                             </div>

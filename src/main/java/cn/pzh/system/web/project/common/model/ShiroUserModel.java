@@ -20,7 +20,7 @@ public class ShiroUserModel implements Serializable {
     public String userName;      // 账号
     public String realName;         // 姓名
     public Integer deptId;      // 部门id
-    public List<Integer> roleList; // 角色集
+    public String roleId;       // 角色集
     public String deptName;        // 部门名称
     public List<String> roleNames; // 角色名称集
 

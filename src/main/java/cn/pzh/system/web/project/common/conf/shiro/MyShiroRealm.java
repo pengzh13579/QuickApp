@@ -45,29 +45,29 @@ public class MyShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        IShiro shiroFactory = ShiroFactroy.me();
-        ShiroUserModel shiroUser = (ShiroUserModel) principalCollection.getPrimaryPrincipal();
-        List<Integer> roleList = shiroUser.getRoleList();
-
-        Set<String> permissionSet = new HashSet<>();
-        Set<String> roleNameSet = new HashSet<>();
-
-        for (Integer roleId : roleList) {
-            List<String> permissions = shiroFactory.findPermissionsByRoleId(roleId);
-            if (permissions != null) {
-                for (String permission : permissions) {
-                    if (ToolUtil.isNotEmpty(permission)) {
-                        permissionSet.add(permission);
-                    }
-                }
-            }
-            String roleName = shiroFactory.findRoleNameByRoleId(roleId);
-            roleNameSet.add(roleName);
-        }
-
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.addStringPermissions(permissionSet);
-        info.addRoles(roleNameSet);
+//        IShiro shiroFactory = ShiroFactroy.me();
+//        ShiroUserModel shiroUser = (ShiroUserModel) principalCollection.getPrimaryPrincipal();
+//        List<Integer> roleList = shiroUser.getRoleId();
+//
+//        Set<String> permissionSet = new HashSet<>();
+//        Set<String> roleNameSet = new HashSet<>();
+//
+//        for (Integer roleId : roleList) {
+//            List<String> permissions = shiroFactory.findPermissionsByRoleId(roleId);
+//            if (permissions != null) {
+//                for (String permission : permissions) {
+//                    if (ToolUtil.isNotEmpty(permission)) {
+//                        permissionSet.add(permission);
+//                    }
+//                }
+//            }
+//            String roleName = shiroFactory.findRoleNameByRoleId(roleId);
+//            roleNameSet.add(roleName);
+//        }
+//
+//        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+//        info.addStringPermissions(permissionSet);
+//        info.addRoles(roleNameSet);
         return null;
     }
 

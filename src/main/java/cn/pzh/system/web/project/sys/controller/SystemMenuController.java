@@ -118,4 +118,11 @@ public class SystemMenuController {
         return j;
 
     }
+
+    @RequestMapping ("/edit/{code}")
+    public String userEdit(@PathVariable String userName, Model model) {
+//        model.addAttribute("user", userService.getUser(userName));
+//        model.addAttribute("provinceList", provinceAreaService.getAllProvince());
+        return ViewConstants.USER_FORM;
+    }
 }

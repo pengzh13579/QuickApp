@@ -50,9 +50,6 @@ public class SystemUserController {
     private LoginLogService loginLogService;
 
     @Autowired
-    private MenuService menuService;
-
-    @Autowired
     private ProvinceAreaService provinceAreaService;
 
     @RequestMapping ("/getUsers")
@@ -155,8 +152,6 @@ public class SystemUserController {
             j.setMsg(MessageConstants.LOGIN_SUCCESS_MSG);
             j.setSuccess(true);
             view = ViewConstants.INDEX;
-            attr.addFlashAttribute("menuInfo",menuService.getMenuList(Convert.toIntArray(userInfo.getRoleId())));
-            attr.addFlashAttribute("userInfo", userInfo);
             // 修改用户表在线状态
             userService.updateOnlineStatus(1);
         }else{

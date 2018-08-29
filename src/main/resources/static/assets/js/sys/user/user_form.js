@@ -116,8 +116,8 @@ $(function () {
           result += "<option value='" + value.cityId + "'>" + value.city
               + "</option>";
         });
-        $("#cityId").html('');
-        $("#cityId").append(result);
+        $("#cityIdAddr").html('');
+        $("#cityIdAddr").append(result);
       }
     }, "json");
   });
@@ -130,8 +130,8 @@ $(function () {
               result += "<option value='" + value.areaId + "'>" + value.area
                   + "</option>";
             });
-            $("#areaId").html('');
-            $("#areaId").append(result);
+            $("#areaIdAddr").html('');
+            $("#areaIdAddr").append(result);
           }
         }, "json");
   });

@@ -64,16 +64,7 @@ public class ShiroFactroy implements IShiro {
         shiroUser.setDeptName(user.getDeptName());// 部门名称
         shiroUser.setRealName(user.getRealName());        // 用户名称
 
-        Integer[] roleArray = Convert.toIntArray(user.getRoleId());// 角色集合
-        List<Integer> roleList = new ArrayList<Integer>();
-        List<String> roleNameList = new ArrayList<String>();
-        for (int roleId : roleArray) {
-            roleList.add(roleId);
-            //TODO
-            //roleNameList.add(roleMapper.getRoleName(roleId));
-        }
-        shiroUser.setRoleList(roleList);
-        shiroUser.setRoleNames(roleNameList);
+        shiroUser.setRoleId(user.getRoleId());
 
         return shiroUser;
     }
