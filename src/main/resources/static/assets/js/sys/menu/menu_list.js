@@ -76,14 +76,6 @@ $(function () {
                     return '<span class="label label-info">是</span>';
             }
         },{
-            title: "创建时间",
-            field: "createDate",
-            sortable: true
-        },{
-            title: "更新时间",
-            field: "updateDate",
-            sortable: true
-        },{
             title: "操作",
             field: "empty",
             formatter: function (value, row, index) {
