@@ -37,7 +37,6 @@
             #{item.userName,jdbcType=VARCHAR},
             #{item.provinceId,jdbcType=VARCHAR},
             #{item.cityId,jdbcType=VARCHAR},
-            #{item.provinceId,jdbcType=VARCHAR},
             #{item.areaId,jdbcType=VARCHAR},
             #{item.nativeType,jdbcType=INTEGER}
         )

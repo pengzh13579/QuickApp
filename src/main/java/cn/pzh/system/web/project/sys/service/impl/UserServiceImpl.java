@@ -58,14 +58,16 @@ public class UserServiceImpl implements UserService {
         CommonFieldUtils.setAdminCommon(userEntity, true);
         userMapper.saveUser(userEntity);
 
-        //联系方式，注册只有邮箱
-        List<SystemContactEntity> contacts = userInfo.getContacts().stream().filter(item -> item != null)
-                .collect(Collectors.toList());
-        contacts.forEach(contact -> contact.setUserName(ShiroKit.getUser().getUserName()));
-        contactMapper.saveContact(contacts);
+        if(null != userInfo.getContacts()){
+            //联系方式，注册只有邮箱
+            List<SystemContactEntity> contacts = userInfo.getContacts().stream().filter(item -> item != null)
+                    .collect(Collectors.toList());
+            contacts.forEach(contact -> contact.setUserName(ShiroKit.getUser().getUserName()));
+            contactMapper.saveContact(contacts);
+        }
 
         List<SystemUserNativePlaceEntity> userNativePlace = userInfo.getUserNativePlace();
-        userNativePlace.forEach(nativePlace -> nativePlace.setUserName(ShiroKit.getUser().getUserName()));
+        userNativePlace.forEach(nativePlace -> nativePlace.setUserName(userInfo.getUserName()));
         userNativePlaceMapper.saveNativePlace(userNativePlace);
         return true;
     }
@@ -192,6 +194,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean checkRepeatUserName(String userName) {
-        return null == userMapper.getUserByUserName(userName) ? true : false;
+        return null == userMapper.getUserByUserName(userName) ? false : true;
     }
 }

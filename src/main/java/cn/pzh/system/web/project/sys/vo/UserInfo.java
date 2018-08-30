@@ -14,7 +14,6 @@ public class UserInfo implements Serializable {
     private Integer id;
     private String userName;
     private String realName;
-    private String avatar;
     private Integer sex;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;

@@ -6,8 +6,8 @@ $(function () {
     event: 'focus' //响应事件。如果没有传入event，则按照默认的click
   });
   $("#add_contact_btn").click(function () {
-    var item = "<div  id=\"contact_div[" + itemNum
-        + "]\" class=\"form-group\">\n" +
+    var item = "<div  id=\"contact_div" + itemNum
+        + "\" class=\"form-group\">\n" +
         "           <label class=\"col-sm-1 control-label\"></label>" +
         "           <label class=\"col-sm-2 control-label\" style=\"margin-top:-7px\">\n"
         +
@@ -44,7 +44,7 @@ $(function () {
         minlength: 4,
         maxlength: 10
       },
-      nickName: {
+      realName: {
         required: true,
         minlength: 4,
         maxlength: 10
@@ -55,20 +55,60 @@ $(function () {
       birthday: {
         date: true,
         required: true
+      },
+      provinceId: {
+        min: 1
+      },
+      cityId: {
+        min: 1
+      },
+      areaId: {
+        min: 1
+      },
+      provinceIdAddr: {
+        min: 1
+      },
+      cityIdAddr: {
+        min: 1
+      },
+      areaIdAddr: {
+        min: 1
       }
     },
-    messages: {},
+    messages: {
+      provinceId: {
+        min: '请选择籍贯所在省'
+      },
+      cityId: {
+        min: '请选择籍贯所在市'
+      },
+      areaId: {
+        min: '请选择籍贯所在区县'
+      },
+      provinceIdAddr: {
+        min: '请选择住所所在省'
+      },
+      cityIdAddr: {
+        min: '请选择住所所在市'
+      },
+      areaIdAddr: {
+        min: '请选择住所所在区县'
+      }
+    },
     submitHandler: function (form) {
       var url = "/systemUserController/addUser";
       if ($('#id').val() != "") {
         var url = "/systemUserController/editUser";
       }
-      $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: url,
-        data: $(form).serialize(),
-        success: function (data) {
+
+      $.ajaxFileUpload({
+        url: url, //用于文件上传的服务器端请求地址
+        secureuri: false, //是否需要安全协议，一般设置为false
+        fileElementId: 'avatar', //文件上传域的ID
+        data: $(form).serializeObject(),
+        cache:false,
+        dataType: 'JSON', //返回值类型 一般设置为json
+        success: function (data){  //服务器成功响应处理函数
           layer.msg(data.msg, {time: 2000}, function () {
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             if (data.success) {
@@ -139,10 +179,10 @@ $(function () {
 
 function contact_change(index) {
   $('#contactType' + index).val($('#contactTypeSelect' + index).val());
-  $('#contactInfo' + index).attr('type', 'text');
+  $('#contactInfo' + index).attr('class', 'required');
   switch ($('#contactType' + index).val()) {
     case '1':
-      $('#contactInfo' + index).attr('type', 'email');
+      $('#contactInfo' + index).attr('class', 'email');
       break;
     case '2':
     case '3':

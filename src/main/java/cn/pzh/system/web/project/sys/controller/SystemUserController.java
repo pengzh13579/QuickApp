@@ -95,8 +95,11 @@ public class SystemUserController {
 
     @RequestMapping (value= "/addUser")
     @ResponseBody
-    public AjaxJson addUser(UserInfo userInfo, HttpServletRequest request)
+    public AjaxJson addUser(UserInfo userInfo,
+            @RequestParam(value = "avatar") MultipartFile uploadFile,
+            HttpServletRequest request)
             throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        String contextPath = request.getSession().getServletContext().getRealPath("/uploadFile");
         AjaxJson j = new AjaxJson();
         j.setSuccess(false);
         Boolean checkUserNameFlag = userService.checkRepeatUserName(userInfo.getUserName());

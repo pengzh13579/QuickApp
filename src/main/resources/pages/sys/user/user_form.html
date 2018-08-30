@@ -58,7 +58,8 @@
                                 <input type="hidden" id="nativeType" name="userNativePlace[0].nativeType" th:value="0"/>
                                 <div class="col-sm-3">
                                     <select id="provinceId" name="userNativePlace[0].provinceId"
-                                            class="form-control" th:value="${#lists.size(user?.userNativePlace)>0}?${user?.userNativePlace[0].provinceId}">
+                                            class="form-control" th:value="${not #lists.isEmpty(user?.userNativePlace)}?${user?.userNativePlace[0].provinceId}">
+                                        <option value="0"></option>
                                         <tr th:each="province,iter : ${provinceList}" >
                                             <option th:value="${province.provinceId}" th:text="${province.province}"></option>
                                         </tr>
@@ -66,13 +67,13 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <select name="userNativePlace[0].cityId" id="cityId"
-                                            class="form-control" th:value="${#lists.size(user?.userNativePlace)>0}?${user?.userNativePlace[0].cityId}">
+                                            class="form-control" th:value="${not #lists.isEmpty(user?.userNativePlace)}?${user?.userNativePlace[0].cityId}">
                                         <option>选择城市</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-3">
                                     <select name="userNativePlace[0].areaId" id="areaId"
-                                            class="form-control" th:value="${#lists.size(user?.userNativePlace)>0}?${user?.userNativePlace[0].areaId}">
+                                            class="form-control" th:value="${not #lists.isEmpty(user?.userNativePlace)}?${user?.userNativePlace[0].areaId}">
                                         <option>选择区域</option>
                                     </select>
                                 </div>
@@ -82,7 +83,8 @@
                                 <input type="hidden" id="nativeTypeAddr" name="userNativePlace[1].nativeType" th:value="1"/>
                                 <div class="col-sm-3">
                                     <select id="provinceIdAddr" name="userNativePlace[1].provinceId"
-                                            class="form-control" th:value="${#lists.size(user?.userNativePlace)>0}?${user?.userNativePlace[1].provinceId}">
+                                            class="form-control" th:value="${not #lists.isEmpty(user?.userNativePlace)}?${user?.userNativePlace[1].provinceId}">
+                                        <option value="0"></option>
                                         <tr th:each="province,iter : ${provinceList}" >
                                             <option th:value="${province.provinceId}" th:text="${province.province}"></option>
                                         </tr>
@@ -90,13 +92,13 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <select name="userNativePlace[1].cityId" id="cityIdAddr"
-                                            class="form-control" th:value="${#lists.size(user?.userNativePlace)>0}?${user?.userNativePlace[1].cityId}">
+                                            class="form-control" th:value="${not #lists.isEmpty(user?.userNativePlace)}?${user?.userNativePlace[1].cityId}">
                                         <option>选择城市</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-3">
                                     <select name="userNativePlace[1].areaId" id="areaIdAddr"
-                                            class="form-control" th:value="${#lists.size(user?.userNativePlace)>0}?${user?.userNativePlace[1].areaId}">
+                                            class="form-control" th:value="${not #lists.isEmpty(user?.userNativePlace)}?${user?.userNativePlace[1].areaId}">
                                         <option>选择区域</option>
                                     </select>
                                 </div>
@@ -134,7 +136,7 @@
                                 <label class="col-sm-3 control-label">头像</label>
                                 <div class="col-sm-8">
                                     <div class="file-loading">
-                                        <input id="avatar" name="avatar" type="file" class="file" data-show-preview="false"/>
+                                        <input id="avatar" name="avatar" type="file"/>
                                     </div>
                                 </div>
                             </div>
@@ -159,12 +161,13 @@
     <script th:src="@{/assets/js/content.js}"></script>
 
     <!-- jQuery Validation plugin javascript-->
-    <script th:src="@{/assets/js/plugins/validate/jquery.validate.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/validate/jquery.id_validate.min.js}"></script>
     <script th:src="@{/assets/js/plugins/validate/messages_zh.min.js}"></script>
     <script th:src="@{/assets/js/plugins/layer/layer.min.js}"></script>
     <script th:src="@{/assets/js/plugins/layer/laydate/laydate.js}"></script>
     <script th:src="@{/assets/js/sys/user/user_form.js}"></script>
-
+    <script th:src="@{/assets/js/ajaxfileupload.js}"></script>
+    <script th:src="@{/assets/js/common.js}"></script>
 </body>
 
 </html>
