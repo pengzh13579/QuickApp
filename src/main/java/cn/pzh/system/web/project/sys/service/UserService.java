@@ -11,7 +11,7 @@ public interface UserService {
 
     List<SystemUserEntity> getUsers();
 
-    Boolean registration(UserInfo userInfo) throws UnsupportedEncodingException, NoSuchAlgorithmException;
+    Boolean registration(UserInfo userInfo, Integer avatarId) throws UnsupportedEncodingException, NoSuchAlgorithmException;
 
     UserInfo userLogin(String userName, String password, Boolean rememberFlag)
             throws Exception;

@@ -111,7 +111,7 @@
         VALUES (
             #{userName,jdbcType=VARCHAR},
             #{realName,jdbcType=VARCHAR},
-            #{avatar,jdbcType=VARCHAR},
+            #{avatar,jdbcType=INTEGER},
             #{sex,jdbcType=INTEGER},
             #{password,jdbcType=VARCHAR},
             #{salt,jdbcType=VARCHAR},

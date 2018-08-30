@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.sys.dao.mapper.FileMapper">
+
+
+    <insert id="saveFile" parameterType="cn.pzh.system.web.project.common.dao.first.entity.SystemFileEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_file (
+            file_name,
+            file_suffix,
+            path)
+        values (
+            #{fileName,jdbcType=VARCHAR},
+            #{fileSuffix,jdbcType=VARCHAR},
+            #{path,jdbcType=VARCHAR}
+        )
+    </insert>
+
+</mapper>

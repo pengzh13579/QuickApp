@@ -1,9 +1,11 @@
 package cn.pzh.system.web.project.sys.service.impl;
 
 import cn.pzh.system.web.project.common.conf.UploadFileConfig;
+import cn.pzh.system.web.project.common.dao.first.entity.SystemFileEntity;
 import cn.pzh.system.web.project.common.dao.first.entity.SystemLoginLogEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
 import cn.pzh.system.web.project.common.utils.IpUtil;
+import cn.pzh.system.web.project.sys.dao.mapper.FileMapper;
 import cn.pzh.system.web.project.sys.dao.mapper.LoginLogMapper;
 import cn.pzh.system.web.project.sys.service.FileService;
 import java.io.File;
@@ -23,31 +25,31 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional (propagation = Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
 public class FileServiceImpl implements FileService {
 
+
     @Autowired
-    private UploadFileConfig uploadFileConfig;
+    private FileMapper fileMapper;
 
     @Override
     @Transactional (readOnly = false)
-    public String uploadFile(MultipartFile uploadFile, String localPath) throws IOException {
+    public Integer uploadFile(MultipartFile uploadFile, String localPath) throws IOException {
 
-        return String.valueOf(FileSave(uploadFile,localPath));
+        return FileSave(uploadFile,localPath);
     }
 
     /**
      * 文件上传方法
      * @param uploadFile 上传文件
-     * @param ContextPath 上传路径
+     * @param localPath 上传路径
      * @return 是否成功
      * @throws IOException
      */
     @Transactional(readOnly = false)
     public Integer FileSave(MultipartFile uploadFile,
-            String ContextPath) throws IOException {
+            String localPath) throws IOException {
 
         if (!uploadFile.isEmpty()) {
             //获取文件大小
             Long size = uploadFile.getSize();
-
 
             //获取文件的文件名
             String filename = uploadFile.getOriginalFilename();
@@ -59,7 +61,7 @@ public class FileServiceImpl implements FileService {
             String fileName = UUID.randomUUID().toString() + "." + fileSuffix;
 
             //创建保存文件路径的File对象
-            File uploadFoler = new File(ContextPath);
+            File uploadFoler = new File(localPath);
 
             //创建目的File对象
             File targetFile;
@@ -73,10 +75,11 @@ public class FileServiceImpl implements FileService {
             uploadFile.transferTo(targetFile);
 
             //定义附件实体
-//            SystemFileEntity sysFileEntity = new SystemFileEntity();
-//            sysFileEntity.setFileName(filename);
-//            sysFileEntity.setFilePath(targetFile.getPath().split("uploadFile")[1]);
-//            Integer fileSEQ = fileMapper.save(sysFileEntity);
+            SystemFileEntity sysFileEntity = new SystemFileEntity();
+            sysFileEntity.setFileName(filename);
+            sysFileEntity.setFileSuffix(fileSuffix);
+            sysFileEntity.setPath(targetFile.getPath().split("uploadFile")[1]);
+            Integer fileSEQ = fileMapper.saveFile(sysFileEntity);
 
             return 1;
         } else {

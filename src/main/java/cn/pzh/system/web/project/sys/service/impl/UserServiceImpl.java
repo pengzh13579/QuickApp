@@ -47,9 +47,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional (readOnly = false)
-    public Boolean registration(UserInfo userInfo) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public Boolean registration(UserInfo userInfo, Integer avatarId) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
         SystemUserEntity userEntity = new SystemUserEntity();
+        userEntity.setAvatar(avatarId);
         BeanUtils.copyProperties(userInfo, userEntity);
         //用户信息
         userEntity.setSalt(ShiroKit.getRandomSalt(5));
