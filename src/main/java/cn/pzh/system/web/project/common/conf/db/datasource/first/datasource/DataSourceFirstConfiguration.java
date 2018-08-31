@@ -1,6 +1,6 @@
-package cn.pzh.system.web.project.common.conf.datasource.first.datasource;
+package cn.pzh.system.web.project.common.conf.db.datasource.first.datasource;
 
-import cn.pzh.system.web.project.common.conf.datasource.first.annotation.DatasourceFirstMapper;
+import cn.pzh.system.web.project.common.conf.db.datasource.first.annotation.DatasourceFirstMapper;
 import cn.pzh.system.web.project.common.constant.ConfConstants;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.github.pagehelper.PageHelper;

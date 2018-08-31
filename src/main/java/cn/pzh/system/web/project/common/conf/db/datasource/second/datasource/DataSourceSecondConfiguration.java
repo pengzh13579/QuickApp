@@ -1,6 +1,6 @@
-package cn.pzh.system.web.project.common.conf.datasource.second.datasource;
+package cn.pzh.system.web.project.common.conf.db.datasource.second.datasource;
 
-import cn.pzh.system.web.project.common.conf.datasource.second.annotation.DatasourceSecondMapper;
+import cn.pzh.system.web.project.common.conf.db.datasource.second.annotation.DatasourceSecondMapper;
 import cn.pzh.system.web.project.common.constant.ConfConstants;
 import javax.sql.DataSource;
 import com.alibaba.druid.pool.DruidDataSource;

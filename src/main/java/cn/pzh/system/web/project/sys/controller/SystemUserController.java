@@ -86,24 +86,12 @@ public class SystemUserController {
         return result.toJSONString();
     }
 
-    @RequestMapping(value = "/avatarUpload", produces = "text/html;charset=utf-8")
-    @ResponseBody
-    public String avatarUpload(@RequestParam("avatar") MultipartFile file,
-                               HttpServletRequest request) throws IOException {
-        // 1、解析文件数据，并存入车检数据库
-        InputStream fileInput = fileInput = file.getInputStream();
-        String name = file.getOriginalFilename();
-        fileInput.close();
-        return "上传成功：" + name;
-    }
-
     @RequestMapping(value = "/addUser")
     @ResponseBody
     public AjaxJson addUser(UserInfo userInfo,
                             @RequestParam(value = "avatar") MultipartFile uploadFile,
                             HttpServletRequest request)
             throws IOException, NoSuchAlgorithmException {
-        ;
         AjaxJson j = new AjaxJson();
         j.setSuccess(false);
         Boolean checkUserNameFlag = userService.checkRepeatUserName(userInfo.getUserName());

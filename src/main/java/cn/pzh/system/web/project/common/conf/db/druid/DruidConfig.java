@@ -1,4 +1,4 @@
-package cn.pzh.system.web.project.common.conf.druid;
+package cn.pzh.system.web.project.common.conf.db.druid;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;

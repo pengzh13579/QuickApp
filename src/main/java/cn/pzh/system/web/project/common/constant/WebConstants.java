@@ -8,4 +8,15 @@ public class WebConstants {
     public final static String IS_ONLINE = "isOnline";
     public final static String LOGIN_ERROR = "loginError";
 
+    public static final String FORMAT_DATE = "yyyyMMdd";
+
+    public static final String FORMAT_DATE_YYYYMMDD = "yyyy/MM/dd";
+
+    public static final String YYYY_MM_DD = "yyyy-MM-dd";
+
+    public static final String FORMAT_FULL_DATE = "yyyy-MM-dd HH:mm:ss";
+
+    public static final String FORMAT_MMDDHHMM = "MM-dd HH:mm";
+
+    public static final String FORMAT_YYYYMMDDHHMM = "YYYY-MM-dd HH:mm";
 }

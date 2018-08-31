@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional (propagation = Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
 public class FileServiceImpl implements FileService {
 
-
     @Autowired
     private FileMapper fileMapper;
 

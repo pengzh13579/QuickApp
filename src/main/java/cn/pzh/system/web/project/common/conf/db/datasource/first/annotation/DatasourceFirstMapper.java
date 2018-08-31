@@ -1,4 +1,4 @@
-package cn.pzh.system.web.project.common.conf.datasource.second.annotation;
+package cn.pzh.system.web.project.common.conf.db.datasource.first.annotation;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -15,5 +15,5 @@ import java.lang.annotation.Target;
 @Inherited
 @Retention (RUNTIME)
 @Target ({ TYPE, METHOD, FIELD, PARAMETER })
-public @interface DatasourceSecondMapper {
+public @interface DatasourceFirstMapper {
 }
