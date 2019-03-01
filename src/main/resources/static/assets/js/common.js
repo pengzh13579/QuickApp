@@ -17,6 +17,6 @@ $.fn.serializeObject = function()
 
 function bindFiledToControl(data){
   for(var key in data){
-    $('#' + key).val(data[key]);
+    $('#' + key).val(data[key]).change();
   }
 }
