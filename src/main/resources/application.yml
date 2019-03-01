@@ -33,8 +33,6 @@ spring:
 server:
   tomcat:
     uri-encoding: UTF-8
-    basedir: D:/springboot-tomcat-tmp
-    context-path: D:/springboot-tomcat-tmp
   port: 9090
 
 logging:
