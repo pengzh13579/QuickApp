@@ -3,7 +3,7 @@ package cn.pzh.system.web.project.sys.service.impl;
 import cn.pzh.system.web.project.common.model.AreaModel;
 import cn.pzh.system.web.project.common.model.CityModel;
 import cn.pzh.system.web.project.common.model.ProvinceModel;
-import cn.pzh.system.web.project.sys.dao.mapper.CityMapper;
+import cn.pzh.system.web.project.dao.first.mapper.sys.CityMapper;
 import cn.pzh.system.web.project.sys.service.ProvinceAreaService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

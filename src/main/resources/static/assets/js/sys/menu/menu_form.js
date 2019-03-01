@@ -10,7 +10,7 @@ var setting = {
     simpleData: {
       enable: true, //设置是否启用简单数据格式（zTree支持标准数据格式跟简单数据格式，上面例子中是标准数据格式）
       idKey: "id", //设置启用简单数据格式时id对应的属性名称
-      pidKey: "pId", //设置启用简单数据格式时parentId对应的属性名称,ztree根据id及pid层级关系构建树结构
+      pidKey: "pid", //设置启用简单数据格式时parentId对应的属性名称,ztree根据id及pid层级关系构建树结构
       rootPid: 0
     }
   },
@@ -18,7 +18,7 @@ var setting = {
     enable: true  //设置是否显示checkbox复选框
   },
   callback: {
-    // onClick: onClick,  //定义节点单击事件回调函数
+  onClick: setPidInfo,  //定义节点单击事件回调函数
     // onRightClick: OnRightClick, //定义节点右键单击事件回调函数
     // beforeRename: beforeRename, //定义节点重新编辑成功前回调函数，一般用于节点编辑时判断输入的节点名称是否合法
     // onDblClick: onDblClick, //定义节点双击事件回调函数
@@ -36,6 +36,7 @@ var setting = {
 $(function () {
   $.post("/systemMenuController/selectMenuTreeList", {}, function (data) {  //id=3是初始输入，确立根节点的id=3
     zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, eval(data));
+    zTreeObj.selectNode(zTreeObj.getNodeByParam("id",$('#pid').val()));
   });
   $("#frm").validate({
     rules: {
@@ -55,11 +56,10 @@ $(function () {
     },
     messages: {},
     submitHandler: function (form) {
-      debugger;
-      $('#pId').val(zTreeObj.getSelectedNodes()[0].id);
+      $('#pid').val(zTreeObj.getSelectedNodes()[0].id);
       var url = "/systemMenuController/addMenu";
       if ($('#id').val() != "") {
-        var url = "/systemUserController/editUser";
+        var url = "/systemMenuController/editMenu";
       }
       $.ajax({
         type: "POST",
@@ -67,7 +67,6 @@ $(function () {
         url: url,
         data: $(form).serialize(),
         success: function (data) {
-          debugger;
           layer.msg(data.msg, {time: 2000}, function () {
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             if (data.success) {
@@ -79,3 +78,7 @@ $(function () {
     }
   });
 });
+
+function setPidInfo(){
+  $('#pid').val(zTreeObj.getSelectedNodes()[0].id);
+}

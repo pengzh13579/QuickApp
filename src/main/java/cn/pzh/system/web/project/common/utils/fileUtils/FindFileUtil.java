@@ -90,7 +90,6 @@ public class FindFileUtil extends SimpleFileVisitor<Path> {
     public FileVisitResult visitFileFailed(Path file, IOException exc)
             throws IOException {
         // 如果错误信息中包含X:\System Volume Information，这是表示系统的隐藏盘，是不能读的
-        System.out.println(exc.getMessage());
         return FileVisitResult.CONTINUE;
     }
 }

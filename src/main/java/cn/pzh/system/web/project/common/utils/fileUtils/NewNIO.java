@@ -431,15 +431,4 @@ public class NewNIO implements NewNIOInf {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-
-        NewNIOInf inf = new NewNIO();
-//		inf.copeOrMoveFile("e:/cc/dd/11.txt", "e:/XX/xxx/zzz/",
-//				OptionFile_TYPE.COPE);
-//		inf.copeOrMoveDirectory("e:\\BB\\CC\\DD", "e:\\", 1,
-//				OptionFile_TYPE.MOVE);
-        System.out.println(inf.findFilesByType("D:\\workspace",
-                new String[]{"css"}, false).size());
-    }
-
 }

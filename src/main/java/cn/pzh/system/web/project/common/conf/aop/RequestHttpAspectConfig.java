@@ -1,9 +1,7 @@
 package cn.pzh.system.web.project.common.conf.aop;
 
-import cn.pzh.system.web.project.common.dao.first.entity.SystemOperationLogEntity;
 import cn.pzh.system.web.project.common.utils.IpUtil;
 import cn.pzh.system.web.project.sys.service.OperationLogService;
-import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -80,6 +78,6 @@ public class RequestHttpAspectConfig {
      */
     @AfterReturning (returning = "object",pointcut = "log()")
     public void doAfterReturn(Object object){
-        logger.info("response={}",object.toString());
+        logger.info("response={}",(object == null ? null : object.toString()));
     }
 }

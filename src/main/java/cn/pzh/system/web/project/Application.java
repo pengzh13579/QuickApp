@@ -22,11 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @EnableAutoConfiguration
 @SpringBootApplication
 @EnableTransactionManagement
-@MapperScan (basePackages = "cn.pzh.system.web.project.**.dao.mapper")
+@MapperScan (basePackages = "cn.pzh.system.web.project.dao.**.mapper.**")
 public class Application {
 
     @Autowired
     private MenuService menuService;
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -43,7 +44,7 @@ public class Application {
 
     @RequestMapping ("/index")
     public String index(Model model) {
-        model.addAttribute("menuInfo",menuService.getMenuList(Convert.toIntArray(ShiroKit.getUser().getRoleId())));
+        model.addAttribute("menuInfo",menuService.listIndexMenus(Convert.toIntArray(ShiroKit.getUser().getRoleId())));
         model.addAttribute("userInfo", ShiroKit.getUser());
         return ViewConstants.INDEX;
     }

@@ -1,7 +1,7 @@
 package cn.pzh.system.web.project.sys.vo;
 
-import cn.pzh.system.web.project.common.dao.first.entity.SystemContactEntity;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemUserNativePlaceEntity;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemContactEntity;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemUserNativePlaceEntity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;

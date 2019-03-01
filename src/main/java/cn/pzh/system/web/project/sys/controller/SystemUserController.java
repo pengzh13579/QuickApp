@@ -3,10 +3,9 @@ package cn.pzh.system.web.project.sys.controller;
 import cn.pzh.system.web.project.common.conf.UploadFileConfig;
 import cn.pzh.system.web.project.common.constant.MessageConstants;
 import cn.pzh.system.web.project.common.constant.ViewConstants;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemLoginLogEntity;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
+import cn.pzh.system.web.project.dao.first.entity.monitor.LoginLogEntity;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemUserEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
-import cn.pzh.system.web.project.common.utils.Convert;
 import cn.pzh.system.web.project.common.utils.support.ShiroKit;
 import cn.pzh.system.web.project.sys.service.*;
 import cn.pzh.system.web.project.sys.vo.ChangePasswordInfo;
@@ -15,7 +14,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -28,13 +26,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.CredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -56,9 +52,39 @@ public class SystemUserController {
     @Autowired
     private UploadFileConfig uploadFileConfig;
 
-    @RequestMapping("/getUsers")
+    @RequestMapping("/list")
+    public String list() {
+        return ViewConstants.USER_LIST;
+    }
+
+    @RequestMapping("/add")
+    public String userAdd(Model model) {
+//        model.addAttribute("provinceList", provinceAreaService.getAllProvince());
+        return ViewConstants.USER_FORM;
+    }
+
+    @RequestMapping("/edit/{userName}")
+    public String userEdit(@PathVariable String userName, Model model) {
+        model.addAttribute("user", userService.getUser(userName));
+//        model.addAttribute("provinceList", provinceAreaService.getAllProvince());
+        return ViewConstants.USER_FORM;
+    }
+
+    @RequestMapping("/userInfo/{userName}")
+    public String userInfo(@PathVariable String userName, Model model) {
+        model.addAttribute("user", userService.getUser(userName));
+        return ViewConstants.USER_READ_FORM;
+    }
+
+    @RequestMapping("/relatedRole/{id}")
+    public String relatedRole(@PathVariable Integer id, Model model) {
+        model.addAttribute("user", userService.getUser(id));
+        return ViewConstants.USER_RELATED_ROLE;
+    }
+
+    @RequestMapping("/listUsers")
     @ResponseBody
-    public String getUsers(HttpServletRequest request) {
+    public String listUsers(HttpServletRequest request) {
         Map<String, String> map = new HashMap<String, String>();
 
         // page 为easyui分页插件默认传到后台的参数，代表当前的页码，起始页为1
@@ -68,7 +94,7 @@ public class SystemUserController {
         Integer pageSize = Integer.valueOf(request.getParameter("pageSize"));
         // 默认从第一页开始，每页五条
         PageHelper.startPage(pageNo, pageSize);
-        List<SystemUserEntity> users = userService.getUsers();
+        List<SystemUserEntity> users = userService.listUsers();
         // 将users对象绑定到pageInfo
         PageInfo<SystemUserEntity> pageUser = new PageInfo<SystemUserEntity>(users);
         // 获取总记录数
@@ -82,7 +108,6 @@ public class SystemUserController {
 
         // rows存放每页记录 ，这里的两个参数名是固定的，必须为 total和 rows
         result.put("rows", users);
-        System.out.println(result.toJSONString());
         return result.toJSONString();
     }
 
@@ -149,7 +174,7 @@ public class SystemUserController {
             j.setSuccess(true);
             view = ViewConstants.INDEX;
             // 修改用户表在线状态
-            userService.updateOnlineStatus(1);
+            userService.updateOnlineStatus(1, ShiroKit.getUser().userName);
         } else {
             if (userInfo != null && userInfo.getIsOnline() == 1) {
                 j.setMsg(MessageConstants.USER_IS_ONLINE_MSG);
@@ -157,7 +182,7 @@ public class SystemUserController {
             }
         }
         attr.addFlashAttribute("info", j);
-        SystemLoginLogEntity loginLogEntity = new SystemLoginLogEntity();
+        LoginLogEntity loginLogEntity = new LoginLogEntity();
         loginLogService.insertLoginLog(loginLogEntity, j, request, userName);
         return "redirect:/" + view;
     }
@@ -170,7 +195,7 @@ public class SystemUserController {
     @RequestMapping("/logout")
     public String logout() {
         // 修改用户表在线状态
-        userService.updateOnlineStatus(0);
+        userService.updateOnlineStatus(0, ShiroKit.getUser().userName);
         SecurityUtils.getSubject().logout();
         return ViewConstants.LOGIN;
     }
@@ -182,30 +207,6 @@ public class SystemUserController {
         userService.updateOnlineStatus(0, userName);
         SecurityUtils.getSubject().logout();
         return ViewConstants.LOGIN;
-    }
-
-    @RequestMapping("/userList")
-    public String userList() {
-        return ViewConstants.USER_LIST;
-    }
-
-    @RequestMapping("/add")
-    public String userAdd(Model model) {
-        model.addAttribute("provinceList", provinceAreaService.getAllProvince());
-        return ViewConstants.USER_FORM;
-    }
-
-    @RequestMapping("/userInfo/{userName}")
-    public String userInfo(@PathVariable String userName, Model model) {
-        model.addAttribute("user", userService.getUser(userName));
-        return ViewConstants.USER_READ_FORM;
-    }
-
-    @RequestMapping("/edit/{userName}")
-    public String userEdit(@PathVariable String userName, Model model) {
-        model.addAttribute("user", userService.getUser(userName));
-        model.addAttribute("provinceList", provinceAreaService.getAllProvince());
-        return ViewConstants.USER_FORM;
     }
 
     @RequestMapping("/personInfo")
@@ -236,7 +237,7 @@ public class SystemUserController {
                 return j;
             }
             userService.changePassword(passwordInfo.getNewPwd());
-            userService.updateOnlineStatus(0);
+            userService.updateOnlineStatus(0, ShiroKit.getUser().userName);
             SecurityUtils.getSubject().logout();
             j.setMsg("密码修改成功请重新登录!");
             j.setSuccess(true);
@@ -247,21 +248,35 @@ public class SystemUserController {
         return j;
     }
 
-    @RequestMapping("/lockUser")
-    public AjaxJson lockUser(String userName) {
+    @RequestMapping("/relatedRoleInfo")
+    @ResponseBody
+    public AjaxJson relatedRoleInfo(String roleIds, String userName) {
         AjaxJson j = new AjaxJson();
-        userService.changeUserStatus(userName, 2);
-        SecurityUtils.getSubject().logout();
+        userService.updateUserRoleId(roleIds, userName);
         j.setMsg("锁定成功!");
         j.setSuccess(true);
         return j;
     }
 
-    @RequestMapping("/deleteUser")
-    public AjaxJson deleteUser(String userName) {
+    @RequestMapping("/lockUser/{userName}")
+    @ResponseBody
+    public AjaxJson lockUser(@PathVariable String userName) {
+        AjaxJson j = new AjaxJson();
+        userService.changeUserStatus(userName, 2);
+        if (ShiroKit.getUser().getUserName().equals(userName))
+            SecurityUtils.getSubject().logout();
+        j.setMsg("锁定成功!");
+        j.setSuccess(true);
+        return j;
+    }
+
+    @RequestMapping("/deleteUser/{userName}")
+    @ResponseBody
+    public AjaxJson deleteUser(@PathVariable String userName) {
         AjaxJson j = new AjaxJson();
         userService.changeUserStatus(userName, 1);
-        SecurityUtils.getSubject().logout();
+        if (ShiroKit.getUser().getUserName().equals(userName))
+            SecurityUtils.getSubject().logout();
         j.setMsg("删除成功!");
         j.setSuccess(true);
         return j;

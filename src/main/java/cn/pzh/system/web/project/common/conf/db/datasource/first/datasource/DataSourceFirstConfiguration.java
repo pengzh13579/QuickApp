@@ -40,7 +40,7 @@ public class DataSourceFirstConfiguration {
         bean.setPlugins(plugins);
 
         bean.setMapperLocations(new PathMatchingResourcePatternResolver()
-                .getResources("classpath*:mybatis/cn/pzh/system/web/project/**/dao/first/mapper/*.xml"));
+                .getResources("classpath*:mybatis/cn/pzh/system/web/project/dao/first/mapper/**/*.xml"));
         return bean.getObject();
     }
 

@@ -291,22 +291,4 @@ public class DateUtil {
 		return dateStr;
 	}
 
-	/**
-	 * 格式化Oracle Date
-	 * @param value
-	 * @return
-	 */
-//	public static String buildDateValue(Object value){
-//		if(Func.isOracle()){
-//			return "to_date('"+ value +"','yyyy-mm-dd HH24:MI:SS')";
-//		}else{
-//			return Func.toStr(value);
-//		}
-//	}
-
-	public static void main(String[] args) {
-		System.out.println(getTime(new Date()));
-		System.out.println(getAfterDayWeek("3"));
-	}
-
 }

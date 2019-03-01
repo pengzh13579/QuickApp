@@ -1,53 +1,50 @@
 package cn.pzh.system.web.project.sys.service.impl;
 
-import cn.pzh.system.web.project.common.dao.first.entity.SystemFileEntity;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemRoleEntity;
-import cn.pzh.system.web.project.sys.dao.mapper.FileMapper;
-import cn.pzh.system.web.project.sys.service.FileService;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemRoleEntity;
+import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
+import cn.pzh.system.web.project.dao.first.mapper.sys.RoleMapper;
 import cn.pzh.system.web.project.sys.service.RoleService;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional (propagation = Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
 public class RoleServiceImpl implements RoleService {
 
+    @Autowired
+    private RoleMapper roleMapper;
+
     @Override
-    public List<SystemRoleEntity> getList() {
-        return null;
+    public List<SystemRoleEntity> listRoles() {
+        return roleMapper.listRoles();
     }
 
     @Override
-    public Boolean insert(SystemRoleEntity info) {
-        return null;
+    @Transactional (readOnly = false)
+    public Boolean insert(SystemRoleEntity role) {
+        return roleMapper.save(role);
     }
 
     @Override
     public SystemRoleEntity get(Integer id) {
-        return null;
+        return roleMapper.selectRoleById(id);
     }
 
     @Override
-    public Boolean update(SystemRoleEntity info) {
-        return null;
+    @Transactional (readOnly = false)
+    public Boolean update(SystemRoleEntity role) {
+        return roleMapper.update(role);
     }
 
     @Override
+    @Transactional (readOnly = false)
     public void delete(Integer id) {
-
-    }
-
-    @Override
-    public void updateDisFlag(Integer id) {
-
+        SystemRoleEntity role = roleMapper.selectRoleById(id);
+        role.setDisFlag(1);
+        CommonFieldUtils.setAdminCommon(role, false);
+        roleMapper.update(role);
     }
 }

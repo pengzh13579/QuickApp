@@ -1,18 +1,11 @@
 package cn.pzh.system.web.project.sys.service.impl;
 
-import cn.pzh.system.web.project.common.conf.UploadFileConfig;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemFileEntity;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemLoginLogEntity;
-import cn.pzh.system.web.project.common.model.AjaxJson;
-import cn.pzh.system.web.project.common.utils.IpUtil;
-import cn.pzh.system.web.project.sys.dao.mapper.FileMapper;
-import cn.pzh.system.web.project.sys.dao.mapper.LoginLogMapper;
+import cn.pzh.system.web.project.dao.first.entity.comm.CommonFileEntity;
+import cn.pzh.system.web.project.dao.first.mapper.comm.FileMapper;
 import cn.pzh.system.web.project.sys.service.FileService;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,11 +67,11 @@ public class FileServiceImpl implements FileService {
             uploadFile.transferTo(targetFile);
 
             //定义附件实体
-            SystemFileEntity sysFileEntity = new SystemFileEntity();
-            sysFileEntity.setFileName(filename);
-            sysFileEntity.setFileSuffix(fileSuffix);
-            sysFileEntity.setPath(targetFile.getPath().split("uploadFile")[1]);
-            Integer fileSEQ = fileMapper.saveFile(sysFileEntity);
+            CommonFileEntity commonFileEntity = new CommonFileEntity();
+            commonFileEntity.setFileName(filename);
+            commonFileEntity.setFileSuffix(fileSuffix);
+            commonFileEntity.setPath(targetFile.getPath().split("uploadFile")[1]);
+            Integer fileSEQ = fileMapper.saveFile(commonFileEntity);
 
             return 1;
         } else {

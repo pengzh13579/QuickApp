@@ -147,12 +147,4 @@ public class CRC16Util {
 
         return b;
     }
-
-    public static void main(String[] args) {
-        byte[] test = CRC16Util.HexString2Bytes("0200fb000130");
-        System.out.println(CRC16Util.mkCrc16(test));    //2363
-        System.out.println(CRC16Util.evalCRC16(test));    //fe9f
-        System.out.println(CRC16Util.crcTable(test));    //4231
-        System.out.println(CRC16Util.getCRC16(test));    //60bc
-    }
 }

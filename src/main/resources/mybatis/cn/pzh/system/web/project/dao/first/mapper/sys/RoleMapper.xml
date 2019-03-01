@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.dao.first.mapper.sys.RoleMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.sys.SystemRoleEntity" >
+        <result column="ID" property="id" jdbcType="INTEGER" />
+        <result column="NUM" property="num" jdbcType="INTEGER" />
+        <result column="CODE" property="code" jdbcType="VARCHAR" />
+        <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+        <result column="TIPS" property="tips" jdbcType="VARCHAR" />
+        <result column="TEMP" property="temp" jdbcType="VARCHAR" />
+        <result column="DIS_FLAG" property="disFlag" jdbcType="INTEGER" />
+        <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+        <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+        <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+        <result column="UPDATE_DATE" property="updateDate" jdbcType="DATE" />
+    </resultMap>
+
+    <sql id="selectColumn">
+        SYS_ROLE.ID,
+        SYS_ROLE.NUM,
+        SYS_ROLE.CODE,
+        SYS_ROLE.ROLE_NAME,
+        SYS_ROLE.TIPS,
+        SYS_ROLE.TEMP,
+        SYS_ROLE.DIS_FLAG,
+        SYS_ROLE.CREATE_USER,
+        SYS_ROLE.CREATE_DATE,
+        SYS_ROLE.UPDATE_USER,
+        SYS_ROLE.UPDATE_DATE
+    </sql>
+
+    <select id="listRoles" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM SYS_ROLE
+        WHERE SYS_ROLE.DIS_FLAG = 0
+        ORDER BY SYS_ROLE.NUM ASC
+    </select>
+
+    <!--  -->
+    <select id="selectRoleById" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM SYS_ROLE
+        WHERE SYS_ROLE.ID = #{id,jdbcType=INTEGER}
+        AND SYS_ROLE.DIS_FLAG = 0
+        ORDER BY SYS_ROLE.NUM ASC
+    </select>
+
+    <!--  -->
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO SYS_ROLE (
+            NUM,
+            CODE,
+            ROLE_NAME,
+            TIPS,
+            TEMP,
+            DIS_FLAG,
+            CREATE_USER,
+            CREATE_DATE,
+            UPDATE_USER,
+            UPDATE_DATE)
+        VALUES
+        <foreach collection="list" item="item" index= "index" separator =",">
+        (
+            #{item.num,jdbcType=INTEGER},
+            #{item.code,jdbcType=VARCHAR},
+            #{item.roleName,jdbcType=VARCHAR},
+            #{item.tips,jdbcType=VARCHAR},
+            #{item.temp,jdbcType=VARCHAR},
+            #{item.disFlag,jdbcType=INTEGER},
+            #{item.createUser,jdbcType=VARCHAR},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.updateUser,jdbcType=VARCHAR},
+            #{item.updateDate,jdbcType=TIMESTAMP}
+        )
+        </foreach>
+    </insert>
+
+    <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemRoleEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO SYS_ROLE (
+            NUM,
+            CODE,
+            ROLE_NAME,
+            TIPS,
+            TEMP,
+            DIS_FLAG,
+            CREATE_USER,
+            CREATE_DATE,
+            UPDATE_USER,
+            UPDATE_DATE)
+        VALUES (
+            #{num,jdbcType=INTEGER},
+            #{code,jdbcType=VARCHAR},
+            #{roleName,jdbcType=VARCHAR},
+            #{tips,jdbcType=VARCHAR},
+            #{temp,jdbcType=VARCHAR},
+            #{disFlag,jdbcType=INTEGER},
+            #{createUser,jdbcType=VARCHAR},
+            #{createDate,jdbcType=TIMESTAMP},
+            #{updateUser,jdbcType=VARCHAR},
+            #{updateDate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemRoleEntity">
+        UPDATE SYS_ROLE
+        <trim prefix="set" suffixOverrides=",">
+            <if test="num != null">NUM=#{num,jdbcType=INTEGER},</if>
+            <if test="code != null">CODE=#{code,jdbcType=VARCHAR},</if>
+            <if test="roleName != null">ROLE_NAME=#{roleName,jdbcType=VARCHAR},</if>
+            <if test="tips != null">TIPS=#{tips,jdbcType=VARCHAR},</if>
+            <if test="temp != null">TEMP=#{temp,jdbcType=VARCHAR},</if>
+            <if test="disFlag != null">DIS_FLAG=#{disFlag,jdbcType=VARCHAR},</if>
+            <if test="updateUser != null">UPDATE_USER=#{updateUser,jdbcType=VARCHAR},</if>
+            <if test="updateDate != null">UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP},</if>
+        </trim>
+        where ID=#{id,jdbcType=INTEGER}
+    </update>
+
+</mapper>

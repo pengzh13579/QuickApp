@@ -6,9 +6,10 @@ $(function () {
         //必须设置，不然request.getParameter获取不到请求参数
         contentType: "application/x-www-form-urlencoded",
         //获取数据的Servlet地址
-        url: "/systemUserController/getUsers",
+        url: "/systemUserController/listUsers",
         //表格显示条纹
         striped: true,
+        singleSelect : true,
         //启动分页
         pagination: true,
         //每页显示的记录数
@@ -19,9 +20,6 @@ $(function () {
         pageList: [5, 10, 15, 20, 25],
         //是否启用查询
         search: true,
-        //是否启用详细信息视图
-        detailView:true,
-        detailFormatter:detailFormatter,
         //表示服务端请求
         sidePagination: "server",
         //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
@@ -34,11 +32,19 @@ $(function () {
                 "total": res.total
             };
         },
+        formatNoMatches: function(){
+          return "没有相关的匹配结果";
+        },
+        formatLoadingMessage: function(){
+          return "请稍等，正在加载中。。。";
+        },
         //数据列
         columns: [{
+            checkbox: true
+        },{
             title: "ID",
             field: "id",
-            sortable: true
+            visible: false
         },{
             title: "登录名",
             field: "userName"
@@ -93,7 +99,7 @@ $(function () {
             formatter: function (value, row, index) {
                 var operateHtml = '<button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.userName+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;';
                 operateHtml = operateHtml + '<button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.userName+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button> &nbsp;';
-                operateHtml = operateHtml + '<button class="btn btn-info btn-xs" type="button" onclick="grant(\''+row.userName+'\')"><i class="fa fa-arrows"></i>&nbsp;关联角色</button>';
+                operateHtml = operateHtml + '<button class="btn btn-info btn-xs" type="button" onclick="related_role(\''+row.id+'\')"><i class="fa fa-arrows"></i>&nbsp;关联角色</button>';
                 return operateHtml;
             }
         }],
@@ -123,6 +129,7 @@ function edit(userName){
         content: '/systemUserController/edit/' + userName,
         end: function(index){
             $('#table_list').bootstrapTable("refresh");
+            layer.close(index);
         }
     });
 }
@@ -136,30 +143,33 @@ function add(){
         content: '/systemUserController/add',
         end: function(index){
             $('#table_list').bootstrapTable("refresh");
+            layer.close(index);
         }
     });
 }
-function grant(id){
+
+function related_role(id){
     layer.open({
         type: 2,
         title: '关联角色',
         shadeClose: true,
         shade: false,
         area: ['893px', '600px'],
-        content: '${ctx!}/admin/user/grant/'  + id,
+        content: '/systemUserController/relatedRole/'  + id,
         end: function(index){
             $('#table_list').bootstrapTable("refresh");
+            layer.close(index);
         }
     });
 }
-function del(id){
+function del(userName){
     layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: "systemUserController/delete/" + id,
-            success: function(msg){
-                layer.msg(msg.message, {time: 2000},function(){
+            url: "/systemUserController/deleteUser/" + userName,
+            success: function(data){
+                layer.msg(data.msg, {time: 2000},function(){
                     $('#table_list').bootstrapTable("refresh");
                     layer.close(index);
                 });
@@ -168,10 +178,31 @@ function del(id){
     });
 }
 
-function detailFormatter(index, row) {
-    var html = [];
-    html.push('<p><b>描述:</b> ' + row.description + '</p>');
-    return html.join('');
+function lockUser(){
+  //获取选中数据
+  var selections = $("#table_list").bootstrapTable('getSelections');
+
+  if (selections.length > 1) {
+    layer.msg("只能选择一行进行锁定");
+    return;
+  }
+  if (selections.length <= 0) {
+    layer.msg("请选择一条数据");
+    return;
+  }
+  layer.confirm('确定锁定' + selections[0].realName + '吗?', {icon: 3, title:'提示'}, function(index){
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      url: "/systemUserController/lockUser/" + selections[0].userName,
+      success: function(data){
+        layer.msg(data.msg, {time: 2000},function(){
+          $('#table_list').bootstrapTable("refresh");
+          layer.close(index);
+        });
+      }
+    });
+  });
 }
 
 //修改——转换日期格式(时间戳转换为datetime格式)

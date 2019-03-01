@@ -3,10 +3,9 @@ package cn.pzh.system.web.project.common.conf.shiro;
 import cn.pzh.system.web.project.common.model.ShiroUserModel;
 import cn.pzh.system.web.project.sys.shiro.factory.IShiro;
 import cn.pzh.system.web.project.sys.shiro.factory.ShiroFactroy;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
-import cn.pzh.system.web.project.common.utils.ToolUtil;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemUserEntity;
 import cn.pzh.system.web.project.common.utils.support.ShiroKit;
-import cn.pzh.system.web.project.sys.dao.mapper.UserMapper;
+import cn.pzh.system.web.project.dao.first.mapper.sys.UserMapper;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -15,16 +14,11 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * MyShiroRealm

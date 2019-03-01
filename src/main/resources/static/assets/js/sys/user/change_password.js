@@ -19,7 +19,6 @@ $(function () {
     },
     messages: {},
     submitHandler:function(form){
-      debugger;
       if($('#newPwd').val() == $('#againPwd').val()){
         $.ajax({
           type: "POST",
@@ -27,7 +26,7 @@ $(function () {
           url: "/systemUserController/changePassword",
           data: $(form).serialize(),
           success: function(data){
-            alert(data.msg);
+            layer.msg(data.msg);
             if(data.success){
               window.location.href="/login";
             }

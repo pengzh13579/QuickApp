@@ -31,7 +31,7 @@ public class DataSourceSecondConfiguration {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
         bean.setMapperLocations(new PathMatchingResourcePatternResolver()
-                .getResources("classpath*:mybatis/cn/pzh/system/web/project/**/dao/second/mapper/*.xml"));
+                .getResources("classpath*:mybatis/cn/pzh/system/web/project/dao/second/mapper/**/*.xml"));
         return bean.getObject();
     }
 

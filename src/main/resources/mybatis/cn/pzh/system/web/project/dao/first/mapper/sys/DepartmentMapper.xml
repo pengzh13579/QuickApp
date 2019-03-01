@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.dao.first.mapper.sys.DepartmentMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.sys.SystemDepartmentEntity" >
+        <result column="ID" property="id" jdbcType="INTEGER" />
+        <result column="CODE" property="code" jdbcType="VARCHAR" />
+        <result column="DEPART_CODE" property="departCode" jdbcType="VARCHAR" />
+        <result column="PCODE" property="pcode" jdbcType="VARCHAR" />
+        <result column="DEPART_SIMPLE_NAME" property="departSimpleName" jdbcType="VARCHAR" />
+        <result column="DEPART_FULL_NAME" property="departFullName" jdbcType="VARCHAR" />
+        <result column="DEPART_LEADER" property="departLeader" jdbcType="VARCHAR" />
+        <result column="DEPART_TEL" property="departTel" jdbcType="VARCHAR" />
+        <result column="OPEN_FLAG" property="openFlag" jdbcType="INTEGER" />
+        <result column="TIPS" property="tips" jdbcType="VARCHAR" />
+        <result column="TEMP" property="temp" jdbcType="VARCHAR" />
+        <result column="NUM" property="num" jdbcType="INTEGER" />
+        <result column="DIS_FLAG" property="disFlag" jdbcType="INTEGER" />
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+        <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <sql id="selectColumn">
+        SYS_DEPARTMENT.ID,
+        SYS_DEPARTMENT.CODE,
+        SYS_DEPARTMENT.DEPART_CODE,
+        SYS_DEPARTMENT.PCODE,
+        SYS_DEPARTMENT.DEPART_SIMPLE_NAME,
+        SYS_DEPARTMENT.DEPART_FULL_NAME,
+        SYS_DEPARTMENT.DEPART_LEADER,
+        SYS_DEPARTMENT.DEPART_TEL,
+        SYS_DEPARTMENT.OPEN_FLAG,
+        SYS_DEPARTMENT.TIPS,
+        SYS_DEPARTMENT.TEMP,
+        SYS_DEPARTMENT.NUM,
+        SYS_DEPARTMENT.DIS_FLAG,
+        SYS_DEPARTMENT.CREATE_DATE,
+        SYS_DEPARTMENT.UPDATE_DATE,
+        SYS_DEPARTMENT.CREATE_USER,
+        SYS_DEPARTMENT.UPDATE_USER
+    </sql>
+
+    <select id="getDepartmentList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM SYS_DEPARTMENT
+        WHERE SYS_DEPARTMENT.DIS_FLAG = 0
+    </select>
+
+    <select id="selectDepartmentByCode" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM SYS_DEPARTMENT
+        WHERE SYS_DEPARTMENT.CODE = #{code,jdbcType=INTEGER}
+        AND SYS_DEPARTMENT.DIS_FLAG = 0
+    </select>
+
+    <!--  -->
+    <select id="selectDepartmentById" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM SYS_DEPARTMENT
+        WHERE SYS_DEPARTMENT.ID = #{id,jdbcType=INTEGER}
+        AND SYS_DEPARTMENT.DIS_FLAG = 0
+    </select>
+
+    <!--  -->
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO SYS_DEPARTMENT (
+            CODE,
+            DEPART_CODE,
+            PCODE,
+            DEPART_SIMPLE_NAME,
+            DEPART_FULL_NAME,
+            DEPART_LEADER,
+            DEPART_TEL,
+            OPEN_FLAG,
+            TIPS,
+            TEMP,
+            NUM,
+            DIS_FLAG,
+            CREATE_DATE,
+            UPDATE_DATE,
+            CREATE_USER,
+            UPDATE_USER
+        )
+        VALUES
+        <foreach collection="list" item="item" index= "index" separator =",">
+        (
+            #{item.code,jdbcType=VARCHAR},
+            #{item.departCode,jdbcType=VARCHAR},
+            #{item.pcode,jdbcType=VARCHAR},
+            #{item.departSimpleName,jdbcType=VARCHAR},
+            #{item.departFullName,jdbcType=VARCHAR},
+            #{item.departLeader,jdbcType=VARCHAR},
+            #{item.departTel,jdbcType=VARCHAR},
+            #{item.openFlag,jdbcType=INTEGER},
+            #{item.tips,jdbcType=VARCHAR},
+            #{item.temp,jdbcType=VARCHAR},
+            #{item.num,jdbcType=INTEGER},
+            #{item.disFlag,jdbcType=INTEGER},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.updateDate,jdbcType=TIMESTAMP},
+            #{item.createUser,jdbcType=VARCHAR},
+            #{item.updateUser,jdbcType=VARCHAR}
+        )
+        </foreach>
+    </insert>
+
+    <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemDepartmentEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO SYS_DEPARTMENT (
+            CODE,
+            DEPART_CODE,
+            PCODE,
+            DEPART_SIMPLE_NAME,
+            DEPART_FULL_NAME,
+            DEPART_LEADER,
+            DEPART_TEL,
+            OPEN_FLAG,
+            TIPS,
+            TEMP,
+            NUM,
+            DIS_FLAG,
+            CREATE_DATE,
+            UPDATE_DATE,
+            CREATE_USER,
+            UPDATE_USER
+        )
+        VALUES (
+            #{code,jdbcType=VARCHAR},
+            #{departCode,jdbcType=VARCHAR},
+            #{pcode,jdbcType=VARCHAR},
+            #{departSimpleName,jdbcType=VARCHAR},
+            #{departFullName,jdbcType=VARCHAR},
+            #{departLeader,jdbcType=VARCHAR},
+            #{departTel,jdbcType=VARCHAR},
+            #{openFlag,jdbcType=INTEGER},
+            #{tips,jdbcType=VARCHAR},
+            #{temp,jdbcType=VARCHAR},
+            #{num,jdbcType=INTEGER},
+            #{disFlag,jdbcType=INTEGER},
+            #{createDate,jdbcType=TIMESTAMP},
+            #{updateDate,jdbcType=TIMESTAMP},
+            #{createUser,jdbcType=VARCHAR},
+            #{updateUser,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemDepartmentEntity">
+        UPDATE SYS_DEPARTMENT
+        <trim prefix="set" suffixOverrides=",">
+            <if test="code != null">CODE=#{code,jdbcType=VARCHAR},</if>
+            <if test="departCode != null">DEPART_CODE=#{departCode,jdbcType=VARCHAR},</if>
+            <if test="pcode != null">PCODE=#{pcode,jdbcType=VARCHAR},</if>
+            <if test="departSimpleName != null">DEPART_SIMPLE_NAME=#{departSimpleName,jdbcType=VARCHAR},</if>
+            <if test="departFullName != null">DEPART_FULL_NAME=#{departFullName,jdbcType=VARCHAR},</if>
+            <if test="departLeader != null">DEPART_LEADER=#{departLeader,jdbcType=VARCHAR},</if>
+            <if test="departTel != null">DEPART_TEL=#{departTel,jdbcType=VARCHAR},</if>
+            <if test="openFlag != null">OPEN_FLAG=#{openFlag,jdbcType=VARCHAR},</if>
+            <if test="tips != null">TIPS=#{tips,jdbcType=VARCHAR},</if>
+            <if test="temp != null">TEMP=#{temp,jdbcType=VARCHAR},</if>
+            <if test="num != null">NUM=#{num,jdbcType=INTEGER},</if>
+            <if test="disFlag != null">DIS_FLAG=#{disFlag,jdbcType=INTEGER},</if>
+            <if test="updateDate != null">UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP},</if>
+            <if test="updateUser != null">UPDATE_USER=#{updateUser,jdbcType=VARCHAR},</if>
+
+        </trim>
+        where ID=#{id,jdbcType=INTEGER}
+    </update>
+
+</mapper>
