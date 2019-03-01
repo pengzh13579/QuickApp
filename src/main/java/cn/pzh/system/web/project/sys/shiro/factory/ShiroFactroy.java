@@ -1,12 +1,11 @@
 package cn.pzh.system.web.project.sys.shiro.factory;
 
 import cn.pzh.system.web.project.common.model.ShiroUserModel;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemUserEntity;
 import cn.pzh.system.web.project.common.model.ManagerStatus;
-import cn.pzh.system.web.project.common.utils.Convert;
 import cn.pzh.system.web.project.common.utils.SpringContextHolder;
-import cn.pzh.system.web.project.sys.dao.mapper.MenuMapper;
-import cn.pzh.system.web.project.sys.dao.mapper.UserMapper;
+import cn.pzh.system.web.project.dao.first.mapper.sys.MenuMapper;
+import cn.pzh.system.web.project.dao.first.mapper.sys.UserMapper;
 import org.apache.shiro.authc.CredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

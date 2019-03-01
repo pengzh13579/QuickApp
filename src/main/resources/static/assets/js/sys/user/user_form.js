@@ -46,7 +46,7 @@ $(function () {
       },
       realName: {
         required: true,
-        minlength: 4,
+        minlength: 1,
         maxlength: 10
       },
       sex: {
@@ -55,45 +55,45 @@ $(function () {
       birthday: {
         date: true,
         required: true
-      },
-      provinceId: {
-        min: 1
-      },
-      cityId: {
-        min: 1
-      },
-      areaId: {
-        min: 1
-      },
-      provinceIdAddr: {
-        min: 1
-      },
-      cityIdAddr: {
-        min: 1
-      },
-      areaIdAddr: {
-        min: 1
       }
+      // provinceId: {
+      //   min: 1
+      // },
+      // cityId: {
+      //   min: 1
+      // },
+      // areaId: {
+      //   min: 1
+      // },
+      // provinceIdAddr: {
+      //   min: 1
+      // },
+      // cityIdAddr: {
+      //   min: 1
+      // },
+      // areaIdAddr: {
+      //   min: 1
+      // }
     },
     messages: {
-      provinceId: {
-        min: '请选择籍贯所在省'
-      },
-      cityId: {
-        min: '请选择籍贯所在市'
-      },
-      areaId: {
-        min: '请选择籍贯所在区县'
-      },
-      provinceIdAddr: {
-        min: '请选择住所所在省'
-      },
-      cityIdAddr: {
-        min: '请选择住所所在市'
-      },
-      areaIdAddr: {
-        min: '请选择住所所在区县'
-      }
+      // provinceId: {
+      //   min: '请选择籍贯所在省'
+      // },
+      // cityId: {
+      //   min: '请选择籍贯所在市'
+      // },
+      // areaId: {
+      //   min: '请选择籍贯所在区县'
+      // },
+      // provinceIdAddr: {
+      //   min: '请选择住所所在省'
+      // },
+      // cityIdAddr: {
+      //   min: '请选择住所所在市'
+      // },
+      // areaIdAddr: {
+      //   min: '请选择住所所在区县'
+      // }
     },
     submitHandler: function (form) {
       var url = "/systemUserController/addUser";
@@ -179,10 +179,11 @@ $(function () {
 
 function contact_change(index) {
   $('#contactType' + index).val($('#contactTypeSelect' + index).val());
-  $('#contactInfo' + index).attr('class', 'required');
+  $('#contactInfo' + index).removeClass('email');
+  $('#contactInfo' + index).addClass('required');
   switch ($('#contactType' + index).val()) {
     case '1':
-      $('#contactInfo' + index).attr('class', 'email');
+      $('#contactInfo' + index).addClass('email');
       break;
     case '2':
     case '3':

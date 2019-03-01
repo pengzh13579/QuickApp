@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+
+    <title>部门管理</title>
+
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/font-awesome.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/animate.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/plugins/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/plugins/jsTree/style.min.css}" rel="stylesheet"/>
+
+    <style>
+        .jstree-open > .jstree-anchor > .fa-folder:before {
+            content: "\f07c";
+        }
+
+        .jstree-default .jstree-icon.none {
+            width: 0;
+        }
+    </style>
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>部门管理</h5>
+                </div>
+                <div class="ibox-content">
+                    <p>
+                        <button class="btn btn-success " type="button" onclick="addLowerDepartment();"><i class="fa fa-plus"></i>&nbsp;添加下级部门</button>
+                        <button class="btn btn-success " type="button" onclick="addSameDepartment();"><i class="fa fa-plus"></i>&nbsp;添加同级部门</button>
+                        <button class="btn btn-success " type="button" onclick="del();"><i class="fa fa-plus"></i>&nbsp;删除</button>
+                    </p>
+                    <hr/>
+                    <div class="row row-lg">
+                        <div class="col-sm-4">
+                            <!-- Example Card View -->
+                            <div class="example-wrap">
+                                <div class="example">
+                                    <div id="department_tree">
+                                        <ul>
+                                            <tr th:if=" ${departmentTree} != null" th:each="node1,iter1 : ${departmentTree}" >
+                                                <li class="jstree-open"><label th:id="${node1.code}" th:utext="${node1.departSimpleName}"></label><ul>
+                                                        <tr th:if=" ${node1.departmentChildren} != null" th:each="node2,iter2 : ${node1.departmentChildren}" >
+                                                            <li th:classappend="${node2.openFlag == 1}? 'jstree-open'"><label th:id="${node2.code}" th:utext="${node2.departSimpleName}"></label><ul>
+                                                                    <tr th:if=" ${node2.departmentChildren} != null" th:each="node3,iter3 : ${node2.departmentChildren}" >
+                                                                        <li th:classappend="${node3.openFlag == 1}? 'jstree-open'"><label th:id="${node3.code}" th:utext="${node3.departSimpleName}"></label><ul>
+                                                                                <tr th:if=" ${node3.departmentChildren} != null" th:each="node4,iter4 : ${node3.departmentChildren}" >
+                                                                                    <li th:classappend="${node4.openFlag == 1}? 'jstree-open'"><label th:id="${node4.code}" th:utext="${node4.departSimpleName}"></label></li><ul>
+                                                                                        <tr th:if=" ${node4.departmentChildren} != null" th:each="node5,iter5 : ${node4.departmentChildren}" >
+                                                                                            <li th:classappend="${node5.openFlag == 1}? 'jstree-open'"><label th:id="${node5.code}" th:utext="${node5.departSimpleName}"></label></li><ul>
+                                                                                                <tr th:if=" ${node5.departmentChildren} != null" th:each="node6,iter6 : ${node5.departmentChildren}" >
+                                                                                                    <li th:classappend="${node6.openFlag == 1}? 'jstree-open'"><label th:id="${node6.code}" th:utext="${node6.departSimpleName}"></label></li>
+                                                                                                </tr>
+                                                                                            </ul>
+                                                                                        </tr>
+                                                                                    </ul>
+                                                                                </tr>
+                                                                            </ul>
+                                                                        </li>
+                                                                    </tr>
+                                                                </ul>
+                                                            </li>
+                                                        </tr>
+                                                    </ul>
+                                                </li>
+                                            </tr>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Example Card View -->
+                        </div>
+                        <div class="col-sm-4">
+                            <form class="form-horizontal m-t" id="frm" method="post">
+                                <input type="hidden" id="id" name="id"/>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">部门编号</label>
+                                    <div class="col-sm-8">
+                                        <input readonly="true" id="code" name="code" class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">部门编码</label>
+                                    <div class="col-sm-8">
+                                        <input readonly="true" id="departCode" name="departCode" class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">父部门</label>
+                                    <div class="col-sm-8">
+                                        <input readonly="true" id="departParentName" name="departParentName" class="form-control" type="text"/>
+                                        <input id="pcode" name="pcode" type="hidden"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">部门简称名称</label>
+                                    <div class="col-sm-8">
+                                        <input id="departSimpleName" name="departSimpleName" class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">部门全称</label>
+                                    <div class="col-sm-8">
+                                        <input id="departFullName" name="departFullName" class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">部门负责人</label>
+                                    <div class="col-sm-8">
+                                        <input id="departLeader" name="departLeader" class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">部门联系电话</label>
+                                    <div class="col-sm-8">
+                                        <input id="departTel" name="departTel" class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">提示</label>
+                                    <div class="col-sm-8">
+                                        <input id="tips" name="tips" class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-8 col-sm-offset-3">
+                                        <button class="btn btn-primary" type="submit">登录</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="example-wrap">
+                                <div class="example">
+                                    <button class="btn btn-success " type="button" onclick="addUsers();"><i class="fa fa-plus"></i>&nbsp;关联用户</button>
+                                    <table id="department_user_list"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+
+<!-- Peity -->
+<script th:src="@{/assets/js/plugins/bootstrap-table/bootstrap-table.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js}"></script>
+<script th:src="@{/assets/js/plugins/validate/jquery.validate.min.js}"></script>
+<script th:src="@{/assets/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/assets/js/plugins/peity/jquery.peity.min.js}"></script>
+
+<script th:src="@{/assets/js/plugins/jsTree/jstree.min.js}"></script>
+<script th:src="@{/assets/js/plugins/layer/layer.min.js}"></script>
+
+<!-- 自定义js -->
+<script th:src="@{/assets/js/common.js}"></script>
+<script th:src="@{/assets/js/content.js}"></script>
+<script th:src="@{/assets/js/sys/department/department_list.js}"></script>
+
+</body>
+</html>

@@ -63,7 +63,7 @@
                         <ul class="nav nav-second-level" th:if=" ${menuNode.children} != null">
                             <tr th:each="menu,iter : ${menuNode.children}" >
                                 <li>
-                                    <a class="J_menuItem" th:id="${menu.code}" th:href="${menu.url}"><img width="14px" height="14px" th:src="${menu.icon}"/><label th:utext="${menu.name}"></label></a>
+                                    <a class="J_menuItem" th:id="${menu.code}" th:href="${menu.url}"><img width="14px" height="14px" th:src="${menu.icon}"/><label th:utext="${menu.menuRealName}"></label></a>
                                 </li>
                             </tr>
                         </ul>

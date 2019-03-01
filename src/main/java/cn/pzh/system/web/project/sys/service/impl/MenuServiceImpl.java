@@ -1,21 +1,17 @@
 package cn.pzh.system.web.project.sys.service.impl;
 
-import cn.pzh.system.web.project.common.dao.first.entity.SystemMenuEntity;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemMenuEntity;
 import cn.pzh.system.web.project.common.model.MenuNode;
 import cn.pzh.system.web.project.common.model.ZTreeNode;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
-import cn.pzh.system.web.project.sys.dao.mapper.MenuMapper;
+import cn.pzh.system.web.project.dao.first.mapper.sys.MenuMapper;
 import cn.pzh.system.web.project.sys.service.MenuService;
 
 import cn.pzh.system.web.project.sys.vo.MenuInfo;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,15 +26,17 @@ public class MenuServiceImpl implements MenuService {
     private MenuMapper menuMapper;
 
     @Override
-    public List<MenuNode> getMenuList(Integer[] roleIds) {
-        List<SystemMenuEntity> menuList = menuMapper.getMenuList(roleIds);
-        List<SystemMenuEntity> parentMenuList = menuList.stream().filter(i -> "0".equals(i.getPcode())).collect(Collectors.toList());
+    public List<MenuNode> listIndexMenus(Integer[] roleIds) {
+        List<SystemMenuEntity> menuList = menuMapper.listIndexMenus(roleIds);
+        List<SystemMenuEntity> parentMenuList = menuList.stream().filter(i -> (0 == i.getPid())).collect(Collectors.toList());
         List<MenuNode> menuNodeList = new ArrayList<>();
         parentMenuList.forEach(item -> {
             MenuNode<SystemMenuEntity> mn = new MenuNode<SystemMenuEntity>();
-            mn.setName(item.getName());
+            mn.setName(item.getMenuRealName());
+            mn.setOpenFlag(item.getOpenFlag());
+            mn.setId(item.getId());
             mn.setCode(item.getCode());
-            mn.setChildren(menuList.stream().filter(i -> item.getCode().equals(i.getPcode())).collect(Collectors.toList()));
+            mn.setChildren(menuList.stream().filter(i -> (item.getId() == i.getPid())).collect(Collectors.toList()));
             menuNodeList.add(mn);
         });
         return menuNodeList;
@@ -46,20 +44,20 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<ZTreeNode> getMenuTreeList() {
-        List<ZTreeNode> treeList = menuMapper.menuTreeList();
+        List<ZTreeNode> treeList = menuMapper.listMenuTree();
         treeList.add(ZTreeNode.createParent());
         return treeList;
     }
 
     @Override
-    public List<SystemMenuEntity> getMenus() {
-        return menuMapper.getMenus();
+    public List<SystemMenuEntity> listMenus() {
+        return menuMapper.listMenus();
     }
 
     @Override
     public String checkRepeatMenuCode(String code) {
         SystemMenuEntity menuEntity = menuMapper.getMenuByMenuCode(code);
-        return null == menuEntity ? null : menuEntity.getName();
+        return null == menuEntity ? null : menuEntity.getMenuRealName();
     }
 
     @Override
@@ -67,9 +65,25 @@ public class MenuServiceImpl implements MenuService {
     public Boolean insertMenu(MenuInfo menuInfo) {
         SystemMenuEntity menuEntity = new SystemMenuEntity();
         BeanUtils.copyProperties(menuInfo, menuEntity);
-        menuEntity.setPcode(menuMapper.selectCodeById(menuInfo.getPId()));
+        menuEntity.setPid(menuInfo.getPId());
         CommonFieldUtils.setAdminCommon(menuEntity, true);
         menuMapper.saveMenu(menuEntity);
         return true;
+    }
+
+    @Override
+    public SystemMenuEntity getMenu(String menuCode) {
+        return menuMapper.getMenuByMenuCode(menuCode);
+    }
+
+    @Override
+    public SystemMenuEntity getMenu(Integer id) {
+        return menuMapper.getMenuByMenuId(id);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public Boolean updateMenu(SystemMenuEntity menuEntity) {
+        return menuMapper.updateMenu(menuEntity);
     }
 }

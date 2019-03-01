@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.dao.first.mapper.sys.MenuMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.sys.SystemMenuEntity" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="CODE" property="code" jdbcType="VARCHAR" />
+        <result column="PID" property="pid" jdbcType="INTEGER" />
+        <result column="MENU_REAL_NAME" property="menuRealName" jdbcType="VARCHAR" />
+        <result column="ICON" property="icon" jdbcType="VARCHAR" />
+        <result column="URL" property="url" jdbcType="VARCHAR" />
+        <result column="OPEN_FLAG" property="openFlag" jdbcType="INTEGER" />
+        <result column="MENU_FLAG" property="menuFlag" jdbcType="INTEGER" />
+        <result column="NUM" property="num" jdbcType="INTEGER" />
+        <result column="TIPS" property="tips" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="selectColumn">
+        SYS_MENU.ID,
+        SYS_MENU.CODE,
+        SYS_MENU.PID,
+        SYS_MENU.MENU_REAL_NAME,
+        SYS_MENU.ICON,
+        SYS_MENU.URL,
+        SYS_MENU.OPEN_FLAG,
+        SYS_MENU.MENU_FLAG,
+        SYS_MENU.NUM,
+        SYS_MENU.TIPS
+    </sql>
+
+    <!--  -->
+    <select id="listIndexMenus" parameterType="java.util.ArrayList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM SYS_MENU SYS_MENU
+        INNER JOIN SYS_MENU_ROLE SYS_MENU_ROLE
+        ON SYS_MENU.ID = SYS_MENU_ROLE.MENU_ID
+        WHERE SYS_MENU.DIS_FLAG = 0
+        AND SYS_MENU_ROLE.ROLE_ID in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ORDER BY NUM ASC
+    </select>
+
+    <select id="listMenus" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM SYS_MENU SYS_MENU
+        WHERE SYS_MENU.DIS_FLAG = 0
+        ORDER BY SYS_MENU.NUM ASC
+    </select>
+
+    <insert id="saveMenu" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemMenuEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO SYS_MENU (
+            CODE,
+            PID,
+            MENU_REAL_NAME,
+            ICON,
+            URL,
+            OPEN_FLAG,
+            MENU_FLAG,
+            NUM,
+            TIPS,
+            DIS_FLAG,
+            CREATE_USER,
+            CREATE_DATE,
+            UPDATE_USER,
+            UPDATE_DATE)
+        VALUES (
+            #{code,jdbcType=VARCHAR},
+            #{pid,jdbcType=INTEGER},
+            #{menuRealName,jdbcType=VARCHAR},
+            #{icon,jdbcType=VARCHAR},
+            #{url,jdbcType=VARCHAR},
+            #{openFlag,jdbcType=INTEGER},
+            #{menuFlag,jdbcType=INTEGER},
+            #{num,jdbcType=INTEGER},
+            #{tips,jdbcType=INTEGER},
+            #{disFlag,jdbcType=INTEGER},
+            #{createUser,jdbcType=VARCHAR},
+            #{createDate,jdbcType=TIMESTAMP},
+            #{updateUser,jdbcType=VARCHAR},
+            #{updateDate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="listMenuTree" resultType="cn.pzh.system.web.project.common.model.ZTreeNode">
+        SELECT
+            m1.id AS id,
+            (CASE WHEN (m2.id = 0 OR m2.id IS NULL) THEN 0
+            ELSE m2.id END ) AS pId,
+            m1.MENU_REAL_NAME AS NAME,
+            (CASE WHEN (m2.id = 0 OR m2.id IS NULL) THEN 'true'
+            ELSE 'false' END ) as isOpen
+        FROM
+          sys_menu m1
+        LEFT JOIN sys_menu m2 ON m1.pid = m2.id
+        ORDER BY
+          m1.id ASC
+    </select>
+    <select id="selectCodeById" resultType="String" parameterType="String">
+        SELECT
+          SYS_MENU.CODE
+        FROM SYS_MENU SYS_MENU
+        WHERE SYS_MENU.DIS_FLAG = 0
+        AND SYS_MENU.ID=#{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getMenuByMenuCode" resultMap="BaseResultMap" parameterType="String">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM SYS_MENU SYS_MENU
+        WHERE SYS_MENU.DIS_FLAG = 0
+        AND SYS_MENU.CODE=#{code,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getMenuByMenuId" resultMap="BaseResultMap" parameterType="Integer">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM SYS_MENU SYS_MENU
+        WHERE SYS_MENU.DIS_FLAG = 0
+        AND SYS_MENU.ID=#{id,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateMenu" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemMenuEntity">
+        UPDATE SYS_MENU
+        <trim prefix="set" suffixOverrides=",">
+            <if test="code != null">CODE=#{code,jdbcType=VARCHAR},</if>
+            <if test="pid != null">PID=#{pid,jdbcType=VARCHAR},</if>
+            <if test="menuRealName != null">MENU_REAL_NAME=#{menuRealName,jdbcType=VARCHAR},</if>
+            <if test="icon != null">ICON=#{icon,jdbcType=VARCHAR},</if>
+            <if test="url != null">URL=#{url,jdbcType=VARCHAR},</if>
+            <if test="num != null">NUM=#{num,jdbcType=INTEGER},</if>
+            <if test="levels != null">LEVELS=#{levels,jdbcType=INTEGER},</if>
+            <if test="MenuFlag != null">MENU_FLAG=#{menuFlag,jdbcType=INTEGER},</if>
+            <if test="tips != null">TIPS=#{tips,jdbcType=VARCHAR},</if>
+            <if test="OpenFlag != null">OPEN_FLAG=#{openFlag,jdbcType=INTEGER},</if>
+            <if test="disFlag != null">DIS_FLAG=#{disFlag,jdbcType=VARCHAR},</if>
+            <if test="updateUser != null">UPDATE_USER=#{updateUser,jdbcType=VARCHAR},</if>
+            <if test="updateDate != null">UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP},</if>
+        </trim>
+        where ID=#{id,jdbcType=INTEGER}
+    </update>
+</mapper>

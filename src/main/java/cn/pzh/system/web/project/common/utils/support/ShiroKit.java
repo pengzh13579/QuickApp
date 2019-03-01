@@ -16,7 +16,7 @@
 package cn.pzh.system.web.project.common.utils.support;
 
 import cn.pzh.system.web.project.common.model.ShiroUserModel;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemUserEntity;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;

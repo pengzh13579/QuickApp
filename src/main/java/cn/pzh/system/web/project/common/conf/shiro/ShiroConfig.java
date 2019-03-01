@@ -150,7 +150,6 @@ public class ShiroConfig {
 
         // 配置哪些页面需要受保护，以及访问这些页面需要的权限
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-        System.out.println("Shiro拦截器工厂类注入成功");
         return shiroFilterFactoryBean;
     }
 

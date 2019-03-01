@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+
+    <title>关联角色列表</title>
+
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/font-awesome.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/plugins/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/animate.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet"/>
+
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox ">
+                <input  disabled="disabled" style="display: none" id="userName" name="userName" class="form-control" type="text" th:value="${user?.userName}" />
+                <input  disabled="disabled" style="display: none" id="roleId" name="roleId" class="form-control" type="text" th:value="${user?.roleId}" />
+                <div class="ibox-title">
+                    <h5 th:text="'请为 ' + ${user?.realName} + ' 选择需要关联的角色'"></h5>
+                </div>
+                <div class="ibox-content">
+                    <p>
+                        <button class="btn btn-success " type="button" onclick="relatedRole();"><i class="fa fa-plus"></i>&nbsp;关联角色</button>
+                    </p>
+                    <hr/>
+                    <div class="row row-lg">
+                        <div class="col-sm-12">
+                            <!-- Example Card View -->
+                            <div class="example-wrap">
+                                <div class="example">
+                                    <table id="role_table_list"></table>
+                                </div>
+                            </div>
+                            <!-- End Example Card View -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+
+<!-- Bootstrap table -->
+<script th:src="@{/assets/js/plugins/bootstrap-table/bootstrap-table.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+
+<!-- Peity -->
+<script th:src="@{/assets/js/plugins/peity/jquery.peity.min.js}"></script>
+
+<script th:src="@{/assets/js/plugins/layer/layer.min.js}"></script>
+
+<!-- 自定义js -->
+<script th:src="@{/assets/js/content.js}"></script>
+<script th:src="@{/assets/js/sys/user/user_related_role.js}"></script>
+
+</body>
+</html>

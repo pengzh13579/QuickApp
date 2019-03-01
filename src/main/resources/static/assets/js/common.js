@@ -14,3 +14,9 @@ $.fn.serializeObject = function()
   });
   return o;
 };
+
+function bindFiledToControl(data){
+  for(var key in data){
+    $('#' + key).val(data[key]).change();
+  }
+}

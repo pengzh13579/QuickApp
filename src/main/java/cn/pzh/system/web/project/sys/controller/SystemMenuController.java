@@ -1,40 +1,25 @@
 package cn.pzh.system.web.project.sys.controller;
 
-import cn.pzh.system.web.project.common.constant.MessageConstants;
 import cn.pzh.system.web.project.common.constant.ViewConstants;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemLoginLogEntity;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemMenuEntity;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
+import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemMenuEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
 import cn.pzh.system.web.project.common.model.ZTreeNode;
-import cn.pzh.system.web.project.common.utils.Convert;
-import cn.pzh.system.web.project.common.utils.support.ShiroKit;
-import cn.pzh.system.web.project.sys.service.LoginLogService;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemRoleEntity;
 import cn.pzh.system.web.project.sys.service.MenuService;
-import cn.pzh.system.web.project.sys.service.UserService;
-import cn.pzh.system.web.project.sys.vo.ChangePasswordInfo;
 import cn.pzh.system.web.project.sys.vo.MenuInfo;
-import cn.pzh.system.web.project.sys.vo.UserInfo;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.CredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -48,7 +33,6 @@ public class SystemMenuController {
     @Autowired
     private MenuService menuService;
 
-
     /**
      * 获取菜单列表(选择父级菜单用)
      */
@@ -58,19 +42,25 @@ public class SystemMenuController {
         return menuService.getMenuTreeList();
     }
 
+    @RequestMapping ("/list")
+    public String menuList() {
+        return ViewConstants.MENU_LIST;
+    }
+
     @RequestMapping ("/add")
     public String menuAdd() {
         return ViewConstants.MENU_FORM;
     }
 
-    @RequestMapping ("/menuList")
-    public String menuList() {
-        return ViewConstants.MENU_LIST;
+    @RequestMapping ("/edit/{menuCode}")
+    public String menuEdit(@PathVariable String menuCode, Model model) {
+        model.addAttribute("menu", menuService.getMenu(menuCode));
+        return ViewConstants.MENU_FORM;
     }
 
-    @RequestMapping ("/getMenus")
+    @RequestMapping ("/listMenus")
     @ResponseBody
-    public String getMenus(HttpServletRequest request) {
+    public String listMenus(HttpServletRequest request) {
         Map<String, String> map = new HashMap<String, String>();
 
         // page 为easyui分页插件默认传到后台的参数，代表当前的页码，起始页为1
@@ -80,10 +70,9 @@ public class SystemMenuController {
         Integer pageSize = Integer.valueOf(request.getParameter("pageSize"));
         // 默认从第一页开始，每页五条
         PageHelper.startPage(pageNo, pageSize);
-        List<SystemMenuEntity> menus = menuService.getMenus();
+        List<SystemMenuEntity> menus = menuService.listMenus();
         // 将users对象绑定到pageInfo
         PageInfo<SystemMenuEntity> pageMenu = new PageInfo<SystemMenuEntity>(menus);
-        // 获取总记录数
 
         // JSONObject
         JSONObject result = new JSONObject();
@@ -93,7 +82,6 @@ public class SystemMenuController {
 
         // rows存放每页记录 ，这里的两个参数名是固定的，必须为 total和 rows
         result.put("rows", menus);
-        System.out.println(result.toJSONString());
         return result.toJSONString();
     }
 
@@ -116,13 +104,35 @@ public class SystemMenuController {
         }
         j.setMsg("菜单添加失败，请联系管理员");
         return j;
-
     }
 
-    @RequestMapping ("/edit/{code}")
-    public String userEdit(@PathVariable String userName, Model model) {
-//        model.addAttribute("user", userService.getUser(userName));
-//        model.addAttribute("provinceList", provinceAreaService.getAllProvince());
-        return ViewConstants.USER_FORM;
+    @RequestMapping(value = "/editMenu")
+    @ResponseBody
+    public AjaxJson editMenu(MenuInfo menuInfo, HttpServletRequest request)
+            throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        SystemMenuEntity menuEntity = new SystemMenuEntity();
+        BeanUtils.copyProperties(menuInfo, menuEntity);
+        Boolean flag = menuService.updateMenu(menuEntity);
+        AjaxJson j = new AjaxJson();
+        if (flag) {
+            j.setMsg("菜单修改成功");
+            j.setSuccess(true);
+            return j;
+        }
+        j.setMsg("菜单修改失败，请联系管理员");
+        j.setSuccess(false);
+        return j;
+    }
+
+    @RequestMapping("/delete")
+    public AjaxJson delete(Integer id) {
+        SystemMenuEntity menuEntity =menuService.getMenu(id);
+        menuEntity.setDisFlag(1);
+        CommonFieldUtils.setDeleteCommon(menuEntity);
+        AjaxJson j = new AjaxJson();
+        menuService.updateMenu(menuEntity);
+        j.setMsg("菜单删除成功!");
+        j.setSuccess(true);
+        return j;
     }
 }

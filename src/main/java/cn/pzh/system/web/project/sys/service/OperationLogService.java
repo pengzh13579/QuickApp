@@ -1,9 +1,9 @@
 package cn.pzh.system.web.project.sys.service;
 
-import cn.pzh.system.web.project.common.dao.first.entity.SystemOperationLogEntity;
+import cn.pzh.system.web.project.dao.first.entity.monitor.OperationLogEntity;
 
 public interface OperationLogService {
 
-    void insertOperationLog(SystemOperationLogEntity operationLogEntity );
+    void insertOperationLog(OperationLogEntity operationLogEntity );
 
 }

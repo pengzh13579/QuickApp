@@ -1,7 +1,7 @@
 package cn.pzh.system.web.project.sys.shiro.factory;
 
 import cn.pzh.system.web.project.common.model.ShiroUserModel;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemUserEntity;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 
 import java.util.List;

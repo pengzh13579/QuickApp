@@ -1,15 +1,15 @@
 package cn.pzh.system.web.project.sys.service.impl;
 
-import cn.pzh.system.web.project.common.dao.first.entity.SystemContactEntity;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemUserEntity;
-import cn.pzh.system.web.project.common.dao.first.entity.SystemUserNativePlaceEntity;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemContactEntity;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemUserEntity;
+import cn.pzh.system.web.project.dao.first.entity.sys.SystemUserNativePlaceEntity;
 import cn.pzh.system.web.project.common.session.LoginUserInfoBean;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
 import cn.pzh.system.web.project.common.utils.DateUtil;
 import cn.pzh.system.web.project.common.utils.support.ShiroKit;
-import cn.pzh.system.web.project.sys.dao.mapper.ContactMapper;
-import cn.pzh.system.web.project.sys.dao.mapper.UserMapper;
-import cn.pzh.system.web.project.sys.dao.mapper.UserNativePlaceMapper;
+import cn.pzh.system.web.project.dao.first.mapper.sys.ContactMapper;
+import cn.pzh.system.web.project.dao.first.mapper.sys.UserMapper;
+import cn.pzh.system.web.project.dao.first.mapper.sys.UserNativePlaceMapper;
 import cn.pzh.system.web.project.sys.service.UserService;
 import cn.pzh.system.web.project.sys.vo.UserInfo;
 import java.io.UnsupportedEncodingException;
@@ -41,8 +41,8 @@ public class UserServiceImpl implements UserService {
     private UserNativePlaceMapper userNativePlaceMapper;
 
     @Override
-    public List<SystemUserEntity> getUsers() {
-        return userMapper.getUsers();
+    public List<SystemUserEntity> listUsers() {
+        return userMapper.listUsers();
     }
 
     @Override
@@ -77,7 +77,6 @@ public class UserServiceImpl implements UserService {
     @Transactional (readOnly = false)
     public UserInfo userLogin(String userName, String password, Boolean rememberFlag) throws Exception {
 
-        //if (1 != user.getIsOnline()) {
         //获取当前登陆者
         Subject userSub = SecurityUtils.getSubject();
 
@@ -94,8 +93,6 @@ public class UserServiceImpl implements UserService {
         UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(user, userInfo);
         return userInfo;
-        //}
-        //return WebConstants.IS_ONLINE;
     }
 
 
@@ -103,10 +100,7 @@ public class UserServiceImpl implements UserService {
     public void updateOnlineStatus(Integer isOnline, String UserName) {
         updateOnlineStatusByUserName(isOnline, UserName);
     }
-    @Override
-    public void updateOnlineStatus(Integer isOnline) {
-        updateOnlineStatusByUserName(isOnline, ShiroKit.getUser().getUserName());
-    }
+
     @Override
     public SystemUserEntity getUserEntity(String userName) {
         return userMapper.getUserByUserName(userName);
@@ -124,13 +118,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserInfo getUser(Integer id) {
+        SystemUserEntity systemUserEntity = userMapper.getUserById(id);
+        UserInfo userInfo = new UserInfo();
+        BeanUtils.copyProperties(systemUserEntity, userInfo);
+        return userInfo;
+    }
+
+    @Override
     public void changePassword(String newPwd) {
         SystemUserEntity systemUserEntity = new SystemUserEntity();
         systemUserEntity.setUserName(ShiroKit.getUser().getUserName());
         systemUserEntity.setSalt(ShiroKit.getRandomSalt(5));
         systemUserEntity.setPassword(ShiroKit.md5(newPwd, systemUserEntity.getSalt()));
         CommonFieldUtils.setAdminCommon(systemUserEntity, true);
-        userMapper.updatePassword(systemUserEntity);
+        userMapper.updateUser(systemUserEntity);
     }
 
     /**
@@ -152,7 +154,7 @@ public class UserServiceImpl implements UserService {
         systemUserEntity.setUserName(UserName);
         systemUserEntity.setIsOnline(isOnline);
         CommonFieldUtils.setAdminCommon(systemUserEntity, false);
-        userMapper.updateOnlineStatus(systemUserEntity);
+        userMapper.updateUser(systemUserEntity);
     }
 
     @Override
@@ -167,7 +169,7 @@ public class UserServiceImpl implements UserService {
         }
         //用户信息
         CommonFieldUtils.setAdminCommon(userEntity, false);
-        userMapper.updateUserInfo(userEntity);
+        userMapper.updateUser(userEntity);
 
         contactMapper.deleteContactByUserName(userInfo.getUserName());
         //联系方式，注册只有邮箱
@@ -188,13 +190,23 @@ public class UserServiceImpl implements UserService {
     public void changeUserStatus(String userName, Integer disFlag) {
         SystemUserEntity userEntity = new SystemUserEntity();
         userEntity.setUserName(userName);
-        userEntity.setDisFlag(disFlag);
         CommonFieldUtils.setAdminCommon(userEntity, false);
-        userMapper.updateUserDisFlag(userEntity);
+        userEntity.setDisFlag(disFlag);
+        userMapper.updateUser(userEntity);
     }
 
     @Override
     public Boolean checkRepeatUserName(String userName) {
         return null == userMapper.getUserByUserName(userName) ? false : true;
+    }
+
+    @Override
+    @Transactional (readOnly = false)
+    public void updateUserRoleId(String roleIds, String userName) {
+        SystemUserEntity userEntity = new SystemUserEntity();
+        userEntity.setRoleId(roleIds);
+        userEntity.setUserName(userName);
+        CommonFieldUtils.setAdminCommon(userEntity, false);
+        userMapper.updateUser(userEntity);
     }
 }

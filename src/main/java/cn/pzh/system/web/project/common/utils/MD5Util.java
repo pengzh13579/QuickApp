@@ -52,10 +52,5 @@ public class MD5Util {
         }
         return newstr;
     }
-
-    public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-
-        System.out.println(EncoderStringByMd5("23"));
-    }
 }
 

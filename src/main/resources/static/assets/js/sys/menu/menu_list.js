@@ -6,7 +6,7 @@ $(function () {
         //必须设置，不然request.getParameter获取不到请求参数
         contentType: "application/x-www-form-urlencoded",
         //获取数据的Servlet地址
-        url: "/systemMenuController/getMenus",
+        url: "/systemMenuController/listMenus",
         //表格显示条纹
         striped: true,
         //启动分页
@@ -34,17 +34,23 @@ $(function () {
                 "total": res.total
             };
         },
+        formatNoMatches: function(){
+          return "没有相关的匹配结果";
+        },
+        formatLoadingMessage: function(){
+          return "请稍等，正在加载中。。。";
+        },
         //数据列
         columns: [{
             title: "ID",
             field: "id",
-            sortable: true
+            visible: false
         },{
             title: "菜单编号",
             field: "code"
         },{
             title: "菜单名称",
-            field: "name"
+            field: "menuRealName"
         },{
             title: "资源URL",
             field: "url"
@@ -58,7 +64,7 @@ $(function () {
         },{
             title: "是否菜单",
             sortable: true,
-            field: "isMenu",
+            field: "menuFlag",
             formatter: function (value, row, index) {
                 if(value == 0)
                     return '<span class="label label-danger">否</span>';
@@ -68,7 +74,7 @@ $(function () {
         },{
             title: "是否展开",
             sortable: true,
-            field: "isOpen",
+            field: "openFlag",
             formatter: function (value, row, index) {
                 if(value == 0)
                     return '<span class="label label-danger">否</span>';
@@ -79,8 +85,8 @@ $(function () {
             title: "操作",
             field: "empty",
             formatter: function (value, row, index) {
-                var operateHtml = '<button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;';
-                operateHtml = operateHtml + '<button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button>';
+                var operateHtml = '<button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.code+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;';
+                operateHtml = operateHtml + '<button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.code+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button>';
                 return operateHtml;
             }
         }]
@@ -88,14 +94,14 @@ $(function () {
 });
 
 
-function edit(id){
+function edit(code){
     layer.open({
         type: 2,
         title: '菜单修改',
         shadeClose: true,
         shade: false,
         area: ['893px', '600px'],
-        content: '/systemMenuController/edit/' + id,
+        content: '/systemMenuController/edit/' + code,
         end: function(index){
             $('#table_list').bootstrapTable("refresh");
         }
@@ -114,12 +120,12 @@ function add(){
         }
     });
 }
-function del(id){
+function del(code){
     layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: "/systemMenuController/delete/" + id,
+            url: "/systemMenuController/delete/" + code,
             success: function(msg){
                 layer.msg(msg.message, {time: 2000},function(){
                     $('#table_list').bootstrapTable("refresh");

@@ -1,6 +1,8 @@
 spring.profiles: dev
 spring.profiles.include: common
 
+debug: true
+
 app:
   first:
     datasource:

@@ -6,7 +6,8 @@ import lombok.Data;
 @Data
 public class MenuNode<T> {
     private T parent;
-    private String isOpen;
+    private Integer id;
+    private Integer openFlag;
     private String code;
     private String name;
     private List<T> children;
