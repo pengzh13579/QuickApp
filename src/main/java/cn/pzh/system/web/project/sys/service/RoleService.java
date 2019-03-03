@@ -4,9 +4,11 @@ import cn.pzh.system.web.project.dao.first.entity.sys.SystemRoleEntity;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface RoleService {
 
-    List<SystemRoleEntity> listRoles();
+    List<SystemRoleEntity> listRoles(HttpServletRequest request);
 
     Boolean insert(SystemRoleEntity info);
 

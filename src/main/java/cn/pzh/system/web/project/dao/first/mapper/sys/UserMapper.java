@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
-    List<SystemUserEntity> listUsers();
+    List<SystemUserEntity> listUsers(SystemUserEntity systemUserEntity);
 
     SystemUserEntity getUserByUserName(String userName);
 

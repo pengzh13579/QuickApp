@@ -7,9 +7,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface UserService {
 
-    List<SystemUserEntity> listUsers();
+    List<SystemUserEntity> listUsers(SystemUserEntity systemUserEntity);
 
     Boolean registration(UserInfo userInfo, Integer avatarId) throws UnsupportedEncodingException, NoSuchAlgorithmException;
 

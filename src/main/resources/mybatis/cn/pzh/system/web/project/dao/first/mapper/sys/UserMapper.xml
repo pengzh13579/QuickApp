@@ -45,13 +45,39 @@
         SYS_USER.UPDATE_USER
     </sql>
 
+    <sql id="whereCause">
+        <where>
+            <if test="disFlag == null or disFlag == ''">
+                SYS_USER.DIS_FLAG <![CDATA[ <> ]]> 1
+            </if>
+            <if test="disFlag != null and disFlag != ''">
+                SYS_USER.DIS_FLAG = #{disFlag}
+            </if>
+            <if test="userName != null and userName != ''">
+                AND SYS_USER.USER_NAME like CONCAT('%',#{userName},'%')
+            </if>
+            <if test="realName != null and realName != ''">
+                AND SYS_USER.REAL_NAME like CONCAT('%',#{realName},'%')
+            </if>
+            <if test="sex != null">
+                AND SYS_USER.SEX = #{sex}
+            </if>
+            <if test="createDateStart != null and createDateStart != ''">
+                AND SYS_USER.CREATE_DATE <![CDATA[ >= ]]> #{createDateStart}
+            </if>
+            <if test="createDateEnd != null and createDateEnd != ''">
+                AND SYS_USER.CREATE_DATE <![CDATA[ <= ]]> #{createDateEnd}
+            </if>
+        </where>
+    </sql>
+
     <!--  -->
-    <select id="listUsers" resultMap="BaseResultMap">
+    <select id="listUsers" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemUserEntity" resultMap="BaseResultMap">
   	     SELECT
           <include refid="selectColumn"></include>,
           (SELECT GROUP_CONCAT(SYS_ROLE.ROLE_NAME) FROM SYS_ROLE SYS_ROLE WHERE INSTR(SYS_USER.role_id,SYS_ROLE.ID)) roleName
         FROM SYS_USER SYS_USER
-        WHERE SYS_USER.DIS_FLAG <![CDATA[ <> ]]> 1
+        <include refid="whereCause"></include>
     </select>
 
     <!--  -->

@@ -15,8 +15,12 @@ import cn.pzh.system.web.project.sys.vo.UserInfo;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.github.pagehelper.PageHelper;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
@@ -26,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 @Transactional (propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
@@ -41,8 +47,16 @@ public class UserServiceImpl implements UserService {
     private UserNativePlaceMapper userNativePlaceMapper;
 
     @Override
-    public List<SystemUserEntity> listUsers() {
-        return userMapper.listUsers();
+    public List<SystemUserEntity> listUsers(SystemUserEntity systemUserEntity) {
+
+        Map<String, String> map = new HashMap<String, String>();
+
+        // 默认从第pageNum开始，每页pageSize条
+        PageHelper.startPage(systemUserEntity.getPageNumber(), systemUserEntity.getPageSize(),
+                CommonFieldUtils.fieldNameToColumnName(systemUserEntity.getSortName()) + " " + systemUserEntity.getSortOrder());
+
+        return userMapper.listUsers(systemUserEntity);
+
     }
 
     @Override

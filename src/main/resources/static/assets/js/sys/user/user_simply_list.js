@@ -1,14 +1,4 @@
 $(function () {
-    //外部js调用
-    laydate({
-        elem: '#createDateStart', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
-        event: 'focus' //响应事件。如果没有传入event，则按照默认的click
-    });
-    //外部js调用
-    laydate({
-        elem: '#createDateEnd', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
-        event: 'focus' //响应事件。如果没有传入event，则按照默认的click
-    });
     //初始化表格,动态从服务器加载数据
     $("#table_list").bootstrapTable({
         //使用get请求到服务器获取数据
@@ -16,7 +6,7 @@ $(function () {
         //必须设置，不然request.getParameter获取不到请求参数
         contentType: "application/x-www-form-urlencoded",
         //获取数据的Servlet地址
-        url: "/systemUserController/listUsers",
+        url: "/systemUserController/listUsersInfo",
         //表格显示条纹
         striped: true,
         singleSelect : true,
@@ -28,32 +18,13 @@ $(function () {
         pageNumber: 1,
         //记录数可选列表
         pageList: [5, 10, 15, 20, 25],
+        //是否启用查询
+        search: true,
         //表示服务端请求
         sidePagination: "server",
         //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
         //设置为limit可以获取limit, offset, search, sort, order
         queryParamsType: "undefined",
-        //工具按钮用哪个容器
-        toolbar: '#toolbar',
-        //是否启用排序
-        sortable: true,
-        //排序方式
-        sortOrder: "asc",
-        queryParams: function queryParams(params){
-            var param = {
-                pageNumber: params.pageNumber,
-                pageSize: params.pageSize,
-                sortName: params.sortName,
-                sortOrder: params.sortOrder,
-                disFlag: $("#disFlagSearch").val(),
-                userName: $("#userNameSearch").val(),
-                realName: $("#realNameSearch").val(),
-                sex: $("#sexSearch").val(),
-                createDateStart: $("#createDateStart").val(),
-                createDateEnd: $("#createDateEnd").val()
-            };
-            return param;
-        },
         //json数据解析
         responseHandler: function(res) {
             return {
@@ -76,16 +47,13 @@ $(function () {
             visible: false
         },{
             title: "登录名",
-            field: "userName",
-            sortable : true
+            field: "userName"
         },{
             title: "姓名",
-            field: "realName",
-            sortable : true
+            field: "realName"
         },{
             title: "性别",
             field: "sex",
-            sortable : true,
             formatter: function(value, row, index) {
                 if (value == '1')
                     return '<span class="label label-warning">女</span>';
@@ -94,7 +62,6 @@ $(function () {
         },{
             title: "出生日期",
             field: "birthday",
-            sortable : true,
             formatter: function (value, row, index) {
                 return changeDateFormat(value)
             }
@@ -147,10 +114,8 @@ $(function () {
               end: function(index){
               }
             });
+            console.log("click:" + row.userName)
         }
-    });
-    $("#searchbtn").click(function () {
-        $('#table_list').bootstrapTable('refresh');
     });
 });
 

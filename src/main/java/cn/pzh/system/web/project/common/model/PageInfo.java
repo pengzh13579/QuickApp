@@ -22,11 +22,15 @@ import lombok.Data;
 public class PageInfo<T> implements Serializable {
     private static final long serialVersionUID = 1L;
     //当前页
-    private int pageNum;
+    private int pageNumber;
     //每页的数量
     private int pageSize;
     //总记录数
     private long total;
+    //排序
+    private String sortOrder;
+    //排序列名
+    private String sortName;
     //总页数
     private int pages;
     //结果集
@@ -48,14 +52,14 @@ public class PageInfo<T> implements Serializable {
     public PageInfo(List<T> list) {
         if (list instanceof Page) {
             Page page = (Page) list;
-            this.pageNum = page.getPageNum();
+            this.pageNumber = page.getPageNum();
             this.pageSize = page.getPageSize();
 
             this.pages = page.getPages();
             this.list = page;
             this.total = page.getTotal();
         } else if (list instanceof Collection) {
-            this.pageNum = 1;
+            this.pageNumber = 1;
             this.pageSize = list.size();
 
             this.pages = 1;
@@ -72,14 +76,14 @@ public class PageInfo<T> implements Serializable {
      * 判定页面边界
      */
     private void judgePageBoudary() {
-        isFirstPage = pageNum == 1;
-        isLastPage = pageNum == pages;
+        isFirstPage = pageNumber == 1;
+        isLastPage = pageNumber == pages;
     }
 
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("PageInfo{");
-        sb.append("pageNum=").append(pageNum);
+        sb.append("pageNum=").append(pageNumber);
         sb.append(", pageSize=").append(pageSize);
         sb.append(", total=").append(total);
         sb.append(", pages=").append(pages);

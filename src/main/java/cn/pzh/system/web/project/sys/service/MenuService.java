@@ -5,6 +5,8 @@ import cn.pzh.system.web.project.common.model.MenuNode;
 import cn.pzh.system.web.project.common.model.ZTreeNode;
 
 import cn.pzh.system.web.project.sys.vo.MenuInfo;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface MenuService {
@@ -13,7 +15,7 @@ public interface MenuService {
 
     List<ZTreeNode> getMenuTreeList();
 
-    List<SystemMenuEntity> listMenus();
+    List<SystemMenuEntity> listMenus(HttpServletRequest request);
 
     String checkRepeatMenuCode(String code);
 

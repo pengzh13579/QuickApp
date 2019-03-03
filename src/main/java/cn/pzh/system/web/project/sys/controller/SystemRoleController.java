@@ -53,16 +53,8 @@ public class SystemRoleController {
     @RequestMapping("/listRoles")
     @ResponseBody
     public String listRoles(HttpServletRequest request) {
-        Map<String, String> map = new HashMap<String, String>();
 
-        // page 为easyui分页插件默认传到后台的参数，代表当前的页码，起始页为1
-        Integer pageNo = Integer.valueOf(request.getParameter("pageNumber"));
-
-        // rows为为easyui分页插件默认传到后台的参数，代表当前设置的每页显示的记录条数
-        Integer pageSize = Integer.valueOf(request.getParameter("pageSize"));
-        // 默认从第一页开始，每页五条
-        PageHelper.startPage(pageNo, pageSize);
-        List<SystemRoleEntity> infos = roleService.listRoles();
+        List<SystemRoleEntity> infos = roleService.listRoles(request);
         // 将users对象绑定到pageInfo
         PageInfo<SystemRoleEntity> page = new PageInfo<SystemRoleEntity>(infos);
         // 获取总记录数

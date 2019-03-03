@@ -43,9 +43,12 @@
                         <button class="btn btn-success " type="button" onclick="addSameDepartment();"><i class="fa fa-plus"></i>&nbsp;添加同级部门</button>
                         <button class="btn btn-success " type="button" onclick="del();"><i class="fa fa-plus"></i>&nbsp;删除</button>
                     </p>
+                    <p align="right">
+                        <button class="btn btn-success " type="button" onclick="addUsers();"><i class="fa fa-plus"></i>&nbsp;关联用户</button>
+                    </p>
                     <hr/>
                     <div class="row row-lg">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <!-- Example Card View -->
                             <div class="example-wrap">
                                 <div class="example">
@@ -83,7 +86,7 @@
                             </div>
                             <!-- End Example Card View -->
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-5">
                             <form class="form-horizontal m-t" id="frm" method="post">
                                 <input type="hidden" id="id" name="id"/>
 
@@ -146,7 +149,6 @@
                         <div class="col-sm-4">
                             <div class="example-wrap">
                                 <div class="example">
-                                    <button class="btn btn-success " type="button" onclick="addUsers();"><i class="fa fa-plus"></i>&nbsp;关联用户</button>
                                     <table id="department_user_list"></table>
                                 </div>
                             </div>

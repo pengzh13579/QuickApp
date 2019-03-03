@@ -155,7 +155,7 @@ function addLowerDepartment(){
   document.getElementById("frm").reset();
   $('#code').removeAttr('readonly');
   $('#departCode').removeAttr('readonly');
-  $('#pcode').val($(nodes[0].text).attr('id'));
+  $('#pcode').val($(nodes[0].text).attr('id')).change();
 }
 
 function addSameDepartment(){
@@ -164,10 +164,11 @@ function addSameDepartment(){
     layer.msg("请在左侧部门树中选择一个部门添加同级部门！");
     return;
   }
+  var node = $('#department_tree').jstree("get_node", $('#department_tree').jstree("get_parent", nodes[0]))
   document.getElementById("frm").reset();
   $('#code').removeAttr('readonly');
   $('#departCode').removeAttr('readonly');
-  $('#pcode').val($(nodes[0].text).attr('id'));
+  $('#pcode').val($(node.text).attr('id')).change();
 }
 
 function addUsers(){

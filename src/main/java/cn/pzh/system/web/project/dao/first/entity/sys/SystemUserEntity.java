@@ -14,16 +14,21 @@ public class SystemUserEntity extends CommonEntity implements Serializable {
     private Integer id;
     private String userName;
     private Integer avatar;
-    private String avatarImg;
     private String realName;
     private String password;
     private String salt;
     private Integer sex;
     private Date birthday;
-    private List<SystemContactEntity> contacts;
     private Integer isOnline;
     private String roleId;
-    private String roleName;
     private Integer deptId;
+
+    private String avatarImg;
+    private String roleName;
     private String deptName;
+    private List<SystemContactEntity> contacts;
+
+    private String createDateStart;
+    private String createDateEnd;
+
 }
