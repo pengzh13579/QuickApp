@@ -172,6 +172,7 @@ function addSameDepartment(){
 }
 
 function addUsers(){
+    openUserSimpleList("关联用户", "/systemDepartmentController/userSimpleList", {code : $('#pcode').val()})
 }
 
 function del(){

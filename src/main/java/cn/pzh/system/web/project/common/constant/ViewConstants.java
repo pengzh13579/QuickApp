@@ -6,6 +6,7 @@ public class ViewConstants {
     public final static String USER_LIST = "/sys/user/user_list";
     public final static String USER_FORM = "/sys/user/user_form";
     public final static String USER_READ_FORM = "/sys/user/user_read_form";
+    public final static String USER_SIMPLE_LIST = "/sys/user/user_simple_list";
     public final static String USER_RELATED_ROLE = "/sys/user/user_related_role";
     public final static String CHANGE_PASSWORD = "/sys/user/change_password";
     public final static String MENU_LIST = "/sys/menu/menu_list";

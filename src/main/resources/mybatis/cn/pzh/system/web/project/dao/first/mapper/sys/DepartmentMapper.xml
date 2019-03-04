@@ -20,7 +20,6 @@
         <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP" />
         <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
         <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
-
     </resultMap>
 
     <sql id="selectColumn">

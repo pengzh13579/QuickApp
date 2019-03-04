@@ -56,6 +56,15 @@ public class SystemUserController {
     }
 
     /***
+     * 用户列表页面
+     * @return 用户列表页面
+     */
+    @RequestMapping("/userSimpleList")
+    public String userSimpleList() {
+        return ViewConstants.USER_SIMPLE_LIST;
+    }
+
+    /***
      * 用户添加页面
      * @param model 模型
      * @return 用户添加页面
