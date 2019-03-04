@@ -57,9 +57,6 @@
 
                             <div class="form-group" id="control_info">
                                 <label class="col-sm-3 control-label">联系方式</label>
-                                <div class="col-sm-8">
-                                    <button  disabled="disabled" id="add_contact_btn" class="btn btn-primary btn-sm btn-block" type="button">添加新的联系方式</button>
-                                </div>
                             </div>
                             <tr th:each="contact,iter : ${user?.contacts}" >
                                 <div th:id="|contact_div${iter.index}|" class="form-group">
@@ -73,9 +70,6 @@
                                     <div class="col-sm-6">
                                         <input type="hidden" id="telType1" th:name="|contacts[${iter.index}].contactType|" class="form-control" th:value="${contact.contactType}" />
                                         <input  disabled="disabled" th:type="${contact.contactType == '1'}?'email'" id="telephone" th:name="|contacts[${iter.index}].contactInfo|" class="form-control" th:value="${contact.contactInfo}"/>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <button th:id="|contact_del_btn${iter.index}|" class="btn btn-primary" type="button" onclick="del_contact(this)">删除</button>
                                     </div>
                                 </div>
                             </tr>

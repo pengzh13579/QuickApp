@@ -11,9 +11,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
- * 功能: [POI实现把数据库数据导出到Excel]
- * 作者: JML
- * 版本: 1.0
+ * POI实现把数据库数据导出到Excel
  */
 public class ExcelExportUtils {
 

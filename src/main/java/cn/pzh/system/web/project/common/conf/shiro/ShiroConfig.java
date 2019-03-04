@@ -135,7 +135,7 @@ public class ShiroConfig {
         // 拦截器
         // authc:所有url都必须认证通过才可以访问;
         // anon:所有url都都可以匿名访问
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/druid/**", "anon");

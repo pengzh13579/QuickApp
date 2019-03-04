@@ -11,7 +11,7 @@ import cn.pzh.system.web.project.dao.first.mapper.sys.ContactMapper;
 import cn.pzh.system.web.project.dao.first.mapper.sys.UserMapper;
 import cn.pzh.system.web.project.dao.first.mapper.sys.UserNativePlaceMapper;
 import cn.pzh.system.web.project.sys.service.UserService;
-import cn.pzh.system.web.project.sys.vo.UserInfo;
+import cn.pzh.system.web.project.sys.vo.UserInfoVO;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -46,10 +46,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserNativePlaceMapper userNativePlaceMapper;
 
+    /***
+     * 用户列表信息查询
+     * @param systemUserEntity 查询实体类
+     * @return 用户列表信息
+     */
     @Override
     public List<SystemUserEntity> listUsers(SystemUserEntity systemUserEntity) {
-
-        Map<String, String> map = new HashMap<String, String>();
 
         // 默认从第pageNum开始，每页pageSize条
         PageHelper.startPage(systemUserEntity.getPageNumber(), systemUserEntity.getPageSize(),
@@ -59,71 +62,116 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /***
+     * 添加用户信息
+     * @param userInfo 用户信息
+     * @param avatarId 用户头像
+     * @return 添加用户结果
+     */
     @Override
     @Transactional (readOnly = false)
-    public Boolean registration(UserInfo userInfo, Integer avatarId) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public Boolean registration(UserInfoVO userInfo, Integer avatarId) {
 
         SystemUserEntity userEntity = new SystemUserEntity();
+
+        // 将用户头像所对应的ID存入
         userEntity.setAvatar(avatarId);
         BeanUtils.copyProperties(userInfo, userEntity);
-        //用户信息
+
+        // 用户信息盐+密码
         userEntity.setSalt(ShiroKit.getRandomSalt(5));
         userEntity.setPassword(ShiroKit.md5("111111", userEntity.getSalt()));
 
         CommonFieldUtils.setAdminCommon(userEntity, true);
+
+        // 保存用户信息
         userMapper.saveUser(userEntity);
 
+        // 联系方式非空check
         if(null != userInfo.getContacts()){
-            //联系方式，注册只有邮箱
+            // 联系方式，注册只有邮箱
             List<SystemContactEntity> contacts = userInfo.getContacts().stream().filter(item -> item != null)
                     .collect(Collectors.toList());
-            contacts.forEach(contact -> contact.setUserName(ShiroKit.getUser().getUserName()));
+            contacts.forEach(contact -> contact.setUserName(userEntity.getUserName()));
+
+            // 保存联系方式
             contactMapper.saveContact(contacts);
         }
 
+        // 籍贯地址等信息保存处理
         List<SystemUserNativePlaceEntity> userNativePlace = userInfo.getUserNativePlace();
-        userNativePlace.forEach(nativePlace -> nativePlace.setUserName(userInfo.getUserName()));
-        userNativePlaceMapper.saveNativePlace(userNativePlace);
+
+        // 籍贯地址等信息非空check
+        if(null != userNativePlace) {
+            userNativePlace.forEach(nativePlace -> nativePlace.setUserName(userInfo.getUserName()));
+            userNativePlaceMapper.saveNativePlace(userNativePlace);
+        }
         return true;
     }
 
+    /***
+     * 用户登录
+     * @param userName 用户名
+     * @param password 密码
+     * @param rememberFlag 记住我
+     * @return 用户信息
+     */
     @Override
     @Transactional (readOnly = false)
-    public UserInfo userLogin(String userName, String password, Boolean rememberFlag) throws Exception {
+    public UserInfoVO userLogin(String userName, String password,
+            Boolean rememberFlag) {
 
-        //获取当前登陆者
+        // 获取当前登陆者
         Subject userSub = SecurityUtils.getSubject();
 
-        //创建令牌
+        // 创建令牌
         UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
 
-        //前台记住我checkbox是否打勾
+        // 前台记住我checkbox是否打勾
         token.setRememberMe(rememberFlag);
-        //登录验证
+
+        // 登录验证
         userSub.login(token);
 
+        // 将用户加入到session中
         SystemUserEntity user = setSession(userName);
 
-        UserInfo userInfo = new UserInfo();
+        // 返回用户信息
+        UserInfoVO userInfo = new UserInfoVO();
         BeanUtils.copyProperties(user, userInfo);
         return userInfo;
     }
 
-
+    /***
+     * 更新在线状态
+     * @param isOnline 在线值
+     * @param UserName 用户名
+     */
     @Override
+    @Transactional (readOnly = false)
     public void updateOnlineStatus(Integer isOnline, String UserName) {
         updateOnlineStatusByUserName(isOnline, UserName);
     }
 
+    /***
+     * 根据用户名获得用户信息
+     * @param userName 用户名
+     * @return 用户信息
+     */
     @Override
     public SystemUserEntity getUserEntity(String userName) {
         return userMapper.getUserByUserName(userName);
     }
 
+    /***
+     * 根据用户名获得用户信息
+     * @param userName 用户名
+     * @return 用户信息
+     */
     @Override
-    public UserInfo getUser(String userName) {
+    public UserInfoVO getUser(String userName) {
         SystemUserEntity systemUserEntity = userMapper.getUserByUserName(userName);
-        UserInfo userInfo = new UserInfo();
+        UserInfoVO userInfo = new UserInfoVO();
         BeanUtils.copyProperties(systemUserEntity, userInfo);
         userInfo.setBirthdayRtn(DateUtil.formatDate(userInfo.getBirthday(), "yyyy-MM-dd"));
         userInfo.setContacts(contactMapper.selectContactByUserName(userInfo.getUserName()));
@@ -131,67 +179,79 @@ public class UserServiceImpl implements UserService {
         return userInfo;
     }
 
+    /***
+     * 根据id获得用户信息
+     * @param id 用户ID
+     * @return 用户信息
+     */
     @Override
-    public UserInfo getUser(Integer id) {
+    public UserInfoVO getUser(Integer id) {
         SystemUserEntity systemUserEntity = userMapper.getUserById(id);
-        UserInfo userInfo = new UserInfo();
+        UserInfoVO userInfo = new UserInfoVO();
         BeanUtils.copyProperties(systemUserEntity, userInfo);
         return userInfo;
     }
 
+    /***
+     * 修改密码
+     * @param newPwd 新密码
+     */
     @Override
+    @Transactional (readOnly = false)
     public void changePassword(String newPwd) {
+
         SystemUserEntity systemUserEntity = new SystemUserEntity();
+
+        // 当前登录用户名
         systemUserEntity.setUserName(ShiroKit.getUser().getUserName());
+
+        // 盐
         systemUserEntity.setSalt(ShiroKit.getRandomSalt(5));
+
+        // 密码
         systemUserEntity.setPassword(ShiroKit.md5(newPwd, systemUserEntity.getSalt()));
+
+        // 共通字段设置
         CommonFieldUtils.setAdminCommon(systemUserEntity, true);
         userMapper.updateUser(systemUserEntity);
     }
 
-    /**
-     * 将Cookie添加进Session
+    /***
+     * 更新用户信息
+     * @param userInfo 用户信息
+     * @return 添加用户结果
      */
-    private SystemUserEntity setSession(String userName) {
-        SystemUserEntity user = userMapper.getUserByUserName(userName);
-        Session session = SecurityUtils.getSubject().getSession();
-        LoginUserInfoBean loginUserInfoBean = new LoginUserInfoBean();
-        loginUserInfoBean.setUserName(user.getUserName());
-        loginUserInfoBean.setRealName(user.getRealName());
-        loginUserInfoBean.setLoginTime(new Date());
-        session.setAttribute("userInfo", loginUserInfoBean);
-        return user;
-    }
-
-    private void updateOnlineStatusByUserName(Integer isOnline, String UserName) {
-        SystemUserEntity systemUserEntity = new SystemUserEntity();
-        systemUserEntity.setUserName(UserName);
-        systemUserEntity.setIsOnline(isOnline);
-        CommonFieldUtils.setAdminCommon(systemUserEntity, false);
-        userMapper.updateUser(systemUserEntity);
-    }
-
     @Override
     @Transactional (readOnly = false)
-    public Boolean updateUserInfo(UserInfo userInfo) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public Boolean updateUserInfo(UserInfoVO userInfo) {
 
         SystemUserEntity userEntity = new SystemUserEntity();
         BeanUtils.copyProperties(userInfo, userEntity);
+
+        // 根据用户名获得用户信息
         SystemUserEntity user = userMapper.getUserByUserName(userInfo.getUserName());
+
+        // 用户非空check
         if (null == user) {
             return false;
         }
-        //用户信息
+
+        // 共通字段设置
         CommonFieldUtils.setAdminCommon(userEntity, false);
+
+        // 更新用户信息
         userMapper.updateUser(userEntity);
 
+        // 通过用户名删除联系方式
         contactMapper.deleteContactByUserName(userInfo.getUserName());
+
         //联系方式，注册只有邮箱
         List<SystemContactEntity> contacts = userInfo.getContacts().stream().filter(item -> item != null)
                 .collect(Collectors.toList());
         contacts.forEach(contact -> contact.setUserName(ShiroKit.getUser().getUserName()));
         contactMapper.saveContact(contacts);
 
+        // 籍贯地址等信息保存处理
         userNativePlaceMapper.deleteNativePlaceByUserName(userInfo.getUserName());
         List<SystemUserNativePlaceEntity> userNativePlace = userInfo.getUserNativePlace();
         userNativePlace.forEach(nativePlace -> nativePlace.setUserName(ShiroKit.getUser().getUserName()));
@@ -200,20 +260,42 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    /***
+     * 更新用户状态
+     * @param userName 用户名
+     * @param disFlag 状态值
+     */
     @Override
+    @Transactional (readOnly = false)
     public void changeUserStatus(String userName, Integer disFlag) {
+
         SystemUserEntity userEntity = new SystemUserEntity();
         userEntity.setUserName(userName);
+
+        // 共通字段设置
         CommonFieldUtils.setAdminCommon(userEntity, false);
         userEntity.setDisFlag(disFlag);
+
+        // 更新用户信息
         userMapper.updateUser(userEntity);
     }
 
+    /***
+     * 用户名重复性check
+     * @param userName 用户名
+     * @return false：不重复<br/>
+     *          true：重复
+     */
     @Override
     public Boolean checkRepeatUserName(String userName) {
         return null == userMapper.getUserByUserName(userName) ? false : true;
     }
 
+    /***
+     * 更新用户关联角色
+     * @param roleIds 关联角色ID
+     * @param userName 用户名
+     */
     @Override
     @Transactional (readOnly = false)
     public void updateUserRoleId(String roleIds, String userName) {
@@ -222,5 +304,42 @@ public class UserServiceImpl implements UserService {
         userEntity.setUserName(userName);
         CommonFieldUtils.setAdminCommon(userEntity, false);
         userMapper.updateUser(userEntity);
+    }
+
+    /***
+     * 将用户信息设置到session中
+     * @param userName 用户名
+     * @return 用户信息
+     */
+    private SystemUserEntity setSession(String userName) {
+
+        // 根据用户名获得用户信息
+        SystemUserEntity user = userMapper.getUserByUserName(userName);
+
+        // 获得session
+        Session session = SecurityUtils.getSubject().getSession();
+
+        // 登录用户信息
+        LoginUserInfoBean loginUserInfoBean = new LoginUserInfoBean();
+        loginUserInfoBean.setUserName(user.getUserName());
+        loginUserInfoBean.setRealName(user.getRealName());
+        loginUserInfoBean.setLoginTime(new Date());
+
+        // 将登录用户信息加入session
+        session.setAttribute("userInfo", loginUserInfoBean);
+        return user;
+    }
+
+    /***
+     * 根据用户名更新在线状态
+     * @param isOnline 在线状态值
+     * @param UserName 用户名
+     */
+    private void updateOnlineStatusByUserName(Integer isOnline, String UserName) {
+        SystemUserEntity systemUserEntity = new SystemUserEntity();
+        systemUserEntity.setUserName(UserName);
+        systemUserEntity.setIsOnline(isOnline);
+        CommonFieldUtils.setAdminCommon(systemUserEntity, false);
+        userMapper.updateUser(systemUserEntity);
     }
 }

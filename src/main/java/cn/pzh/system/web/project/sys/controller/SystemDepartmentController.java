@@ -6,12 +6,7 @@ import cn.pzh.system.web.project.common.model.AjaxJson;
 import cn.pzh.system.web.project.sys.service.DepartmentService;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,37 +22,36 @@ public class SystemDepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
+    /***
+     * 部门列表页面
+     * @return 部门列表页面
+     */
     @RequestMapping("/list")
     public String list(Model model) {
         model.addAttribute("departmentTree", departmentService.listDepartmentTree(null));
         return "/sys/department/department_list";
     }
 
-    @RequestMapping("/add")
-    public String add(Model model) {
-        return "/sys/department/department_form";
-    }
-
-    @RequestMapping("/departmentList")
-    @ResponseBody
-    public String getList(HttpServletRequest request) {
-
-        // JSONObject
-        JSONObject result = new JSONObject();
-
-        return result.toJSONString();
-    }
-
+    /***
+     * 根据部门编码获得部门信息
+     * @param code 部门编码
+     * @return 部门信息
+     */
     @RequestMapping("/getDepartmentInfo")
     @ResponseBody
     public SystemDepartmentEntity getDepartmentInfo(String code) {
         return departmentService.getDepartmentByCode(code);
     }
 
+    /***
+     * 部门人员关联列表 TODO
+     * @param code 部门编码
+     * @param request 模型
+     * @return 部门人员关联列表
+     */
     @RequestMapping("/listDepartmentUsers/{code}")
     @ResponseBody
     public String listUsers(@PathVariable String code, HttpServletRequest request) {
-        Map<String, String> map = new HashMap<String, String>();
 
         // page 为easyui分页插件默认传到后台的参数，代表当前的页码，起始页为1
         Integer pageNo = Integer.valueOf(request.getParameter("pageNumber"));
@@ -68,7 +62,7 @@ public class SystemDepartmentController {
         PageHelper.startPage(pageNo, pageSize);
         List<SystemDepartmentEntity> departments = departmentService.listDepartmentUsers(code);
         // 将users对象绑定到pageInfo
-        PageInfo<SystemDepartmentEntity> pageUser = new PageInfo<SystemDepartmentEntity>(departments);
+        PageInfo<SystemDepartmentEntity> pageUser = new PageInfo<>(departments);
         // 获取总记录数
         long total = pageUser.getTotal();
 
@@ -83,44 +77,61 @@ public class SystemDepartmentController {
         return result.toJSONString();
     }
 
-
+    /***
+     * 添加部门信息
+     * @param info 页面部门信息
+     * @return 部门添加结果
+     */
     @RequestMapping(value = "/addDepartment")
     @ResponseBody
-    public AjaxJson addEntity(SystemDepartmentEntity info,
-                            HttpServletRequest request)
-            throws IOException, NoSuchAlgorithmException {
+    public AjaxJson addEntity(SystemDepartmentEntity info) {
 
         AjaxJson j = new AjaxJson();
         j.setSuccess(false);
+
+        // 添加部门信息
         Boolean flag = departmentService.insert(info);
         if (flag) {
-            j.setMsg("角色添加成功！");
+            j.setMsg("部门添加成功！");
             j.setSuccess(true);
             return j;
         }
-        j.setMsg("角色添加失败，请联系管理员");
+        j.setMsg("部门添加失败，请联系管理员");
         return j;
     }
 
+    /***
+     * 修改部门信息
+     * @param info 页面部门信息
+     * @return 部门修改结果
+     */
     @RequestMapping(value = "/editDepartment")
     @ResponseBody
-    public AjaxJson editEntity(SystemDepartmentEntity info, HttpServletRequest request)
-            throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public AjaxJson editEntity(SystemDepartmentEntity info) {
+
+        // 修改部门信息
         Boolean flag = departmentService.update(info);
         AjaxJson j = new AjaxJson();
         if (flag) {
-            j.setMsg("角色修改成功");
+            j.setMsg("部门修改成功");
             j.setSuccess(true);
             return j;
         }
-        j.setMsg("角色修改失败，请联系管理员");
+        j.setMsg("部门修改失败，请联系管理员");
         j.setSuccess(false);
         return j;
     }
 
+    /***
+     * 删除部门--将disFlag变为1
+     * @param id 部门ID
+     * @return 删除结果
+     */
     @RequestMapping("/delete")
     public AjaxJson delete(Integer id) {
         AjaxJson j = new AjaxJson();
+
+        // 删除部门
         departmentService.delete(id);
         j.setMsg("删除成功!");
         j.setSuccess(true);

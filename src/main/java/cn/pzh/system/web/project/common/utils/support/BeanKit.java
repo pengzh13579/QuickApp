@@ -16,11 +16,9 @@ import java.util.Map.Entry;
 
 /**
  * Bean工具类
- * @author Looly
- *
  */
 public class BeanKit {
-	
+
 	/**
 	 * 判断是否为Bean对象
 	 * @param clazz 待测试类

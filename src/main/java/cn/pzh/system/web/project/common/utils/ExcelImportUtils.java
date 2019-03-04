@@ -20,9 +20,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
- * 功能: [POI实现把Excel数据导入到数据库]
- * 作者: JML
- * 版本: 1.0
+ * POI实现把Excel数据导入到数据库
  */
 public class ExcelImportUtils{
 

@@ -7,7 +7,7 @@ import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
 import cn.pzh.system.web.project.dao.first.mapper.sys.MenuMapper;
 import cn.pzh.system.web.project.sys.service.MenuService;
 
-import cn.pzh.system.web.project.sys.vo.MenuInfo;
+import cn.pzh.system.web.project.sys.vo.MenuInfoVO;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +30,11 @@ public class MenuServiceImpl implements MenuService {
     @Autowired
     private MenuMapper menuMapper;
 
+    /***
+     * 首页菜单的显示
+     * @param roleIds 角色ID
+     * @return 首页菜单树
+     */
     @Override
     public List<MenuNode> listIndexMenus(Integer[] roleIds) {
         List<SystemMenuEntity> menuList = menuMapper.listIndexMenus(roleIds);
@@ -47,6 +52,10 @@ public class MenuServiceImpl implements MenuService {
         return menuNodeList;
     }
 
+    /***
+     * 获得菜单树 构建ZTree
+     * @return 菜单树
+     */
     @Override
     public List<ZTreeNode> getMenuTreeList() {
         List<ZTreeNode> treeList = menuMapper.listMenuTree();
@@ -54,29 +63,41 @@ public class MenuServiceImpl implements MenuService {
         return treeList;
     }
 
+    /***
+     * 菜单列表信息查询
+     * @param systemMenuEntity 查询实体类
+     * @return 菜单列表信息
+     */
     @Override
-    public List<SystemMenuEntity> listMenus(HttpServletRequest request) {
-        Map<String, String> map = new HashMap<String, String>();
+    public List<SystemMenuEntity> listMenus(SystemMenuEntity systemMenuEntity) {
 
-        // page 为easyui分页插件默认传到后台的参数，代表当前的页码，起始页为1
-        Integer pageNo = Integer.valueOf(request.getParameter("pageNumber"));
+        // 默认从第pageNum开始，每页pageSize条
+        PageHelper.startPage(systemMenuEntity.getPageNumber(), systemMenuEntity.getPageSize(),
+                CommonFieldUtils.fieldNameToColumnName(systemMenuEntity.getSortName()) + " " + systemMenuEntity.getSortOrder());
 
-        // rows为为easyui分页插件默认传到后台的参数，代表当前设置的每页显示的记录条数
-        Integer pageSize = Integer.valueOf(request.getParameter("pageSize"));
-        // 默认从第一页开始，每页五条
-        PageHelper.startPage(pageNo, pageSize);
         return menuMapper.listMenus();
     }
 
+    /***
+     * 判断菜单编码是否重复
+     * @param code 菜单编码
+     * @return null：不重复<br/>
+     *          非null：重复
+     */
     @Override
     public String checkRepeatMenuCode(String code) {
         SystemMenuEntity menuEntity = menuMapper.getMenuByMenuCode(code);
         return null == menuEntity ? null : menuEntity.getMenuRealName();
     }
 
+    /***
+     * 插入菜单信息
+     * @param menuInfo 菜单信息
+     * @return 插入结果
+     */
     @Override
     @Transactional(readOnly = false)
-    public Boolean insertMenu(MenuInfo menuInfo) {
+    public Boolean insertMenu(MenuInfoVO menuInfo) {
         SystemMenuEntity menuEntity = new SystemMenuEntity();
         BeanUtils.copyProperties(menuInfo, menuEntity);
         menuEntity.setPid(menuInfo.getPId());
@@ -85,16 +106,31 @@ public class MenuServiceImpl implements MenuService {
         return true;
     }
 
+    /***
+     * 根据菜单编码获得菜单信息
+     * @param menuCode 菜单编码
+     * @return 菜单信息
+     */
     @Override
     public SystemMenuEntity getMenu(String menuCode) {
         return menuMapper.getMenuByMenuCode(menuCode);
     }
 
+    /***
+     * 根据菜单ID获得菜单信息
+     * @param id 菜单ID
+     * @return 菜单信息
+     */
     @Override
     public SystemMenuEntity getMenu(Integer id) {
         return menuMapper.getMenuByMenuId(id);
     }
 
+    /***
+     * 更新菜单信息
+     * @param menuEntity 菜单信息
+     * @return 更新结果
+     */
     @Override
     @Transactional(readOnly = false)
     public Boolean updateMenu(SystemMenuEntity menuEntity) {

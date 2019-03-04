@@ -10,7 +10,6 @@ import java.util.Locale;
 
 /**
  * 时间工具类
- * @author xiaoleilu
  */
 public class DateTimeKit {
 	/** 毫秒 */

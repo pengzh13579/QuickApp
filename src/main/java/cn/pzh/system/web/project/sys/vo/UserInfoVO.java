@@ -9,11 +9,12 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
-public class UserInfo implements Serializable {
+public class UserInfoVO implements Serializable {
 
     private Integer id;
     private String userName;
     private String realName;
+    private String avatarPath;
     private Integer sex;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;

@@ -6,8 +6,6 @@ import lombok.Data;
 
 /**
  * $.ajax后需要接受的JSON
- *
- * @author
  */
 @Data
 public class AjaxJson {

@@ -1,5 +1,5 @@
 $(function () {
-//初始化表格,动态从服务器加载数据
+    //初始化表格,动态从服务器加载数据
     $("#table_list").bootstrapTable({
         //使用get请求到服务器获取数据
         method: "POST",
@@ -27,6 +27,15 @@ $(function () {
         //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
         //设置为limit可以获取limit, offset, search, sort, order
         queryParamsType: "undefined",
+        queryParams: function queryParams(params){
+            var param = {
+                pageNumber: params.pageNumber,
+                pageSize: params.pageSize,
+                sortName: params.sortName,
+                sortOrder: params.sortOrder
+            };
+            return param;
+        },
         //json数据解析
         responseHandler: function(res) {
             return {

@@ -29,8 +29,6 @@ import java.util.Random;
 
 /**
  * shiro工具类
- *
- * @author dafei, Chill Zhuang
  */
 public class ShiroKit {
 

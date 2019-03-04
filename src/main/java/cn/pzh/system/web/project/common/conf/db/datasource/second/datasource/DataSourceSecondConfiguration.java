@@ -21,12 +21,12 @@ public class DataSourceSecondConfiguration {
 
     @Bean (name = ConfConstants.SECOND_DATASOURCE_ID)
     @ConfigurationProperties (prefix = ConfConstants.SECOND_DATASOURCE_YML_CONFIGURATION)
-    public DataSource testDataSource() {
+    public DataSource secondDataSource() {
         return new DruidDataSource();
     }
 
     @Bean (name = ConfConstants.SECOND_SQL_SESSION_FACTORY_ID)
-    public SqlSessionFactory testSqlSessionFactory(@Qualifier (ConfConstants.SECOND_DATASOURCE_ID) DataSource dataSource)
+    public SqlSessionFactory secondSqlSessionFactory(@Qualifier (ConfConstants.SECOND_DATASOURCE_ID) DataSource dataSource)
             throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
@@ -36,13 +36,13 @@ public class DataSourceSecondConfiguration {
     }
 
     @Bean (name = ConfConstants.SECOND_DATASOURCE_MBEAN)
-    public DataSourceTransactionManager testTransactionManager(
+    public DataSourceTransactionManager secondTransactionManager(
             @Qualifier (ConfConstants.SECOND_DATASOURCE_ID) DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 
     @Bean (name = ConfConstants.SECOND_SQL_SESSION_ID)
-    public SqlSessionTemplate testSqlSessionTemplate(
+    public SqlSessionTemplate secondSqlSessionTemplate(
             @Qualifier (ConfConstants.SECOND_SQL_SESSION_FACTORY_ID) SqlSessionFactory sqlSessionFactory)
             throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);

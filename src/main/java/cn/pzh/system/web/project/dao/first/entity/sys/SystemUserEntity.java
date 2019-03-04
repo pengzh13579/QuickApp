@@ -23,7 +23,7 @@ public class SystemUserEntity extends CommonEntity implements Serializable {
     private String roleId;
     private Integer deptId;
 
-    private String avatarImg;
+    private String avatarPath;
     private String roleName;
     private String deptName;
     private List<SystemContactEntity> contacts;

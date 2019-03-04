@@ -14,6 +14,7 @@
         <result column="NUM" property="num" jdbcType="INTEGER" />
         <result column="TIPS" property="tips" jdbcType="VARCHAR" />
     </resultMap>
+
     <sql id="selectColumn">
         SYS_MENU.ID,
         SYS_MENU.CODE,
@@ -27,7 +28,7 @@
         SYS_MENU.TIPS
     </sql>
 
-    <!--  -->
+    <!-- 根据角色ID获得首页的菜单 -->
     <select id="listIndexMenus" parameterType="java.util.ArrayList" resultMap="BaseResultMap">
         SELECT
         <include refid="selectColumn"></include>
@@ -42,6 +43,7 @@
         ORDER BY NUM ASC
     </select>
 
+    <!-- 获得菜单列表 -->
     <select id="listMenus" resultMap="BaseResultMap">
         SELECT
         <include refid="selectColumn"></include>
@@ -50,6 +52,7 @@
         ORDER BY SYS_MENU.NUM ASC
     </select>
 
+    <!-- 保存菜单信息 -->
     <insert id="saveMenu" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemMenuEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO SYS_MENU (
             CODE,
@@ -84,6 +87,7 @@
         )
     </insert>
 
+    <!-- 获得菜单树 -->
     <select id="listMenuTree" resultType="cn.pzh.system.web.project.common.model.ZTreeNode">
         SELECT
             m1.id AS id,
@@ -98,6 +102,8 @@
         ORDER BY
           m1.id ASC
     </select>
+
+    <!-- 根据菜单ID获得菜单编码 -->
     <select id="selectCodeById" resultType="String" parameterType="String">
         SELECT
           SYS_MENU.CODE
@@ -106,6 +112,7 @@
         AND SYS_MENU.ID=#{id,jdbcType=VARCHAR}
     </select>
 
+    <!-- 根据菜单编码获得菜单信息 -->
     <select id="getMenuByMenuCode" resultMap="BaseResultMap" parameterType="String">
         SELECT
         <include refid="selectColumn"></include>
@@ -114,6 +121,7 @@
         AND SYS_MENU.CODE=#{code,jdbcType=VARCHAR}
     </select>
 
+    <!-- 根据菜单ID获得菜单信息 -->
     <select id="getMenuByMenuId" resultMap="BaseResultMap" parameterType="Integer">
         SELECT
         <include refid="selectColumn"></include>
@@ -122,6 +130,7 @@
         AND SYS_MENU.ID=#{id,jdbcType=VARCHAR}
     </select>
 
+    <!-- 更新菜单信息 -->
     <update id="updateMenu" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemMenuEntity">
         UPDATE SYS_MENU
         <trim prefix="set" suffixOverrides=",">

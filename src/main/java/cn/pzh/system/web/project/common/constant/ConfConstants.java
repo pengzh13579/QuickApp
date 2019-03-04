@@ -13,4 +13,7 @@ public class ConfConstants {
     public final static String MAPPER_SCAN_PACKAGE = "cn.pzh.system.web.project";
     public final static String FIRST_DATASOURCE_YML_CONFIGURATION = "app.first.datasource";
     public final static String SECOND_DATASOURCE_YML_CONFIGURATION = "app.second.datasource";
+
+    public final static String WEB_RESOURCE_FILE_PATH = "file";
+    public final static String FILE_SPACE = ".";
 }

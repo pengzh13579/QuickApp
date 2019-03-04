@@ -17,9 +17,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
 
-/**
- * Created by Administrator on 15-10-13.
- */
 public abstract class BaseController {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());

@@ -30,15 +30,22 @@
         SYS_ROLE.UPDATE_DATE
     </sql>
 
-    <select id="listRoles" resultMap="BaseResultMap">
+    <sql id="whereCause">
+        <where>
+            SYS_ROLE.DIS_FLAG = 0
+        </where>
+    </sql>
+
+    <!-- 角色列表信息查询语句 -->
+    <select id="listRoles" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemRoleEntity" resultMap="BaseResultMap">
         SELECT
         <include refid="selectColumn"></include>
         FROM SYS_ROLE
-        WHERE SYS_ROLE.DIS_FLAG = 0
+        <include refid="whereCause"></include>
         ORDER BY SYS_ROLE.NUM ASC
     </select>
 
-    <!--  -->
+    <!-- 根据角色ID查询角色信息 -->
     <select id="selectRoleById" parameterType="Integer" resultMap="BaseResultMap">
         SELECT
         <include refid="selectColumn"></include>
@@ -48,7 +55,7 @@
         ORDER BY SYS_ROLE.NUM ASC
     </select>
 
-    <!--  -->
+    <!-- 批量保存角色信息 -->
     <insert id="saveList" parameterType="java.util.List">
         INSERT INTO SYS_ROLE (
             NUM,
@@ -78,6 +85,7 @@
         </foreach>
     </insert>
 
+    <!-- 保存角色信息 -->
     <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemRoleEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO SYS_ROLE (
             NUM,
@@ -104,6 +112,7 @@
         )
     </insert>
 
+    <!-- 更新角色信息 -->
     <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemRoleEntity">
         UPDATE SYS_ROLE
         <trim prefix="set" suffixOverrides=",">

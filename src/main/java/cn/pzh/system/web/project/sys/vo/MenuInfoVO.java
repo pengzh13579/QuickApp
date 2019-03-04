@@ -4,7 +4,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class MenuInfo implements Serializable {
+public class MenuInfoVO implements Serializable {
     private Integer id;
     private String code;
     private Integer pId;

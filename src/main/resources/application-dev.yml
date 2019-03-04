@@ -56,3 +56,6 @@ log:
   level:
     app: DEBUG
     root: INFO
+
+upload:
+  receive-root: C:/file/

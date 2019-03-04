@@ -43,6 +43,7 @@
         SYS_DEPARTMENT.UPDATE_USER
     </sql>
 
+    <!-- 部门列表信息查询语句 -->
     <select id="getDepartmentList" resultMap="BaseResultMap">
         SELECT
         <include refid="selectColumn"></include>
@@ -50,6 +51,7 @@
         WHERE SYS_DEPARTMENT.DIS_FLAG = 0
     </select>
 
+    <!-- 根据部门编码查询部门信息 -->
     <select id="selectDepartmentByCode" parameterType="String" resultMap="BaseResultMap">
         SELECT
         <include refid="selectColumn"></include>
@@ -58,7 +60,7 @@
         AND SYS_DEPARTMENT.DIS_FLAG = 0
     </select>
 
-    <!--  -->
+    <!-- 根据部门ID查询部门信息 -->
     <select id="selectDepartmentById" parameterType="Integer" resultMap="BaseResultMap">
         SELECT
         <include refid="selectColumn"></include>
@@ -67,7 +69,7 @@
         AND SYS_DEPARTMENT.DIS_FLAG = 0
     </select>
 
-    <!--  -->
+    <!-- 批量保存部门信息 -->
     <insert id="saveList" parameterType="java.util.List">
         INSERT INTO SYS_DEPARTMENT (
             CODE,
@@ -110,6 +112,7 @@
         </foreach>
     </insert>
 
+    <!-- 保存部门信息 -->
     <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemDepartmentEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO SYS_DEPARTMENT (
             CODE,
@@ -149,6 +152,7 @@
         )
     </insert>
 
+    <!-- 更新部门信息 -->
     <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemDepartmentEntity">
         UPDATE SYS_DEPARTMENT
         <trim prefix="set" suffixOverrides=",">

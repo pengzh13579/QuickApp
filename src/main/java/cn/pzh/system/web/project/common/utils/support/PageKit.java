@@ -2,9 +2,6 @@ package cn.pzh.system.web.project.common.utils.support;
 
 /**
  * 分页工具类
- * 
- * @author xiaoleilu
- * 
  */
 public class PageKit {
 

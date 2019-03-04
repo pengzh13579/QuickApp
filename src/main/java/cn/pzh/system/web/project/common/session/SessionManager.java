@@ -13,7 +13,6 @@ public class SessionManager {
 
     /**
      * 获取request对象
-     *
      * @return request对象
      */
     public static HttpServletRequest getRequest() {
@@ -24,7 +23,6 @@ public class SessionManager {
 
     /**
      * 获取session对象
-     *
      * @return session对象
      */
     public static HttpSession getSession() {

@@ -22,10 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * MyShiroRealm
- *
- * @author 单红宇(365384722)
- * @myblog http://blog.csdn.net/catoop/
- * @create 2016年1月13日
  */
 public class MyShiroRealm extends AuthorizingRealm {
 

@@ -25,7 +25,7 @@ $(function () {
         "               <input type=\"hidden\" id=\"contactType" + itemNum
         + "\" name=\"contacts[" + itemNum
         + "].contactType\" class=\"form-control\" value=\"1\" />\n" +
-        "               <input type=\"email\" id=\"contactInfo" + itemNum
+        "               <input type=\"text\" id=\"contactInfo" + itemNum
         + "\" name=\"contacts[" + itemNum
         + "].contactInfo\" class=\"form-control\" value=\"\"/>\n" +
         "           </div>\n"
@@ -109,16 +109,20 @@ $(function () {
         cache:false,
         dataType: 'JSON', //返回值类型 一般设置为json
         success: function (data){  //服务器成功响应处理函数
-          layer.msg(data.msg, {time: 2000}, function () {
-            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-            if (data.success) {
-              parent.layer.close(index);
-            }
-          });
+          // 解决返回值带<pre style="word-wrap: break-word; white-space: pre-wrap;">的问题
+          data = $.parseJSON(data.replace(/<.*?>/ig,""));
+          layer.msg(data.msg);
+
+          //先得到当前iframe层的索引
+          var index = parent.layer.getFrameIndex(window.name);
+          if (data.success) {
+            parent.layer.close(index);
+          }
         }
       });
     }
   });
+
   $("#provinceId").change(function () {
     $.get("/provinceAreaController/getCityByProvinceId/" + $(
         "#provinceId").val(), function (data) {
@@ -133,6 +137,7 @@ $(function () {
       }
     }, "json");
   });
+
   $("#cityId").change(function () {
     $.get("/provinceAreaController/getAreaByCityId/" + $("#cityId").val(),
         function (data) {
@@ -147,6 +152,7 @@ $(function () {
           }
         }, "json");
   });
+
   $("#provinceIdAddr").change(function () {
     $.get("/provinceAreaController/getCityByProvinceId/" + $(
         "#provinceIdAddr").val(), function (data) {
@@ -161,6 +167,7 @@ $(function () {
       }
     }, "json");
   });
+
   $("#cityIdAddr").change(function () {
     $.get("/provinceAreaController/getAreaByCityId/" + $("#cityIdAddr").val(),
         function (data) {

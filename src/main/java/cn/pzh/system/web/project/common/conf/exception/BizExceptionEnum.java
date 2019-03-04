@@ -1,9 +1,7 @@
 package cn.pzh.system.web.project.common.conf.exception;
 
 /**
- * @Description 所有业务异常的枚举
- * @author fengshuonan
- * @date 2016年11月12日 下午5:04:51
+ * 所有业务异常的枚举
  */
 public enum BizExceptionEnum {
 

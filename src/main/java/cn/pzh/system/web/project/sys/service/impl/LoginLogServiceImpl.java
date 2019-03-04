@@ -19,6 +19,13 @@ public class LoginLogServiceImpl implements LoginLogService {
     @Autowired
     private LoginLogMapper loginLogMapper;
 
+    /***
+     * 插入登录日志
+     * @param loginLogEntity 登录日志实体类
+     * @param j ajax信息
+     * @param request 请求
+     * @param userName 用户名
+     */
     @Override
     @Transactional (readOnly = false)
     public void insertLoginLog(LoginLogEntity loginLogEntity, AjaxJson j, HttpServletRequest request, String userName) {

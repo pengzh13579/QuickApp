@@ -18,7 +18,11 @@ public class ProvinceAreaController {
     @Autowired
     private ProvinceAreaService provinceAreaService;
 
-    // 根据省份id获取城市数据后直接使用@ResponseBody装成json数据
+    /***
+     * 根据省份id获取城市数据后直接使用@ResponseBody装成json数据
+     * @param id 省份id
+     * @return 查询结果
+     */
     @RequestMapping (value = "/getCityByProvinceId/{id}")
     @ResponseBody
     public AjaxJson getCityByProvinceId(@PathVariable ("id") String id){
@@ -33,7 +37,12 @@ public class ProvinceAreaController {
             return j;
         }
     }
-    //    根据城市id获取区域数据后直接使用@ResponseBody装成json数据
+
+    /***
+     * 根据城市id获取区域数据后直接使用@ResponseBody装成json数据
+     * @param id 城市id
+     * @return 查询结果
+     */
     @RequestMapping(value = "/getAreaByCityId/{id}")
     @ResponseBody
     public AjaxJson getAreaByCityId(@PathVariable("id") String id){

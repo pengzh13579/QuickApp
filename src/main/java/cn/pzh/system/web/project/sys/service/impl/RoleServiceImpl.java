@@ -5,9 +5,7 @@ import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
 import cn.pzh.system.web.project.dao.first.mapper.sys.RoleMapper;
 import cn.pzh.system.web.project.sys.service.RoleService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,45 +22,68 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleMapper roleMapper;
 
+    /***
+     * 角色列表信息查询
+     * @param systemRoleEntity 查询实体类
+     * @return 角色列表信息
+     */
     @Override
-    public List<SystemRoleEntity> listRoles(HttpServletRequest request) {
+    public List<SystemRoleEntity> listRoles(SystemRoleEntity systemRoleEntity) {
 
-        Map<String, String> map = new HashMap<String, String>();
+        // 默认从第pageNum开始，每页pageSize条
+        PageHelper.startPage(systemRoleEntity.getPageNumber(), systemRoleEntity.getPageSize(),
+                CommonFieldUtils.fieldNameToColumnName(systemRoleEntity.getSortName()) + " " + systemRoleEntity.getSortOrder());
 
-        // page 为easyui分页插件默认传到后台的参数，代表当前的页码，起始页为1
-        Integer pageNo = Integer.valueOf(request.getParameter("pageNumber"));
-
-        // rows为为easyui分页插件默认传到后台的参数，代表当前设置的每页显示的记录条数
-        Integer pageSize = Integer.valueOf(request.getParameter("pageSize"));
-        // 默认从第一页开始，每页五条
-        PageHelper.startPage(pageNo, pageSize);
-
-        return roleMapper.listRoles();
+        return roleMapper.listRoles(systemRoleEntity);
     }
 
+    /***
+     * 添加角色信息
+     * @param info 角色信息
+     * @return 添加角色结果
+     */
     @Override
     @Transactional (readOnly = false)
-    public Boolean insert(SystemRoleEntity role) {
-        return roleMapper.save(role);
+    public Boolean insert(SystemRoleEntity info) {
+        return roleMapper.save(info);
     }
 
+    /***
+     * 根据角色ID获得角色信息
+     * @param id 角色ID
+     * @return 角色信息
+     */
     @Override
     public SystemRoleEntity get(Integer id) {
         return roleMapper.selectRoleById(id);
     }
 
+    /***
+     * 修改角色信息
+     * @param info 角色信息
+     * @return 修改角色结果
+     */
     @Override
     @Transactional (readOnly = false)
-    public Boolean update(SystemRoleEntity role) {
-        return roleMapper.update(role);
+    public Boolean update(SystemRoleEntity info) {
+        return roleMapper.update(info);
     }
 
+    /***
+     * 删除角色--将disFlag变为1
+     * @param id 角色ID
+     */
     @Override
     @Transactional (readOnly = false)
     public void delete(Integer id) {
+
+        // 根据角色ID获得角色信息
         SystemRoleEntity role = roleMapper.selectRoleById(id);
-        role.setDisFlag(1);
-        CommonFieldUtils.setAdminCommon(role, false);
+
+        // 将disFlag变为1
+        CommonFieldUtils.setDeleteCommon(role);
+
+        // 更新角色信息
         roleMapper.update(role);
     }
 }

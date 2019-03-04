@@ -15,6 +15,10 @@ public class OperationLogServiceImpl implements OperationLogService {
     @Autowired
     private OperationLogMapper operationLogMapper;
 
+    /***
+     * 插入操作日志
+     * @param operationLogEntity 操作日志实体类
+     */
     @Override
     @Transactional (readOnly = false)
     public void insertOperationLog(OperationLogEntity operationLogEntity) {

@@ -3,14 +3,18 @@
 <mapper namespace="cn.pzh.system.web.project.dao.first.mapper.comm.FileMapper">
 
     <insert id="saveFile" parameterType="cn.pzh.system.web.project.dao.first.entity.comm.CommonFileEntity" useGeneratedKeys="true" keyProperty="id">
-        insert into sys_file (
-            file_name,
-            file_suffix,
-            path)
+        INSERT INTO COMM_FILE (
+            FILE_NAME,
+            FILE_SUFFIX,
+            PATH,
+            UPDATE_USER,
+            UPDATE_DATE)
         values (
             #{fileName,jdbcType=VARCHAR},
             #{fileSuffix,jdbcType=VARCHAR},
-            #{path,jdbcType=VARCHAR}
+            #{path,jdbcType=VARCHAR},
+            #{updateUser,jdbcType=VARCHAR},
+            #{updateDate,jdbcType=TIMESTAMP}
         )
     </insert>
 

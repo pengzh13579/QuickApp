@@ -24,6 +24,15 @@ $(function () {
         //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
         //设置为limit可以获取limit, offset, search, sort, order
         queryParamsType: "undefined",
+        queryParams: function queryParams(params){
+            var param = {
+                pageNumber: params.pageNumber,
+                pageSize: params.pageSize,
+                sortName: params.sortName,
+                sortOrder: params.sortOrder
+            };
+            return param;
+        },
         //json数据解析
         responseHandler: function(res) {
             return {

@@ -4,11 +4,11 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class DepartmentTreeInfo {
+public class DepartmentTreeVO {
 
     private Integer id;
     private String code;
     private String departSimpleName;
     private Integer openFlag;
-    private List<DepartmentTreeInfo> departmentChildren;
+    private List<DepartmentTreeVO> departmentChildren;
 }
