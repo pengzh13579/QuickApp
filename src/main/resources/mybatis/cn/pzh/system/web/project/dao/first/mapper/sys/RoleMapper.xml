@@ -33,6 +33,12 @@
     <sql id="whereCause">
         <where>
             SYS_ROLE.DIS_FLAG = 0
+            <if test="code != null and code != ''">
+                AND SYS_ROLE.CODE like CONCAT('%',#{code},'%')
+            </if>
+            <if test="roleName != null and roleName != ''">
+                AND SYS_ROLE.ROLE_NAME like CONCAT('%',#{roleName},'%')
+            </if>
         </where>
     </sql>
 
@@ -128,4 +134,18 @@
         where ID=#{id,jdbcType=INTEGER}
     </update>
 
+    <insert id="insertRoleRelateMenu" parameterType="Integer">
+        INSERT INTO SYS_MENU_ROLE (MENU_ID,ROLE_ID)
+        VALUES
+        <foreach collection="menuIds" item="item" index="index" separator="," >
+            (
+            #{item,jdbcType=INTEGER},
+            #{roleId,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteRoleRelateMenu" parameterType="Integer">
+        DELETE FROM SYS_MENU_ROLE WHERE ROLE_ID = #{roleId,jdbcType=INTEGER}
+    </delete>
 </mapper>

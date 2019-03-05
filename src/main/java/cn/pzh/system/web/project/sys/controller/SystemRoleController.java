@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -152,4 +153,24 @@ public class SystemRoleController {
         return j;
     }
 
+    /***
+     * 插入或更新角色关联菜单信息
+     * @param roleId 角色ID
+     * @param menuIds 菜单ID
+     * @return 更新结果
+     */
+    @RequestMapping("/insertRoleRelateMenu")
+    @ResponseBody
+    public AjaxJson insertRoleRelateMenu(@RequestParam("roleId") Integer roleId,
+                                 @RequestParam("menuIds[]") List<Integer> menuIds) {
+
+        AjaxJson j = new AjaxJson();
+
+        // 关联菜单
+        roleService.insertRoleRelateMenu(roleId, menuIds);
+        j.setMsg("关联菜单成功！");
+        j.setSuccess(true);
+        return j;
+
+    }
 }

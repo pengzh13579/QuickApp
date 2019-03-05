@@ -115,6 +115,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     /***
+     * 删除部门关联用户
+     * @param id 部门ID
+     * @param userIds 用户ID
+     * @return 删除结果
+     */
+    @Override
+    @Transactional (readOnly = false)
+    public Boolean deleteRelatedUsers(Integer id, List<Integer> userIds) {
+        return departmentMapper.deleteRelatedUsers(id, userIds);
+    }
+
+    /***
      * 根据父部门编码从部门列表中循环迭代子部门 <br/>
      * 生成部门树返回
      * @param departmentList 部门列表

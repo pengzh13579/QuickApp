@@ -133,13 +133,8 @@ $(function () {
 });
 
 var callbackdata = function () {
-  var userIds = [];
-  select_list = $("#user_simple_list").bootstrapTable('getSelections');
-  for (var item in select_list) {
-    userIds.push(select_list[item].id);
-  }
   var data = {
-    userIds: userIds
+    userIds: getBootstrapTableIds("user_simple_list")
   };
   return data;
 }

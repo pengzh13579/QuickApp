@@ -40,4 +40,11 @@ public interface RoleService {
      * @param id 角色ID
      */
     void delete(Integer id);
+
+    /***
+     * 插入或更新角色关联菜单信息
+     * @param roleId 角色ID
+     * @param menuIds 菜单ID
+     */
+    void insertRoleRelateMenu(Integer roleId, List<Integer> menuIds);
 }

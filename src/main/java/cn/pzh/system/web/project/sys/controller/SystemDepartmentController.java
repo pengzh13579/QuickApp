@@ -119,13 +119,33 @@ public class SystemDepartmentController {
      * @param code 部门编号
      * @return 删除结果
      */
-    @RequestMapping("/delete/{code}")
+    @RequestMapping("/delete")
+    @ResponseBody
     public AjaxJson delete(String code) {
         AjaxJson j = new AjaxJson();
 
         // 删除部门
         departmentService.delete(code);
         j.setMsg("删除成功!");
+        j.setSuccess(true);
+        return j;
+    }
+
+    /***
+     * 删除部门关联用户
+     * @param id 部门ID
+     * @param userIds 用户ID
+     * @return 删除结果
+     */
+    @RequestMapping("/deleteRelatedUsers")
+    @ResponseBody
+    public AjaxJson deleteRelatedUsers(@RequestParam("id") Integer id,
+                                       @RequestParam("userIds[]") List<Integer> userIds) {
+        AjaxJson j = new AjaxJson();
+
+        // 删除部门关联用户
+        departmentService.deleteRelatedUsers(id, userIds);
+        j.setMsg("删除关联用户成功!");
         j.setSuccess(true);
         return j;
     }

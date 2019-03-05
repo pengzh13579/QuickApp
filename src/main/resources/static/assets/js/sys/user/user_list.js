@@ -26,6 +26,8 @@ $(function () {
     pageSize: 10,
     //当前第几页
     pageNumber: 1,
+    singleSelect: true,
+    clickToSelect: true,
     //记录数可选列表
     pageList: [5, 10, 15, 20, 25],
     //表示服务端请求
@@ -246,10 +248,8 @@ function lockUser() {
         url: "/systemUserController/lockUser",
         data: {userName : selections[0].userName},
         success: function (data) {
-          layer.msg(data.msg, {time: 2000}, function () {
-            $('#table_list').bootstrapTable("refresh");
-            layer.close(index);
-          });
+          layer.msg(data.msg);
+          $('#table_list').bootstrapTable("refresh");
         }
       });
     }

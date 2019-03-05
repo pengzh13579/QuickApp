@@ -38,9 +38,10 @@ function openUserSimpleList(title, url, jsonStr) {
         url: url,
         data: jsonStr,
         success: function (data) {
-          layer.msg(data.msg, {time: 2000}, function () {
+          layer.msg(data.msg, {time: 1000}, function () {
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             if (data.success) {
+              parentCallbackFunc();
               parent.layer.close(index);
             }
           });
@@ -64,5 +65,15 @@ function changeDateFormat(cellval) {
     var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
     return Y + M + D;
   }
+}
+
+function getBootstrapTableIds(tableId) {
+
+    var ids = [];
+    var select_list = $("#" + tableId).bootstrapTable('getSelections');
+    for (var item in select_list) {
+        ids.push(select_list[item].id);
+    }
+    return ids;
 }
 

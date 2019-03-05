@@ -19,4 +19,6 @@ public interface DepartmentMapper {
     SystemDepartmentEntity selectDepartmentByCode(String code);
 
     Boolean insertOrUpdateRelatedUsers(@Param("id") Integer id, @Param("userIds") List<Integer> userIds);
+
+    Boolean deleteRelatedUsers(@Param("id") Integer id, @Param("userIds") List<Integer> userIds);
 }

@@ -186,4 +186,12 @@
         ON DUPLICATE KEY UPDATE
         USER_ID=values(USER_ID),DEPARTMENT_ID=values(DEPARTMENT_ID)
     </insert>
+
+    <delete id="deleteRelatedUsers" parameterType="Integer">
+        DELETE FROM SYS_USER_DEPARTMENT WHERE DEPARTMENT_ID = #{id,jdbcType=INTEGER}
+        AND USER_ID IN
+        <foreach collection="userIds" item="item" index="index" open="(" close=")" separator=",">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+    </delete>
 </mapper>

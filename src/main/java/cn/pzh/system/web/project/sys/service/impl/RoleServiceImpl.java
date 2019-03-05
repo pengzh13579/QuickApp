@@ -88,4 +88,18 @@ public class RoleServiceImpl implements RoleService {
         // 更新角色信息
         roleMapper.update(role);
     }
+
+    /***
+     * 插入或更新角色关联菜单信息
+     * @param roleId 角色ID
+     * @param menuIds 菜单ID
+     */
+    @Override
+    @Transactional (readOnly = false)
+    public void insertRoleRelateMenu(Integer roleId, List<Integer> menuIds) {
+
+        // 对关联的菜单进行先删后加
+        roleMapper.deleteRoleRelateMenu(roleId);
+        roleMapper.insertRoleRelateMenu(roleId, menuIds);
+    }
 }

@@ -52,6 +52,7 @@ $(function () {
     pageSize: 10,
     //当前第几页
     pageNumber: 1,
+    toolbar: '#toolbar',
     //记录数可选列表
     pageList: [5, 10, 15, 20, 25],
     //表示服务端请求
@@ -64,7 +65,9 @@ $(function () {
         pageNumber: params.pageNumber,
         pageSize: params.pageSize,
         sortName: params.sortName,
-        sortOrder: params.sortOrder
+        sortOrder: params.sortOrder,
+        code: $("#codeSearch").val(),
+        roleName: $("#roleNameSearch").val()
       };
       return param;
     },
@@ -119,9 +122,6 @@ $(function () {
         operateHtml = operateHtml
             + '<button class="btn btn-danger btn-xs" type="button" onclick="del(\''
             + row.id + '\')"><i class="fa fa-remove"></i>&nbsp;删除</button>';
-        operateHtml = operateHtml
-            + '<button class="btn btn-info btn-xs" type="button" onclick="related_menu(\''
-            + row.id + '\')"><i class="fa fa-arrows"></i>&nbsp;关联菜单</button>';
         return operateHtml;
       }
     }],
@@ -154,6 +154,9 @@ $(function () {
       });
     }
   });
+  $("#searchbtn").click(function () {
+      $('#table_list').bootstrapTable('refresh');
+  });
 });
 
 function relatedMenus() {
@@ -176,7 +179,7 @@ function relatedMenus() {
   $.ajax({
     type: "POST",
     dataType: "json",
-    url: "/systemUserController/userSimpleList",
+    url: "/systemRoleController/insertRoleRelateMenu",
     data: {
       roleId: selections[0].id,
       menuIds: menuIds
@@ -222,11 +225,9 @@ function del(id) {
       dataType: "json",
       url: "/systemRoleController/delete",
       data: {id : id},
-      success: function (msg) {
-        layer.msg(msg.message, {time: 2000}, function () {
-          $('#table_list').bootstrapTable("refresh");
-          layer.close(index);
-        });
+      success: function (data) {
+        layer.msg(data.message);
+        $('#table_list').bootstrapTable("refresh");
       }
     });
   });

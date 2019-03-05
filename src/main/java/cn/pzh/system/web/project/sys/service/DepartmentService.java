@@ -61,4 +61,12 @@ public interface DepartmentService {
      * @return 关联结果
      */
     Boolean relatedUsers(Integer id, List<Integer> userIds);
+
+    /***
+     * 删除部门关联用户
+     * @param id 部门ID
+     * @param userIds 用户ID
+     * @return 删除结果
+     */
+    Boolean deleteRelatedUsers(Integer id, List<Integer> userIds);
 }

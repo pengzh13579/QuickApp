@@ -28,6 +28,18 @@
         SYS_MENU.TIPS
     </sql>
 
+    <sql id="whereCause">
+        <where>
+            SYS_MENU.DIS_FLAG = 0
+            <if test="code != null and code != ''">
+                AND SYS_MENU.CODE like CONCAT('%',#{code},'%')
+            </if>
+            <if test="menuRealName != null and menuRealName != ''">
+                AND SYS_MENU.MENU_REAL_NAME like CONCAT('%',#{menuRealName},'%')
+            </if>
+        </where>
+    </sql>
+
     <!-- 根据角色ID获得首页的菜单 -->
     <select id="listIndexMenus" parameterType="java.util.ArrayList" resultMap="BaseResultMap">
         SELECT
@@ -48,7 +60,7 @@
         SELECT
         <include refid="selectColumn"></include>
         FROM SYS_MENU SYS_MENU
-        WHERE SYS_MENU.DIS_FLAG = 0
+        <include refid="whereCause"></include>
         ORDER BY SYS_MENU.NUM ASC
     </select>
 
@@ -161,17 +173,4 @@
         WHERE SYS_MENU.DIS_FLAG = 0
         AND SYS_MENU_ROLE.ROLE_ID=#{roleId,jdbcType=INTEGER}
     </select>
-
-    <insert id="insertOrUpdateRoleRelateMenu" parameterType="Integer">
-        INSERT INTO SYS_MENU_ROLE (MENU_ID,ROLE_ID)
-        VALUES
-        <foreach collection="menuIds" item="item" index="index" separator="," >
-            (
-            #{item,jdbcType=INTEGER},
-            #{id,jdbcType=INTEGER}
-            )
-        </foreach>
-        ON DUPLICATE KEY UPDATE
-        MENU_ID=values(MENU_ID),ROLE_ID=values(ROLE_ID)
-    </insert>
 </mapper>

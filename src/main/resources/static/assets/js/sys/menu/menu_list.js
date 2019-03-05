@@ -17,7 +17,7 @@ $(function () {
     pageNumber: 1,
     //记录数可选列表
     pageList: [5, 10, 15, 20, 25],
-    detailFormatter: detailFormatter,
+    toolbar: '#toolbar',
     //表示服务端请求
     sidePagination: "server",
     //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
@@ -28,7 +28,9 @@ $(function () {
         pageNumber: params.pageNumber,
         pageSize: params.pageSize,
         sortName: params.sortName,
-        sortOrder: params.sortOrder
+        sortOrder: params.sortOrder,
+        code: $("#codeSearch").val(),
+        menuRealName: $("#menuRealNameSearch").val()
       };
       return param;
     },
@@ -116,6 +118,9 @@ function edit(code) {
       $('#table_list').bootstrapTable("refresh");
     }
   });
+  $("#searchbtn").click(function () {
+      $('#table_list').bootstrapTable('refresh');
+  });
 }
 
 function add() {
@@ -139,18 +144,11 @@ function del(code) {
       dataType: "json",
       url: "/systemMenuController/delete",
       data: {code : code},
-      success: function (msg) {
-        layer.msg(msg.message, {time: 2000}, function () {
-          $('#table_list').bootstrapTable("refresh");
-          layer.close(index);
-        });
+      success: function (data) {
+        layer.msg(data.message);
+        $('#table_list').bootstrapTable("refresh");
       }
     });
   });
 }
 
-function detailFormatter(index, row) {
-  var html = [];
-  html.push('<p><b>描述:</b> ' + row.description + '</p>');
-  return html.join('');
-}

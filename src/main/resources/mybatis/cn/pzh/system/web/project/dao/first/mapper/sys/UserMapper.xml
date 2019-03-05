@@ -177,6 +177,7 @@
     <!--  -->
     <select id="listDepartmentUsers" parameterType="String" resultMap="BaseResultMap">
         SELECT
+            SYS_USER.ID,
             SYS_USER.USER_NAME,
             SYS_USER.REAL_NAME
         FROM SYS_USER_DEPARTMENT SYS_USER_DEPARTMENT
