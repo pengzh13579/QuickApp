@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class SystemMenuRoleEntity implements Serializable {
 
-    private Integer id;
     private Integer menuId;
     private Integer roleId;
 }

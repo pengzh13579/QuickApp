@@ -174,4 +174,16 @@
         where ID=#{id,jdbcType=INTEGER}
     </update>
 
+    <insert id="insertOrUpdateRelatedUsers" parameterType="Integer">
+        INSERT INTO SYS_USER_DEPARTMENT (USER_ID,DEPARTMENT_ID)
+        VALUES
+        <foreach collection="userIds" item="item" index="index" separator="," >
+            (
+                #{item,jdbcType=INTEGER},
+                #{id,jdbcType=INTEGER}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        USER_ID=values(USER_ID),DEPARTMENT_ID=values(DEPARTMENT_ID)
+    </insert>
 </mapper>

@@ -66,4 +66,11 @@ public interface MenuService {
      * @return 更新结果
      */
     Boolean updateMenu(SystemMenuEntity menuEntity);
+
+    /***
+     * 根据角色ID获取所关联的菜单
+     * @param roleId 角色ID
+     * @return 关联菜单信息
+     */
+    List<Integer> getMenuIdByRoleId(Integer roleId);
 }

@@ -14,8 +14,7 @@ $(function () {
       num: {
         required: true
       },
-      tips: {
-      }
+      tips: {}
     },
     messages: {},
     submitHandler: function (form) {

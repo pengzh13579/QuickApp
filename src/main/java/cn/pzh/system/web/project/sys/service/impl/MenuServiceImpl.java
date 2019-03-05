@@ -59,7 +59,6 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<ZTreeNode> getMenuTreeList() {
         List<ZTreeNode> treeList = menuMapper.listMenuTree();
-        treeList.add(ZTreeNode.createParent());
         return treeList;
     }
 
@@ -135,5 +134,15 @@ public class MenuServiceImpl implements MenuService {
     @Transactional(readOnly = false)
     public Boolean updateMenu(SystemMenuEntity menuEntity) {
         return menuMapper.updateMenu(menuEntity);
+    }
+
+    /***
+     * 根据角色ID获取所关联的菜单
+     * @param roleId 角色ID
+     * @return 关联菜单信息
+     */
+    @Override
+    public List<Integer> getMenuIdByRoleId(Integer roleId) {
+        return menuMapper.getMenuIdByRoleId(roleId);
     }
 }

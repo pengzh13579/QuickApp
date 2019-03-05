@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -44,37 +45,28 @@ public class SystemDepartmentController {
     }
 
     /***
-     * 部门人员关联列表 TODO
-     * @param code 部门编码
-     * @param request 模型
-     * @return 部门人员关联列表
+     * 部门人员关联
+     * @param id 部门编码
+     * @param userIds 人员ID
+     * @return 关联结果
      */
-    @RequestMapping("/listDepartmentUsers/{code}")
+    @RequestMapping("/relatedUsers")
     @ResponseBody
-    public String listUsers(@PathVariable String code, HttpServletRequest request) {
+    public AjaxJson relatedUsers(@RequestParam ("id") Integer id,
+            @RequestParam("userIds[]") List<Integer> userIds) {
 
-        // page 为easyui分页插件默认传到后台的参数，代表当前的页码，起始页为1
-        Integer pageNo = Integer.valueOf(request.getParameter("pageNumber"));
+        AjaxJson j = new AjaxJson();
+        j.setSuccess(false);
 
-        // rows为为easyui分页插件默认传到后台的参数，代表当前设置的每页显示的记录条数
-        Integer pageSize = Integer.valueOf(request.getParameter("pageSize"));
-        // 默认从第一页开始，每页五条
-        PageHelper.startPage(pageNo, pageSize);
-        List<SystemDepartmentEntity> departments = departmentService.listDepartmentUsers(code);
-        // 将users对象绑定到pageInfo
-        PageInfo<SystemDepartmentEntity> pageUser = new PageInfo<>(departments);
-        // 获取总记录数
-        long total = pageUser.getTotal();
+        Boolean flag = departmentService.relatedUsers(id, userIds);
+        if (flag) {
+            j.setMsg("关联人员成功！");
+            j.setSuccess(true);
+            return j;
+        }
+        j.setMsg("关联人员失败，请联系管理员");
+        return j;
 
-        // JSONObject
-        JSONObject result = new JSONObject();
-
-        // total 存放总记录数
-        result.put("total", total);
-
-        // rows存放每页记录 ，这里的两个参数名是固定的，必须为 total和 rows
-        result.put("rows", departments);
-        return result.toJSONString();
     }
 
     /***
@@ -124,15 +116,15 @@ public class SystemDepartmentController {
 
     /***
      * 删除部门--将disFlag变为1
-     * @param id 部门ID
+     * @param code 部门编号
      * @return 删除结果
      */
-    @RequestMapping("/delete")
-    public AjaxJson delete(Integer id) {
+    @RequestMapping("/delete/{code}")
+    public AjaxJson delete(String code) {
         AjaxJson j = new AjaxJson();
 
         // 删除部门
-        departmentService.delete(id);
+        departmentService.delete(code);
         j.setMsg("删除成功!");
         j.setSuccess(true);
         return j;

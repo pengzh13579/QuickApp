@@ -37,14 +37,14 @@
                     <h5>部门管理</h5>
                 </div>
                 <div class="ibox-content">
-                    <p>
-                        <button class="btn btn-success " type="button" onclick="addLowerDepartment();"><i class="fa fa-plus"></i>&nbsp;添加下级部门</button>
-                        <button class="btn btn-success " type="button" onclick="addSameDepartment();"><i class="fa fa-plus"></i>&nbsp;添加同级部门</button>
-                        <button class="btn btn-success " type="button" onclick="del();"><i class="fa fa-plus"></i>&nbsp;删除</button>
-                    </p>
-                    <p align="right">
-                        <button class="btn btn-success " type="button" onclick="addUsers();"><i class="fa fa-plus"></i>&nbsp;关联用户</button>
-                    </p>
+                    <div class="col-sm-8">
+                        <button class="btn btn-success" type="button" onclick="addLowerDepartment();"><i class="fa fa-plus"></i>&nbsp;添加下级部门</button>
+                        <button class="btn btn-success" type="button" onclick="addSameDepartment();"><i class="fa fa-plus"></i>&nbsp;添加同级部门</button>
+                        <button class="btn btn-danger" type="button" onclick="del();"><i class="fa fa-remove"></i>&nbsp;删除</button>
+                    </div>
+                    <div class="col-sm-4">
+                        <button class="btn btn-info" type="button" onclick="addUsers();"><i class="fa fa-arrows"></i>&nbsp;关联用户</button>
+                    </div>
                     <hr/>
                     <div class="row row-lg">
                         <div class="col-sm-3">
@@ -146,11 +146,10 @@
                             </form>
                         </div>
                         <div class="col-sm-4">
-                            <div class="example-wrap">
-                                <div class="example">
-                                    <table id="department_user_list"></table>
-                                </div>
+                            <div class="ibox-title">
+                                <h5>关联用户</h5>
                             </div>
+                            <table id="department_user_list"></table>
                         </div>
                     </div>
                 </div>

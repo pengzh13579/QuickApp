@@ -174,4 +174,19 @@
         where USER_NAME=#{userName,jdbcType=VARCHAR}
     </update>
 
+    <!--  -->
+    <select id="listDepartmentUsers" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+            SYS_USER.USER_NAME,
+            SYS_USER.REAL_NAME
+        FROM SYS_USER_DEPARTMENT SYS_USER_DEPARTMENT
+        LEFT JOIN SYS_USER SYS_USER
+        ON SYS_USER_DEPARTMENT.USER_ID = SYS_USER.ID
+        LEFT JOIN SYS_DEPARTMENT SYS_DEPARTMENT
+        ON SYS_USER_DEPARTMENT.DEPARTMENT_ID = SYS_DEPARTMENT.ID
+        WHERE SYS_DEPARTMENT.CODE = #{code,jdbcType=VARCHAR}
+        AND SYS_USER.DIS_FLAG <![CDATA[ <> ]]> 1
+        AND SYS_DEPARTMENT.DIS_FLAG <![CDATA[ <> ]]> 1
+    </select>
+
 </mapper>

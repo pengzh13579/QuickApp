@@ -16,4 +16,6 @@ public interface UserMapper {
     void saveUser(SystemUserEntity systemUserEntity);
 
     void updateUser(SystemUserEntity systemUserEntity);
+
+    List<SystemUserEntity> listDepartmentUsers(String code);
 }

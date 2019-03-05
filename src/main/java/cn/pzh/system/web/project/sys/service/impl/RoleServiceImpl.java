@@ -45,6 +45,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional (readOnly = false)
     public Boolean insert(SystemRoleEntity info) {
+        CommonFieldUtils.setAdminCommon(info, true);
         return roleMapper.save(info);
     }
 
@@ -66,6 +67,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional (readOnly = false)
     public Boolean update(SystemRoleEntity info) {
+        CommonFieldUtils.setAdminCommon(info, false);
         return roleMapper.update(info);
     }
 

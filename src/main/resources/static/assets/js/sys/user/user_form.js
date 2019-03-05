@@ -106,11 +106,11 @@ $(function () {
         secureuri: false, //是否需要安全协议，一般设置为false
         fileElementId: 'avatar', //文件上传域的ID
         data: $(form).serializeObject(),
-        cache:false,
+        cache: false,
         dataType: 'JSON', //返回值类型 一般设置为json
-        success: function (data){  //服务器成功响应处理函数
+        success: function (data) {  //服务器成功响应处理函数
           // 解决返回值带<pre style="word-wrap: break-word; white-space: pre-wrap;">的问题
-          data = $.parseJSON(data.replace(/<.*?>/ig,""));
+          data = $.parseJSON(data.replace(/<.*?>/ig, ""));
           layer.msg(data.msg);
 
           //先得到当前iframe层的索引

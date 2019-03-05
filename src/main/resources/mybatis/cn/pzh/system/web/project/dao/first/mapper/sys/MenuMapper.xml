@@ -31,7 +31,7 @@
     <!-- 根据角色ID获得首页的菜单 -->
     <select id="listIndexMenus" parameterType="java.util.ArrayList" resultMap="BaseResultMap">
         SELECT
-        <include refid="selectColumn"></include>
+          DISTINCT <include refid="selectColumn"></include>
         FROM SYS_MENU SYS_MENU
         INNER JOIN SYS_MENU_ROLE SYS_MENU_ROLE
         ON SYS_MENU.ID = SYS_MENU_ROLE.MENU_ID
@@ -150,4 +150,28 @@
         </trim>
         where ID=#{id,jdbcType=INTEGER}
     </update>
+
+    <!-- 根据角色ID获取所关联的菜单 -->
+    <select id="getMenuIdByRoleId" resultType="Integer" parameterType="Integer">
+        SELECT
+          SYS_MENU.ID
+        FROM SYS_MENU SYS_MENU
+        LEFT JOIN SYS_MENU_ROLE SYS_MENU_ROLE
+        ON SYS_MENU.ID=SYS_MENU_ROLE.MENU_ID
+        WHERE SYS_MENU.DIS_FLAG = 0
+        AND SYS_MENU_ROLE.ROLE_ID=#{roleId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertOrUpdateRoleRelateMenu" parameterType="Integer">
+        INSERT INTO SYS_MENU_ROLE (MENU_ID,ROLE_ID)
+        VALUES
+        <foreach collection="menuIds" item="item" index="index" separator="," >
+            (
+            #{item,jdbcType=INTEGER},
+            #{id,jdbcType=INTEGER}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        MENU_ID=values(MENU_ID),ROLE_ID=values(ROLE_ID)
+    </insert>
 </mapper>

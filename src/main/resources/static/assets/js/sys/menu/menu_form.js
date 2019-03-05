@@ -2,7 +2,7 @@ var zTreeObj;
 var setting = {
   view: {
     selectedMulti: true, //设置是否能够同时选中多个节点
-    showIcon: true, //设置是否显示节点图标
+    showIcon: false, //设置是否显示节点图标
     showLine: true, //设置是否显示节点与节点之间的连线
     showTitle: true, //设置是否显示节点的title提示信息
   },
@@ -18,7 +18,7 @@ var setting = {
     enable: true  //设置是否显示checkbox复选框
   },
   callback: {
-  onClick: setPidInfo,  //定义节点单击事件回调函数
+    onClick: setPidInfo,  //定义节点单击事件回调函数
     // onRightClick: OnRightClick, //定义节点右键单击事件回调函数
     // beforeRename: beforeRename, //定义节点重新编辑成功前回调函数，一般用于节点编辑时判断输入的节点名称是否合法
     // onDblClick: onDblClick, //定义节点双击事件回调函数
@@ -36,7 +36,7 @@ var setting = {
 $(function () {
   $.post("/systemMenuController/selectMenuTreeList", {}, function (data) {  //id=3是初始输入，确立根节点的id=3
     zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, eval(data));
-    zTreeObj.selectNode(zTreeObj.getNodeByParam("id",$('#pid').val()));
+    zTreeObj.selectNode(zTreeObj.getNodeByParam("id", $('#pid').val()));
   });
   $("#frm").validate({
     rules: {
@@ -79,6 +79,6 @@ $(function () {
   });
 });
 
-function setPidInfo(){
+function setPidInfo() {
   $('#pid').val(zTreeObj.getSelectedNodes()[0].id);
 }

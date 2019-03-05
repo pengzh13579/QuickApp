@@ -134,7 +134,6 @@ public class SystemMenuController {
         return j;
     }
 
-
     /***
      * 修改菜单信息
      * @param menuInfo 页面菜单信息
@@ -161,7 +160,6 @@ public class SystemMenuController {
         return j;
     }
 
-
     /***
      * 删除菜单--将disFlag变为1
      * @param id 菜单ID
@@ -181,6 +179,23 @@ public class SystemMenuController {
         menuService.updateMenu(menuEntity);
         j.setMsg("菜单删除成功!");
         j.setSuccess(true);
+        return j;
+    }
+
+    /***
+     * 根据角色ID获取所关联的菜单
+     * @param roleId 角色ID
+     * @return 关联菜单信息
+     */
+    @RequestMapping(value = "/getMenuIdByRoleId")
+    @ResponseBody
+    public AjaxJson getMenuIdByRoleId(Integer roleId) {
+
+        AjaxJson j = new AjaxJson();
+        j.setSuccess(true);
+
+        // 根据角色ID获取所关联的菜单
+        j.setObj(menuService.getMenuIdByRoleId(roleId));
         return j;
     }
 }

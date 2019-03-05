@@ -36,9 +36,9 @@ public interface DepartmentService {
 
     /***
      * 删除部门--将disFlag变为1
-     * @param id 部门ID
+     * @param code 部门编号
      */
-    void delete(Integer id);
+    void delete(String code);
 
     /***
      * 根据部门编码获得关联人员
@@ -53,4 +53,12 @@ public interface DepartmentService {
      * @return 部门信息
      */
     SystemDepartmentEntity getDepartmentByCode(String code);
+
+    /***
+     * 部门人员关联
+     * @param id 部门ID
+     * @param userIds 人员ID
+     * @return 关联结果
+     */
+    Boolean relatedUsers(Integer id, List<Integer> userIds);
 }

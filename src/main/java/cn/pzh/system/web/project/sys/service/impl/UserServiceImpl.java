@@ -307,6 +307,16 @@ public class UserServiceImpl implements UserService {
     }
 
     /***
+     * 部门下关联用户列表信息查询
+     * @param code 页面选择的部门编码
+     * @return 用户列表信息
+     */
+    @Override
+    public List<SystemUserEntity> listDepartmentUsers(String code) {
+        return userMapper.listDepartmentUsers(code);
+    }
+
+    /***
      * 将用户信息设置到session中
      * @param userName 用户名
      * @return 用户信息

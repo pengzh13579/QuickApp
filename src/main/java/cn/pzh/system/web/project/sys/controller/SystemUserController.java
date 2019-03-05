@@ -379,9 +379,9 @@ public class SystemUserController {
      * @param userName 用户名
      * @return
      */
-    @RequestMapping("/lockUser/{userName}")
+    @RequestMapping("/lockUser")
     @ResponseBody
-    public AjaxJson lockUser(@PathVariable String userName) {
+    public AjaxJson lockUser(String userName) {
         AjaxJson j = new AjaxJson();
 
         // 修改用户状态为2
@@ -400,9 +400,9 @@ public class SystemUserController {
      * @param userName 用户名
      * @return
      */
-    @RequestMapping("/deleteUser/{userName}")
+    @RequestMapping("/deleteUser")
     @ResponseBody
-    public AjaxJson deleteUser(@PathVariable String userName) {
+    public AjaxJson deleteUser(String userName) {
         AjaxJson j = new AjaxJson();
 
         // 修改用户状态为1
@@ -416,4 +416,29 @@ public class SystemUserController {
         return j;
     }
 
+    /***
+     * 部门下关联用户列表信息查询
+     * @param code 页面选择的部门编码
+     * @return 用户列表信息
+     */
+    @RequestMapping("/listDepartmentUsers/{code}")
+    @ResponseBody
+    public String listDepartmentUsers(@PathVariable String code) {
+
+        // 根据查询实体类得到列表
+        List<SystemUserEntity> users = userService.listDepartmentUsers(code);
+
+        // 将users对象绑定到pageInfo
+        PageInfo<SystemUserEntity> pageUser = new PageInfo<>(users);
+
+        // JSONObject
+        JSONObject result = new JSONObject();
+
+        // total 存放总记录数
+        result.put(KeyConstants.PAGE_RETURN_TOTAL, pageUser.getTotal());
+
+        // rows存放每页记录 ，这里的两个参数名是固定的，必须为 total和 rows
+        result.put(KeyConstants.PAGE_RETURN_ROWS, users);
+        return result.toJSONString();
+    }
 }

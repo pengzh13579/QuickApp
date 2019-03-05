@@ -66,14 +66,14 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     /***
      * 删除部门--将disFlag变为1
-     * @param id 部门ID
+     * @param code 部门编号
      */
     @Override
     @Transactional (readOnly = false)
-    public void delete(Integer id) {
+    public void delete(String code) {
 
         // 根据角色ID获得部门信息
-        SystemDepartmentEntity department = departmentMapper.selectDepartmentById(id);
+        SystemDepartmentEntity department = departmentMapper.selectDepartmentByCode(code);
 
         // 将disFlag变为1
         CommonFieldUtils.setDeleteCommon(department);
@@ -100,6 +100,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public SystemDepartmentEntity getDepartmentByCode(String code) {
         return departmentMapper.selectDepartmentByCode(code);
+    }
+
+    /***
+     * 部门人员关联
+     * @param id 部门ID
+     * @param userIds 人员ID
+     * @return 关联结果
+     */
+    @Override
+    @Transactional (readOnly = false)
+    public Boolean relatedUsers(Integer id, List<Integer> userIds) {
+        return departmentMapper.insertOrUpdateRelatedUsers(id, userIds);
     }
 
     /***

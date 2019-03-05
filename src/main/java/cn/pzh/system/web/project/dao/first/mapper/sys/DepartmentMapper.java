@@ -2,6 +2,7 @@ package cn.pzh.system.web.project.dao.first.mapper.sys;
 
 import cn.pzh.system.web.project.dao.first.entity.sys.SystemDepartmentEntity;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface DepartmentMapper {
 
@@ -16,4 +17,6 @@ public interface DepartmentMapper {
     Boolean update(SystemDepartmentEntity role);
 
     SystemDepartmentEntity selectDepartmentByCode(String code);
+
+    Boolean insertOrUpdateRelatedUsers(@Param("id") Integer id, @Param("userIds") List<Integer> userIds);
 }

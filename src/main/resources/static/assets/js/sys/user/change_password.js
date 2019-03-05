@@ -18,21 +18,21 @@ $(function () {
       }
     },
     messages: {},
-    submitHandler:function(form){
-      if($('#newPwd').val() == $('#againPwd').val()){
+    submitHandler: function (form) {
+      if ($('#newPwd').val() == $('#againPwd').val()) {
         $.ajax({
           type: "POST",
           dataType: "json",
           url: "/systemUserController/changePassword",
           data: $(form).serialize(),
-          success: function(data){
+          success: function (data) {
             layer.msg(data.msg);
-            if(data.success){
-              window.location.href="/login";
+            if (data.success) {
+              window.location.href = "/login";
             }
           }
         });
-      }else{
+      } else {
       }
     }
   });
