@@ -25,31 +25,31 @@
                     <form class="form-horizontal m-t" id="frm" method="post">
                         <input type="hidden" id="id" name="id" th:value="${info?.id}"/>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">角色编号</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">角色编号</label>
+                            <div class="col-xs-6">
                                 <input th:readonly="${info?.id != null}" id="code" name="code" class="form-control" type="text" th:value="${info?.code}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">角色名</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">角色名</label>
+                            <div class="col-xs-6">
                                 <input id="roleName" name="roleName" class="form-control" type="text" th:value="${info?.roleName}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">排序</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">排序</label>
+                            <div class="col-xs-6">
                                 <input id="num" name="num" class="form-control" type="text" th:value="${info?.num}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">备注</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">备注</label>
+                            <div class="col-xs-6">
                                 <input id="tips" name="tips" class="form-control" type="text" th:value="${info?.tips}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-8 col-sm-offset-3">
+                            <div class="col-xs-5 col-xs-offset-3">
                                 <button class="btn btn-primary" type="submit">提交</button>
                             </div>
                         </div>

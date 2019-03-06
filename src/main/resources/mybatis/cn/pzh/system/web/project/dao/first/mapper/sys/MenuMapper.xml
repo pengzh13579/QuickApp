@@ -56,7 +56,7 @@
     </select>
 
     <!-- 获得菜单列表 -->
-    <select id="listMenus" resultMap="BaseResultMap">
+    <select id="listMenus" resultMap="BaseResultMap" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemMenuEntity">
         SELECT
         <include refid="selectColumn"></include>
         FROM SYS_MENU SYS_MENU
@@ -153,9 +153,9 @@
             <if test="url != null">URL=#{url,jdbcType=VARCHAR},</if>
             <if test="num != null">NUM=#{num,jdbcType=INTEGER},</if>
             <if test="levels != null">LEVELS=#{levels,jdbcType=INTEGER},</if>
-            <if test="MenuFlag != null">MENU_FLAG=#{menuFlag,jdbcType=INTEGER},</if>
+            <if test="menuFlag != null">MENU_FLAG=#{menuFlag,jdbcType=INTEGER},</if>
             <if test="tips != null">TIPS=#{tips,jdbcType=VARCHAR},</if>
-            <if test="OpenFlag != null">OPEN_FLAG=#{openFlag,jdbcType=INTEGER},</if>
+            <if test="openFlag != null">OPEN_FLAG=#{openFlag,jdbcType=INTEGER},</if>
             <if test="disFlag != null">DIS_FLAG=#{disFlag,jdbcType=VARCHAR},</if>
             <if test="updateUser != null">UPDATE_USER=#{updateUser,jdbcType=VARCHAR},</if>
             <if test="updateDate != null">UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP},</if>

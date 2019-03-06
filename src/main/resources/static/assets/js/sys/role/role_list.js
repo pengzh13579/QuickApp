@@ -131,7 +131,7 @@ $(function () {
         title: '角色信息',
         shadeClose: true,
         shade: false,
-        area: ['793px', '300px'],
+        area: ['420px', '280px'],
         content: '/systemRoleController/info/' + row.id,
         end: function (index) {
         }
@@ -154,7 +154,7 @@ $(function () {
       });
     }
   });
-  $("#searchbtn").click(function () {
+  $("#searchBtn").click(function () {
       $('#table_list').bootstrapTable('refresh');
   });
 });
@@ -196,7 +196,7 @@ function edit(id) {
     title: '修改角色',
     shadeClose: true,
     shade: false,
-    area: ['793px', '300px'],
+    area: ['420px', '310px'],
     content: '/systemRoleController/edit/' + id,
     end: function (index) {
       $('#table_list').bootstrapTable("refresh");
@@ -210,7 +210,7 @@ function add() {
     title: '添加角色',
     shadeClose: true,
     shade: false,
-    area: ['793px', '300px'],
+    area: ['420px', '310px'],
     content: '/systemRoleController/add',
     end: function (index) {
       $('#table_list').bootstrapTable("refresh");

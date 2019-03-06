@@ -8,8 +8,7 @@ $(function () {
   $("#add_contact_btn").click(function () {
     var item = "<div  id=\"contact_div" + itemNum
         + "\" class=\"form-group\">\n" +
-        "           <label class=\"col-sm-1 control-label\"></label>" +
-        "           <label class=\"col-sm-2 control-label\" style=\"margin-top:-7px\">\n"
+        "           <label class=\"col-xs-3 control-label\" style=\"margin-top:-7px\">\n"
         +
         "               <select id=\"contactTypeSelect" + itemNum
         + "\" class=\"form-control\" onchange=\"contact_change(" + itemNum
@@ -21,7 +20,7 @@ $(function () {
         "                   <option value=\"5\"  >地址</option>\n" +
         "               </select>\n" +
         "           </label>\n" +
-        "           <div class=\"col-sm-6\">\n" +
+        "           <div class=\"col-xs-4\">\n" +
         "               <input type=\"hidden\" id=\"contactType" + itemNum
         + "\" name=\"contacts[" + itemNum
         + "].contactType\" class=\"form-control\" value=\"1\" />\n" +
@@ -29,7 +28,7 @@ $(function () {
         + "\" name=\"contacts[" + itemNum
         + "].contactInfo\" class=\"form-control\" value=\"\"/>\n" +
         "           </div>\n"
-        + "         <div class=\"col-sm-2\">\n"
+        + "         <div class=\"col-xs-2\">\n"
         + "              <button id=\"contact_del_btn" + itemNum
         + "\" class=\"btn btn-primary\" type=\"button\" onclick=\"del_contact(this)\">删除</button>\n"
         + "         </div>" +

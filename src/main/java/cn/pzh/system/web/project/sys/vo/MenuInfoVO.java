@@ -7,8 +7,8 @@ import lombok.Data;
 public class MenuInfoVO implements Serializable {
     private Integer id;
     private String code;
-    private Integer pId;
-    private String name;
+    private Integer pid;
+    private String menuRealName;
     private String icon;
     private String url;
     private Integer num;

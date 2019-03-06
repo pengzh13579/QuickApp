@@ -19,26 +19,26 @@
 
 <body class="gray-bg">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-xs-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="frm" method="post">
                         <input type="hidden" id="id" name="id" th:value="${menu?.id}"/>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">菜单编号</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">菜单编号</label>
+                            <div class="col-xs-6">
                                 <input th:readonly="${menu?.id != null}" id="code" name="code" class="form-control" type="text" th:value="${menu?.code}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">菜单名</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">菜单名</label>
+                            <div class="col-xs-6">
                                 <input id="menuRealName" name="menuRealName" class="form-control" type="text" th:value="${menu?.menuRealName}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">父菜单</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">父菜单</label>
+                            <div class="col-xs-6">
                                 <div style="overflow:scroll; height:180px">
                                     <ul id="treeDemo" class="ztree"></ul>
                                 </div>
@@ -46,26 +46,26 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">URL</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">URL</label>
+                            <div class="col-xs-6">
                                 <input id="url" name="url" class="form-control" type="text" th:value="${menu?.url}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">图标</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">图标</label>
+                            <div class="col-xs-6">
                                 <input id="icon" name="icon" class="form-control" type="text" th:value="${menu?.icon}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">菜单顺序</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">菜单顺序</label>
+                            <div class="col-xs-6">
                                 <input id="num" name="num" class="form-control" type="text" th:value="${menu?.num}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">是否为菜单</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">是否为菜单</label>
+                            <div class="col-xs-6">
                                 <select name="menuFlag" class="form-control">
                                     <option value="0" th:selected="${menu?.menuFlag==0}" >否</option>
                                     <option value="1" th:selected="${menu?.menuFlag==1}" >是</option>
@@ -73,8 +73,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">是否展开</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">是否展开</label>
+                            <div class="col-xs-6">
                                 <select name="openFlag" class="form-control">
                                     <option value="0" th:selected="${menu?.openFlag==0}" >否</option>
                                     <option value="1" th:selected="${menu?.openFlag==1}" >是</option>
@@ -83,7 +83,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-sm-8 col-sm-offset-3">
+                            <div class="col-xs-5 col-xs-offset-3">
                                 <button class="btn btn-primary" type="submit">提交</button>
                             </div>
                         </div>

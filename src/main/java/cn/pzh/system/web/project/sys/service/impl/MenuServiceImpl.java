@@ -70,6 +70,10 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<SystemMenuEntity> listMenus(SystemMenuEntity systemMenuEntity) {
 
+        if (null == systemMenuEntity.getSortName() ||
+                "".equals(systemMenuEntity.getSortName())) {
+            systemMenuEntity.setSortName("num");
+        }
         // 默认从第pageNum开始，每页pageSize条
         PageHelper.startPage(systemMenuEntity.getPageNumber(), systemMenuEntity.getPageSize(),
                 CommonFieldUtils.fieldNameToColumnName(systemMenuEntity.getSortName()) + " " + systemMenuEntity.getSortOrder());
@@ -99,7 +103,6 @@ public class MenuServiceImpl implements MenuService {
     public Boolean insertMenu(MenuInfoVO menuInfo) {
         SystemMenuEntity menuEntity = new SystemMenuEntity();
         BeanUtils.copyProperties(menuInfo, menuEntity);
-        menuEntity.setPid(menuInfo.getPId());
         CommonFieldUtils.setAdminCommon(menuEntity, true);
         menuMapper.saveMenu(menuEntity);
         return true;

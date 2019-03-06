@@ -17,26 +17,26 @@
 
 <body class="gray-bg">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-xs-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="frm" method="post">
                         <input type="hidden" id="id" name="id" th:value="${user?.id}"/>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">账户名</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">账户名</label>
+                            <div class="col-xs-6">
                                 <input th:readonly="${user?.id != null}" id="userName" name="userName" class="form-control" type="text" th:value="${user?.userName}" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">姓名</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">姓名</label>
+                            <div class="col-xs-6">
                                 <input id="realName" name="realName" class="form-control" type="text" th:value="${user?.realName}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">性别</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">性别</label>
+                            <div class="col-xs-6">
                                 <select name="sex" class="form-control">
                                     <option value="0" th:selected="${user?.sex==0}">男</option>
                                     <option value="1" th:selected="${user?.sex==1}">女</option>
@@ -44,8 +44,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">出生日期</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">出生日期</label>
+                            <div class="col-xs-6">
                                 <input id="birthday" name="birthday" readonly="readonly" class="laydate-icon form-control layer-date" th:value="${user?.birthdayRtn}"/>
                             </div>
                         </div>
@@ -100,27 +100,33 @@
                             <!--</div>-->
                         <!--</div>-->
                         <div class="form-group" id="control_info">
-                            <label class="col-sm-3 control-label">联系方式</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">联系方式</label>
+                            <div class="col-xs-6">
                                 <button id="add_contact_btn" class="btn btn-primary btn-sm btn-block" type="button">添加新的联系方式</button>
                             </div>
                         </div>
                         <tr th:each="contact,iter : ${user?.contacts}" >
                             <div th:id="|contact_div${iter.index}|" class="form-group">
-                                <label class="col-sm-3 control-label" th:switch="${contact.contactType}"><label th:align="right" th:case="1" th:text="邮箱"></label><label th:align="right" th:case="2" th:text="电话"></label><label th:align="right" th:case="3" th:text="QQ"></label><label th:align="right" th:case="4" th:text="微信"></label><label th:align="right" th:case="5" th:text="地址"></label></label>
-                                <div class="col-sm-6">
+                                <label class="col-xs-3 control-label" th:switch="${contact.contactType}">
+                                    <label th:align="right" th:case="1" th:text="邮箱"></label>
+                                    <label th:align="right" th:case="2" th:text="电话"></label>
+                                    <label th:align="right" th:case="3" th:text="QQ"></label>
+                                    <label th:align="right" th:case="4" th:text="微信"></label>
+                                    <label th:align="right" th:case="5" th:text="地址"></label>
+                                </label>
+                                <div class="col-xs-4">
                                     <input type="hidden" id="telType1" th:name="|contacts[${iter.index}].contactType|" class="form-control" th:value="${contact.contactType}" />
                                     <input th:type="${contact.contactType == '1'}?'email'" id="telephone" th:name="|contacts[${iter.index}].contactInfo|" class="form-control" th:value="${contact.contactInfo}"/>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-xs-2">
                                     <button th:id="|contact_del_btn${iter.index}|" class="btn btn-primary" type="button" onclick="del_contact(this)">删除</button>
                                 </div>
                             </div>
                         </tr>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">状态</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">状态</label>
+                            <div class="col-xs-6">
                                 <select name="disFlag" class="form-control">
                                     <option value="0" th:selected="${user?.disFlag==0}" >激活</option>
                                     <option value="2" th:selected="${user?.disFlag==2}" >锁定</option>
@@ -129,8 +135,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">头像</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">头像</label>
+                            <div class="col-xs-6">
                                 <div class="file-loading">
                                     <input id="avatar" name="avatar" type="file"/>
                                 </div>
@@ -138,7 +144,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-8 col-sm-offset-3">
+                            <div class="col-xs-5 col-xs-offset-3">
                                 <button class="btn btn-primary" type="submit">提交</button>
                             </div>
                         </div>
@@ -154,6 +160,7 @@
     <script th:src="@{/assets/js/bootstrap.min.js}"></script>
 
     <!-- 自定义js -->
+    <script th:src="@{/assets/js/common.js}"></script>
     <script th:src="@{/assets/js/content.js}"></script>
 
     <!-- jQuery Validation plugin javascript-->
@@ -163,7 +170,6 @@
     <script th:src="@{/assets/js/plugins/layer/laydate/laydate.js}"></script>
     <script th:src="@{/assets/js/sys/user/user_form.js}"></script>
     <script th:src="@{/assets/js/ajaxfileupload.js}"></script>
-    <script th:src="@{/assets/js/common.js}"></script>
 </body>
 
 </html>

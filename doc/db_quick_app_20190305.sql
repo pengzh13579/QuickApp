@@ -3930,9 +3930,9 @@ CREATE TABLE IF NOT EXISTS `log_login` (
   `message` varchar(255) DEFAULT NULL COMMENT '具体消息',
   `ip` char(15) NOT NULL COMMENT '登录ip',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=563 DEFAULT CHARSET=utf8 COMMENT='登录LOG表';
+) ENGINE=InnoDB AUTO_INCREMENT=603 DEFAULT CHARSET=utf8 COMMENT='登录LOG表';
 
--- Dumping data for table db_quick_app.log_login: ~555 rows (approximately)
+-- Dumping data for table db_quick_app.log_login: ~358 rows (approximately)
 DELETE FROM `log_login`;
 /*!40000 ALTER TABLE `log_login` DISABLE KEYS */;
 INSERT INTO `log_login` (`id`, `log_name`, `create_user`, `create_date`, `succeed`, `message`, `ip`) VALUES
@@ -4490,7 +4490,47 @@ INSERT INTO `log_login` (`id`, `log_name`, `create_user`, `create_date`, `succee
 	(559, '用户登录', 'admin', '2019-03-05 17:30:02', 'false', '用户已在线!', '127.0.0.1'),
 	(560, '用户登录', 'admin', '2019-03-05 17:30:08', 'true', '用户登录成功!', '127.0.0.1'),
 	(561, '用户登录', 'admin', '2019-03-05 17:45:50', 'false', '用户已在线!', '127.0.0.1'),
-	(562, '用户登录', 'admin', '2019-03-05 17:45:55', 'true', '用户登录成功!', '127.0.0.1');
+	(562, '用户登录', 'admin', '2019-03-05 17:45:55', 'true', '用户登录成功!', '127.0.0.1'),
+	(563, '用户登录', 'admin', '2019-03-06 10:50:44', 'false', '用户已在线!', '127.0.0.1'),
+	(564, '用户登录', 'admin', '2019-03-06 10:51:13', 'true', '用户登录成功!', '127.0.0.1'),
+	(565, '用户登录', 'admin', '2019-03-06 10:56:46', 'false', '用户已在线!', '127.0.0.1'),
+	(566, '用户登录', 'admin', '2019-03-06 10:56:56', 'true', '用户登录成功!', '127.0.0.1'),
+	(567, '用户登录', 'admin', '2019-03-06 11:04:31', 'false', '用户已在线!', '127.0.0.1'),
+	(568, '用户登录', 'admin', '2019-03-06 11:04:38', 'true', '用户登录成功!', '127.0.0.1'),
+	(569, '用户登录', 'admin', '2019-03-06 11:12:10', 'false', '用户已在线!', '127.0.0.1'),
+	(570, '用户登录', 'admin', '2019-03-06 11:12:26', 'true', '用户登录成功!', '127.0.0.1'),
+	(571, '用户登录', 'admin', '2019-03-06 11:20:18', 'false', '用户已在线!', '127.0.0.1'),
+	(572, '用户登录', 'admin', '2019-03-06 11:20:21', 'true', '用户登录成功!', '127.0.0.1'),
+	(573, '用户登录', 'admin', '2019-03-06 11:31:35', 'false', '用户已在线!', '127.0.0.1'),
+	(574, '用户登录', 'admin', '2019-03-06 11:31:39', 'true', '用户登录成功!', '127.0.0.1'),
+	(575, '用户登录', 'admin', '2019-03-06 11:54:58', 'false', '用户已在线!', '127.0.0.1'),
+	(576, '用户登录', 'admin', '2019-03-06 11:55:05', 'true', '用户登录成功!', '127.0.0.1'),
+	(577, '用户登录', 'admin', '2019-03-06 13:12:33', 'false', '用户已在线!', '127.0.0.1'),
+	(578, '用户登录', 'admin', '2019-03-06 13:12:47', 'true', '用户登录成功!', '127.0.0.1'),
+	(579, '用户登录', 'admin', '2019-03-06 13:41:58', 'false', '用户已在线!', '127.0.0.1'),
+	(580, '用户登录', 'admin', '2019-03-06 13:42:11', 'true', '用户登录成功!', '127.0.0.1'),
+	(581, '用户登录', 'admin', '2019-03-06 13:52:58', 'false', '用户已在线!', '127.0.0.1'),
+	(582, '用户登录', 'admin', '2019-03-06 13:53:04', 'true', '用户登录成功!', '127.0.0.1'),
+	(583, '用户登录', 'admin', '2019-03-06 13:55:30', 'false', '用户已在线!', '127.0.0.1'),
+	(584, '用户登录', 'admin', '2019-03-06 13:55:35', 'true', '用户登录成功!', '127.0.0.1'),
+	(585, '用户登录', 'admin', '2019-03-06 14:02:49', 'false', '用户已在线!', '127.0.0.1'),
+	(586, '用户登录', 'admin', '2019-03-06 14:02:55', 'true', '用户登录成功!', '127.0.0.1'),
+	(587, '用户登录', 'admin', '2019-03-06 14:06:12', 'false', '用户已在线!', '127.0.0.1'),
+	(588, '用户登录', 'admin', '2019-03-06 14:06:17', 'true', '用户登录成功!', '127.0.0.1'),
+	(589, '用户登录', 'admin', '2019-03-06 15:02:45', 'false', '用户已在线!', '127.0.0.1'),
+	(590, '用户登录', 'admin', '2019-03-06 15:02:50', 'true', '用户登录成功!', '127.0.0.1'),
+	(591, '用户登录', 'admin', '2019-03-06 15:18:09', 'false', '用户已在线!', '127.0.0.1'),
+	(592, '用户登录', 'admin', '2019-03-06 15:18:15', 'true', '用户登录成功!', '127.0.0.1'),
+	(593, '用户登录', 'admin', '2019-03-06 15:25:42', 'false', '用户已在线!', '127.0.0.1'),
+	(594, '用户登录', 'admin', '2019-03-06 15:25:46', 'true', '用户登录成功!', '127.0.0.1'),
+	(595, '用户登录', 'admin', '2019-03-06 15:27:47', 'false', '用户已在线!', '127.0.0.1'),
+	(596, '用户登录', 'admin', '2019-03-06 15:27:52', 'true', '用户登录成功!', '127.0.0.1'),
+	(597, '用户登录', 'admin', '2019-03-06 15:38:00', 'false', '用户已在线!', '127.0.0.1'),
+	(598, '用户登录', 'admin', '2019-03-06 15:38:08', 'true', '用户登录成功!', '127.0.0.1'),
+	(599, '用户登录', 'admin', '2019-03-06 15:41:51', 'false', '用户已在线!', '127.0.0.1'),
+	(600, '用户登录', 'admin', '2019-03-06 15:41:56', 'true', '用户登录成功!', '127.0.0.1'),
+	(601, '用户登录', 'admin', '2019-03-06 15:43:41', 'false', '用户已在线!', '127.0.0.1'),
+	(602, '用户登录', 'admin', '2019-03-06 15:43:46', 'true', '用户登录成功!', '127.0.0.1');
 /*!40000 ALTER TABLE `log_login` ENABLE KEYS */;
 
 
@@ -4611,10 +4651,11 @@ DROP TABLE IF EXISTS `sys_dictionary`;
 CREATE TABLE IF NOT EXISTS `sys_dictionary` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `pid` int(10) NOT NULL COMMENT '父级字典',
-  `name` varchar(50) NOT NULL COMMENT '名称',
-  `number` int(5) NOT NULL COMMENT '编号',
-  `sort` int(10) NOT NULL COMMENT '排序',
-  `tips` varchar(50) DEFAULT NULL COMMENT '提示',
+  `dictionarty_code` varchar(50) DEFAULT NULL COMMENT '编码',
+  `dictionarty_name` varchar(50) NOT NULL COMMENT '名称',
+  `dictionarty_value` int(5) DEFAULT NULL COMMENT '值',
+  `sort` int(10) DEFAULT NULL COMMENT '排序',
+  `described` varchar(50) DEFAULT NULL COMMENT '提示',
   `dis_flag` int(1) NOT NULL COMMENT '删除标记：0：有效1：无效',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `update_date` datetime NOT NULL COMMENT '更新日期',
@@ -4649,9 +4690,9 @@ CREATE TABLE IF NOT EXISTS `sys_menu` (
   `create_user` varchar(20) NOT NULL COMMENT '创建者',
   `update_user` varchar(20) NOT NULL COMMENT '更新者',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='菜单表';
 
--- Dumping data for table db_quick_app.sys_menu: ~7 rows (approximately)
+-- Dumping data for table db_quick_app.sys_menu: ~8 rows (approximately)
 DELETE FROM `sys_menu`;
 /*!40000 ALTER TABLE `sys_menu` DISABLE KEYS */;
 INSERT INTO `sys_menu` (`id`, `code`, `pid`, `menu_real_name`, `icon`, `url`, `num`, `levels`, `menu_flag`, `tips`, `open_flag`, `dis_flag`, `create_date`, `update_date`, `create_user`, `update_user`) VALUES
@@ -4661,7 +4702,8 @@ INSERT INTO `sys_menu` (`id`, `code`, `pid`, `menu_real_name`, `icon`, `url`, `n
 	(4, 'sys_system', '3', '系统通知管理', NULL, '/systemUserController/list', 20, NULL, 1, NULL, 0, 0, '2018-08-26 09:57:06', '2018-08-26 09:57:09', 'admin', 'admin'),
 	(5, 'sys_menu', '1', '菜单管理', NULL, '/systemMenuController/list', 4, NULL, 1, NULL, 0, 0, '2018-08-28 20:02:55', '2018-08-28 20:02:57', 'admin', 'admin'),
 	(6, 'sys_role', '1', '角色管理', NULL, '/systemRoleController/list', 2, NULL, 1, NULL, 0, 0, '2019-02-25 15:13:23', '2019-02-25 15:13:23', 'admin', 'admin'),
-	(7, 'sys_department', '1', '部门管理', '', '/systemDepartmentController/list', 3, NULL, 1, NULL, 0, 0, '2019-02-28 10:49:14', '2019-02-28 10:49:14', 'admin', 'admin');
+	(7, 'sys_department', '1', '部门管理', '', '/systemDepartmentController/list', 3, NULL, 1, NULL, 0, 0, '2019-02-28 10:49:14', '2019-02-28 10:49:14', 'admin', 'admin'),
+	(8, 'sys_dictionary', '1', '数据字典', '', '/systemDictionaryController/list', 5, NULL, 1, NULL, 0, 0, '2019-03-06 10:57:38', '2019-03-06 10:57:38', 'admin', 'admin');
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
 
 
@@ -4673,7 +4715,7 @@ CREATE TABLE IF NOT EXISTS `sys_menu_role` (
   PRIMARY KEY (`menu_id`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜单角色关联表';
 
--- Dumping data for table db_quick_app.sys_menu_role: ~8 rows (approximately)
+-- Dumping data for table db_quick_app.sys_menu_role: ~11 rows (approximately)
 DELETE FROM `sys_menu_role`;
 /*!40000 ALTER TABLE `sys_menu_role` DISABLE KEYS */;
 INSERT INTO `sys_menu_role` (`menu_id`, `role_id`) VALUES
@@ -4683,8 +4725,11 @@ INSERT INTO `sys_menu_role` (`menu_id`, `role_id`) VALUES
 	(3, 1),
 	(4, 1),
 	(5, 1),
+	(5, 2),
 	(6, 1),
-	(7, 1);
+	(7, 1),
+	(7, 2),
+	(8, 1);
 /*!40000 ALTER TABLE `sys_menu_role` ENABLE KEYS */;
 
 
@@ -4709,7 +4754,7 @@ CREATE TABLE IF NOT EXISTS `sys_role` (
 DELETE FROM `sys_role`;
 /*!40000 ALTER TABLE `sys_role` DISABLE KEYS */;
 INSERT INTO `sys_role` (`id`, `num`, `code`, `role_name`, `tips`, `temp`, `dis_flag`, `create_date`, `update_date`, `create_user`, `update_user`) VALUES
-	(1, 1, 'administrator', '超级管理员', NULL, NULL, 0, '2018-08-26 11:15:16', '2018-08-26 11:15:18', 'admin', 'admin'),
+	(1, 1, 'administrator', '超级管理员1', '2222222', NULL, 0, '2018-08-26 11:15:16', '2019-03-06 13:17:29', 'admin', 'admin'),
 	(2, 2, 'manager', '管理员1', '', NULL, 0, '2018-08-26 11:19:32', '2018-08-26 11:19:36', 'admin', 'admin');
 /*!40000 ALTER TABLE `sys_role` ENABLE KEYS */;
 
@@ -4740,7 +4785,7 @@ CREATE TABLE IF NOT EXISTS `sys_user` (
 DELETE FROM `sys_user`;
 /*!40000 ALTER TABLE `sys_user` DISABLE KEYS */;
 INSERT INTO `sys_user` (`id`, `user_name`, `REAL_NAME`, `avatar`, `sex`, `PASSWORD`, `SALT`, `birthday`, `is_online`, `role_id`, `dept_id`, `dis_flag`, `create_date`, `update_date`, `create_user`, `update_user`) VALUES
-	(1, 'admin', '管理员', NULL, 0, 'ecfadcde9305f8891bcfe5a1e28c253e', '8pgby', '2018-08-23 19:28:47', 1, '1,2', 1, 0, '2018-08-23 19:29:05', '2019-03-05 17:45:55', 'admin', 'admin'),
+	(1, 'admin', '管理员', NULL, 0, 'ecfadcde9305f8891bcfe5a1e28c253e', '8pgby', '2018-08-23 19:28:47', 1, '1,2', 1, 0, '2018-08-23 19:29:05', '2019-03-06 15:43:46', 'admin', 'admin'),
 	(3, 'admin22', '11', NULL, 1, 'ecfadcde9305f8891bcfe5a1e28c253e', '8pgby', '2018-08-26 13:55:22', 0, '1', 1, 0, '2018-08-26 13:55:26', '2019-02-27 17:31:09', 'admin', 'admin'),
 	(4, 'zhangsan', '张三', NULL, 0, 'f06c1e017c2a663dfa47dee896d55bb4', 'mfbyp', '2019-02-27 00:00:00', 0, NULL, NULL, 1, '2019-02-27 13:55:48', '2019-02-27 15:26:49', 'admin', 'admin'),
 	(9, 'wang', 'wf', '5', 1, 'd2f3a339f9461226cff281cc191e95d2', 'qlm0p', '2019-02-27 00:00:00', 0, NULL, NULL, 1, '2019-03-04 16:02:53', '2019-03-04 16:39:26', 'admin', 'admin'),

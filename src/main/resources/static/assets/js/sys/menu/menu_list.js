@@ -104,6 +104,9 @@ $(function () {
       }
     }]
   });
+  $("#searchBtn").click(function () {
+    $('#table_list').bootstrapTable('refresh');
+  });
 });
 
 function edit(code) {
@@ -112,7 +115,7 @@ function edit(code) {
     title: '修改菜单',
     shadeClose: true,
     shade: false,
-    area: ['893px', '600px'],
+    area: ['500px', '610px'],
     content: '/systemMenuController/edit/' + code,
     end: function (index) {
       $('#table_list').bootstrapTable("refresh");
@@ -129,7 +132,7 @@ function add() {
     title: '添加菜单',
     shadeClose: true,
     shade: false,
-    area: ['893px', '600px'],
+    area: ['500px', '610px'],
     content: '/systemMenuController/add',
     end: function (index) {
       $('#table_list').bootstrapTable("refresh");

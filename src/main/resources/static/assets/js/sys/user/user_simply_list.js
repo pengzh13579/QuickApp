@@ -130,6 +130,9 @@ $(function () {
       });
     }
   });
+  $("#searchBtn").click(function () {
+    $('#user_simple_list').bootstrapTable('refresh');
+  });
 });
 
 var callbackdata = function () {

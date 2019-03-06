@@ -154,14 +154,14 @@ $(function () {
         title: '用户信息',
         shadeClose: true,
         shade: false,
-        area: ['893px', '600px'],
+        area: ['580px', '400px'],
         content: '/systemUserController/userInfo/' + row.userName,
         end: function (index) {
         }
       });
     }
   });
-  $("#searchbtn").click(function () {
+  $("#searchBtn").click(function () {
     $('#table_list').bootstrapTable('refresh');
   });
 });
@@ -172,7 +172,7 @@ function edit(userName) {
     title: '修改用户',
     shadeClose: true,
     shade: false,
-    area: ['893px', '600px'],
+    area: ['580px', '400px'],
     content: '/systemUserController/edit/' + userName,
     end: function (index) {
       $('#table_list').bootstrapTable("refresh");
@@ -187,7 +187,7 @@ function add() {
     title: '添加用户',
     shadeClose: true,
     shade: false,
-    area: ['893px', '600px'],
+    area: ['580px', '400px'],
     content: '/systemUserController/add',
     end: function (index) {
       $('#table_list').bootstrapTable("refresh");
@@ -202,7 +202,7 @@ function related_role(id) {
     title: '关联角色',
     shadeClose: true,
     shade: false,
-    area: ['893px', '600px'],
+    area: ['700px', '500px'],
     content: '/systemUserController/relatedRole/' + id,
     end: function (index) {
       $('#table_list').bootstrapTable("refresh");

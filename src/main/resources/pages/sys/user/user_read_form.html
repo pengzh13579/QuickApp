@@ -18,26 +18,26 @@
 
 <body class="gray-bg">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-xs-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="frm" method="post">
                         <input type="hidden" id="id" name="id" th:value="${user?.id}"/>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">账户名</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">账户名</label>
+                            <div class="col-xs-6">
                                 <input  disabled="disabled" id="userName" name="userName" class="form-control" type="text" th:value="${user?.userName}" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">姓名</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">姓名</label>
+                            <div class="col-xs-6">
                                 <input  disabled="disabled" id="realName" name="realName" class="form-control" type="text" th:value="${user?.realName}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">性别</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">性别</label>
+                            <div class="col-xs-6">
                                 <select  disabled="disabled" name="sex" class="form-control">
                                     <option value="0" th:selected="${user?.sex=='0'}">女</option>
                                     <option value="1" th:selected="${user?.sex=='1'}">男</option>
@@ -45,25 +45,22 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">出生日期</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">出生日期</label>
+                            <div class="col-xs-6">
                                 <input  disabled="disabled" id="birthday" name="birthday" readonly="readonly" class="laydate-icon form-control layer-date" th:value="${user?.birthdayRtn}"/>
                             </div>
                         </div>
 
-                        <div class="form-group" id="control_info">
-                            <label class="col-sm-3 control-label">联系方式</label>
-                        </div>
                         <tr th:each="contact,iter : ${user?.contacts}" >
                             <div th:id="|contact_div${iter.index}|" class="form-group">
-                                <label class="col-sm-3 control-label" th:switch="${contact.contactType}">
-                                　　<p th:case="1">邮箱</p>
-                                　　<p th:case="2">电话</p>
-                                　　<p th:case="3">QQ</p>
-                                　　<p th:case="4">微信</p>
-                                　　<p th:case="5">地址</p>
+                                <label class="col-xs-3 control-label" th:switch="${contact.contactType}">
+                                    <label th:align="right" th:case="1" th:text="邮箱"></label>
+                                    <label th:align="right" th:case="2" th:text="电话"></label>
+                                    <label th:align="right" th:case="3" th:text="QQ"></label>
+                                    <label th:align="right" th:case="4" th:text="微信"></label>
+                                    <label th:align="right" th:case="5" th:text="地址"></label>
                                 </label>
-                                <div class="col-sm-6">
+                                <div class="col-xs-6">
                                     <input type="hidden" id="telType1" th:name="|contacts[${iter.index}].contactType|" class="form-control" th:value="${contact.contactType}" />
                                     <input  disabled="disabled" th:type="${contact.contactType == '1'}?'email'" id="telephone" th:name="|contacts[${iter.index}].contactInfo|" class="form-control" th:value="${contact.contactInfo}"/>
                                 </div>
@@ -71,8 +68,8 @@
                         </tr>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">状态：</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">状态</label>
+                            <div class="col-xs-6">
                                 <select  disabled="disabled" name="disFlag" class="form-control">
                                     <option value="0" th:selected="${user?.disFlag=='0'}" >激活</option>
                                     <option value="2" th:selected="${user?.disFlag=='2'}" >锁定</option>
@@ -81,16 +78,11 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">头像：</label>
-                            <div class="col-sm-8">
+                            <label class="col-xs-3 control-label">头像</label>
+                            <div class="col-xs-6">
                                 <div class="file-loading">
                                     <input  disabled="disabled" id="avatar" name="avatar" type="file" class="file" data-show-preview="false"/>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-8 col-sm-offset-3">
-                                <button class="btn btn-primary" type="button" onclick="closeLayer()">关闭</button>
                             </div>
                         </div>
                     </form>
@@ -111,7 +103,6 @@
     <script th:src="@{/assets/js/plugins/validate/messages_zh.min.js}"></script>
     <script th:src="@{/assets/js/plugins/layer/layer.min.js}"></script>
     <script th:src="@{/assets/js/plugins/layer/laydate/laydate.js}"></script>
-    <script th:src="@{/assets/js/sys/commmon.js}"></script>
 
 </body>
 
