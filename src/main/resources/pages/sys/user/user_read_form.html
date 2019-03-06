@@ -80,9 +80,7 @@
                         <div class="form-group">
                             <label class="col-xs-3 control-label">头像</label>
                             <div class="col-xs-6">
-                                <div class="file-loading">
-                                    <input  disabled="disabled" id="avatar" name="avatar" type="file" class="file" data-show-preview="false"/>
-                                </div>
+                                <img th:src="@{${user?.avatarPath}}"/>
                             </div>
                         </div>
                     </form>

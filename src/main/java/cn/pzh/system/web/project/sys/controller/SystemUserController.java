@@ -71,7 +71,7 @@ public class SystemUserController {
      */
     @RequestMapping("/add")
     public String userAdd(Model model) {
-//        model.addAttribute("provinceList", provinceAreaService.getAllProvince());
+        model.addAttribute("provinceList", provinceAreaService.getAllProvince());
         return ViewConstants.USER_FORM;
     }
 
@@ -84,7 +84,7 @@ public class SystemUserController {
     @RequestMapping("/edit/{userName}")
     public String userEdit(@PathVariable String userName, Model model) {
         model.addAttribute("user", userService.getUser(userName));
-//        model.addAttribute("provinceList", provinceAreaService.getAllProvince());
+        model.addAttribute("provinceList", provinceAreaService.getAllProvince());
         return ViewConstants.USER_FORM;
     }
 

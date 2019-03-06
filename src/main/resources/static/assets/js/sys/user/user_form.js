@@ -55,44 +55,8 @@ $(function () {
         date: true,
         required: true
       }
-      // provinceId: {
-      //   min: 1
-      // },
-      // cityId: {
-      //   min: 1
-      // },
-      // areaId: {
-      //   min: 1
-      // },
-      // provinceIdAddr: {
-      //   min: 1
-      // },
-      // cityIdAddr: {
-      //   min: 1
-      // },
-      // areaIdAddr: {
-      //   min: 1
-      // }
     },
     messages: {
-      // provinceId: {
-      //   min: '请选择籍贯所在省'
-      // },
-      // cityId: {
-      //   min: '请选择籍贯所在市'
-      // },
-      // areaId: {
-      //   min: '请选择籍贯所在区县'
-      // },
-      // provinceIdAddr: {
-      //   min: '请选择住所所在省'
-      // },
-      // cityIdAddr: {
-      //   min: '请选择住所所在市'
-      // },
-      // areaIdAddr: {
-      //   min: '请选择住所所在区县'
-      // }
     },
     submitHandler: function (form) {
       var url = "/systemUserController/addUser";
