@@ -9,11 +9,11 @@ import lombok.Data;
 public class AreaModel {
     private Integer id;
 
-    private String areaId;
+    private String districtId;
 
-    private String area;
+    private String districtName;
 
-    private String father;
+    private String fatherCounty;
 
 }
 

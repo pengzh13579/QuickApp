@@ -10,11 +10,11 @@ public class CityModel {
 
     private Integer id;
 
-    private String cityId;
+    private String countyId;
 
-    private String city;
+    private String countyName;
 
-    private String father;
+    private String fatherProvince;
 
 }
 

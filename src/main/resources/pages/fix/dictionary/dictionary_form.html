@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>字典信息</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/font-awesome.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/animate.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet"/>
+
+</head>
+
+<body class="gray-bg">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="frm" method="post">
+                        <input type="hidden" id="isParentFlag" th:value="${isParentFlag}"/>
+                        <input type="hidden" id="id" name="id" th:value="${info?.id}"/>
+                        <div class="form-group" th:style="${isParentFlag} ? 'display:none'">
+                            <label class="col-xs-3 control-label">父级字典</label>
+                            <div class="col-xs-6">
+                                <input readonly="true" style="display:none" id="pid" name="pid" class="form-control" type="text" th:value="${pid}"/>
+                                <input readonly="true" id="pidName" class="form-control" type="text" th:value="${null != pidName ? pidName : ''}"/>
+                            </div>
+                        </div>
+                        <div class="form-group" th:style="${not isParentFlag} ? 'display:none'">
+                            <label class="col-xs-3 control-label">数据字典编码</label>
+                            <div class="col-xs-6">
+                                <input id="dictionartyCode" name="dictionartyCode" class="form-control" type="text" th:value="${info?.dictionartyCode}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">数据字典名</label>
+                            <div class="col-xs-6">
+                                <input id="dictionartyName" name="dictionartyName" class="form-control" type="text" th:value="${info?.dictionartyName}"/>
+                            </div>
+                        </div>
+                        <div class="form-group" th:style="${isParentFlag} ? 'display:none'">
+                            <label class="col-xs-3 control-label">数据字典值</label>
+                            <div class="col-xs-6">
+                                <input id="dictionartyValue" name="dictionartyValue" class="form-control" type="text" th:value="${info?.dictionartyValue}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">排序</label>
+                            <div class="col-xs-6">
+                            <input id="sort" name="sort" class="form-control" type="text" th:value="${info?.sort}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">描述</label>
+                            <div class="col-xs-6">
+                                <input id="described" name="described" class="form-control" type="text" th:value="${info?.described}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-5 col-xs-offset-3">
+                                <button class="btn btn-primary" type="submit">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script th:src="@{/assets/js/jquery.min.js}"></script>
+    <script th:src="@{/assets/js/bootstrap.min.js}"></script>
+
+    <!-- 自定义js -->
+    <script th:src="@{/assets/js/content.js}"></script>
+
+    <!-- jQuery Validation plugin javascript-->
+    <script th:src="@{/assets/js/plugins/validate/jquery.validate.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/validate/messages_zh.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/layer/layer.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/layer/laydate/laydate.js}"></script>
+    <script th:src="@{/assets/js/fix/dictionary/dictionary_form.js}"></script>
+
+</body>
+
+</html>

@@ -89,6 +89,7 @@ public class UserServiceImpl implements UserService {
 
         // 联系方式非空check
         if(null != userInfo.getContacts()){
+
             // 联系方式，注册只有邮箱
             List<SystemContactEntity> contacts = userInfo.getContacts().stream().filter(item -> item != null)
                     .collect(Collectors.toList());
@@ -246,17 +247,24 @@ public class UserServiceImpl implements UserService {
         contactMapper.deleteContactByUserName(userInfo.getUserName());
 
         //联系方式，注册只有邮箱
-        List<SystemContactEntity> contacts = userInfo.getContacts().stream().filter(item -> item != null)
-                .collect(Collectors.toList());
-        contacts.forEach(contact -> contact.setUserName(ShiroKit.getUser().getUserName()));
-        contactMapper.saveContact(contacts);
+        // 联系方式非空check
+        if(null != userInfo.getContacts()) {
 
-        // 籍贯地址等信息保存处理
-        userNativePlaceMapper.deleteNativePlaceByUserName(userInfo.getUserName());
+            // 联系方式保存处理，先删后加
+            contactMapper.deleteContactByUserName(userInfo.getUserName());
+            List<SystemContactEntity> contacts = userInfo.getContacts().stream().filter(item -> item != null).collect(Collectors.toList());
+            contacts.forEach(contact -> contact.setUserName(userInfo.getUserName()));
+            contactMapper.saveContact(contacts);
+        }
+        // 籍贯地址等信息非空check
         List<SystemUserNativePlaceEntity> userNativePlace = userInfo.getUserNativePlace();
-        userNativePlace.forEach(nativePlace -> nativePlace.setUserName(ShiroKit.getUser().getUserName()));
-        userNativePlaceMapper.saveNativePlace(userNativePlace);
+        if(null != userNativePlace) {
 
+            // 籍贯地址等信息保存处理，先删后加
+            userNativePlaceMapper.deleteNativePlaceByUserName(userInfo.getUserName());
+            userNativePlace.forEach(nativePlace -> nativePlace.setUserName(userInfo.getUserName()));
+            userNativePlaceMapper.saveNativePlace(userNativePlace);
+        }
         return true;
     }
 

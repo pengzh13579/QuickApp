@@ -11,7 +11,7 @@ public class ProvinceModel {
 
     private String provinceId;
 
-    private String province;
+    private String provinceName;
 
 }
 

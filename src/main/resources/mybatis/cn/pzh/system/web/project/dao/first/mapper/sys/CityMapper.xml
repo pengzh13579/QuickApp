@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace = "cn.pzh.system.web.project.dao.first.mapper.sys.CityMapper">
+
     <resultMap id = "ProvinceResultMap" type = "cn.pzh.system.web.project.common.model.ProvinceModel">
         <id column = "id" property = "id" jdbcType = "INTEGER" />
         <result column = "province_id" property = "provinceId" jdbcType = "VARCHAR" />
-        <result column = "province" property = "province" jdbcType = "VARCHAR" />
+        <result column = "province_name" property = "provinceName" jdbcType = "VARCHAR" />
     </resultMap>
 
     <select id = "list" resultMap = "ProvinceResultMap">
         select * from fix_province
     </select>
 
-    <resultMap id="AreaResultMap" type="cn.pzh.system.web.project.common.model.AreaModel" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="area_id" property="areaId" jdbcType="VARCHAR" />
-        <result column="area" property="area" jdbcType="VARCHAR" />
-        <result column="father" property="father" jdbcType="VARCHAR" />
-    </resultMap>
-
-    <select id="getAreaByCityId" resultMap="AreaResultMap" parameterType="java.lang.String">
-        select * from fix_area where father = #{id,jdbcType=VARCHAR}
-    </select>
-
     <resultMap id="CityResultMap" type="cn.pzh.system.web.project.common.model.CityModel" >
         <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="city_id" property="cityId" jdbcType="VARCHAR" />
-        <result column="city" property="city" jdbcType="VARCHAR" />
-        <result column="father" property="father" jdbcType="VARCHAR" />
+        <result column="county_id" property="countyId" jdbcType="VARCHAR" />
+        <result column="county_name" property="countyName" jdbcType="VARCHAR" />
+        <result column="father_province" property="fatherProvince" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="getCityByProvinceId" resultMap="CityResultMap" parameterType="java.lang.String">
-        select * from fix_city where father = #{id,jdbcType=VARCHAR}
+        select * from fix_county where father_province = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <resultMap id="AreaResultMap" type="cn.pzh.system.web.project.common.model.AreaModel" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="district_id" property="districtId" jdbcType="VARCHAR" />
+        <result column="district_name" property="districtName" jdbcType="VARCHAR" />
+        <result column="father_county" property="fatherCounty" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getAreaByCityId" resultMap="AreaResultMap" parameterType="java.lang.String">
+        select * from fix_district where father_county = #{id,jdbcType=VARCHAR}
     </select>
 
 </mapper>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.dao.first.mapper.fix.DictionaryMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.fix.FixedDictionaryEntity" >
+        <result column="ID" property="id" jdbcType="INTEGER" />
+        <result column="PID" property="pid" jdbcType="INTEGER" />
+        <result column="DICTIONARTY_CODE" property="dictionartyCode" jdbcType="VARCHAR" />
+        <result column="DICTIONARTY_NAME" property="dictionartyName" jdbcType="VARCHAR" />
+        <result column="DICTIONARTY_VALUE" property="dictionartyValue" jdbcType="INTEGER" />
+        <result column="SORT" property="sort" jdbcType="INTEGER" />
+        <result column="DESCRIBED" property="described" jdbcType="VARCHAR" />
+        <result column="DIS_FLAG" property="disFlag" jdbcType="INTEGER" />
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+        <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <sql id="selectColumn">
+        FIX_DICTIONARY.ID,
+        FIX_DICTIONARY.PID,
+        FIX_DICTIONARY.DICTIONARTY_CODE,
+        FIX_DICTIONARY.DICTIONARTY_NAME,
+        FIX_DICTIONARY.DICTIONARTY_VALUE,
+        FIX_DICTIONARY.SORT,
+        FIX_DICTIONARY.DESCRIBED,
+        FIX_DICTIONARY.DIS_FLAG,
+        FIX_DICTIONARY.CREATE_DATE,
+        FIX_DICTIONARY.UPDATE_DATE,
+        FIX_DICTIONARY.CREATE_USER,
+        FIX_DICTIONARY.UPDATE_USER
+    </sql>
+
+    <sql id="whereCause">
+        <where>
+            FIX_DICTIONARY.DIS_FLAG = 0
+            AND FIX_DICTIONARY.PID = #{pid,jdbcType=INTEGER}
+        </where>
+    </sql>
+
+    <!-- 字典列表信息查询语句 -->
+    <select id="listDictionarys" parameterType="cn.pzh.system.web.project.dao.first.entity.fix.FixedDictionaryEntity" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM FIX_DICTIONARY
+        <include refid="whereCause"></include>
+    </select>
+
+    <!-- 根据字典ID查询字典信息 -->
+    <select id="selectDictionaryById" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM FIX_DICTIONARY
+        WHERE FIX_DICTIONARY.ID = #{id,jdbcType=INTEGER}
+        AND FIX_DICTIONARY.DIS_FLAG = 0
+    </select>
+
+    <!-- 批量保存字典信息 -->
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO FIX_DICTIONARY (
+            PID,
+            DICTIONARTY_CODE,
+            DICTIONARTY_NAME,
+            DICTIONARTY_VALUE,
+            SORT,
+            DESCRIBED,
+            DIS_FLAG,
+            CREATE_DATE,
+            UPDATE_DATE,
+            CREATE_USER,
+            UPDATE_USER
+        )
+        VALUES
+        <foreach collection="list" item="item" index= "index" separator =",">
+        (
+            #{item.pid,jdbcType=INTEGER},
+            #{item.dictionartyCode,jdbcType=VARCHAR},
+            #{item.dictionartyName,jdbcType=VARCHAR},
+            #{item.dictionartyValue,jdbcType=INTEGER},
+            #{item.sort,jdbcType=INTEGER},
+            #{item.described,jdbcType=VARCHAR},
+            #{item.disFlag,jdbcType=INTEGER},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.updateDate,jdbcType=TIMESTAMP},
+            #{item.createUser,jdbcType=VARCHAR},
+            #{item.updateUser,jdbcType=VARCHAR}
+        )
+        </foreach>
+    </insert>
+
+    <!-- 保存字典信息 -->
+    <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.fix.FixedDictionaryEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO FIX_DICTIONARY (
+            PID,
+            DICTIONARTY_CODE,
+            DICTIONARTY_NAME,
+            DICTIONARTY_VALUE,
+            SORT,
+            DESCRIBED,
+            DIS_FLAG,
+            CREATE_DATE,
+            UPDATE_DATE,
+            CREATE_USER,
+            UPDATE_USER
+        )
+        VALUES (
+            #{pid,jdbcType=INTEGER},
+            #{dictionartyCode,jdbcType=VARCHAR},
+            #{dictionartyName,jdbcType=VARCHAR},
+            #{dictionartyValue,jdbcType=INTEGER},
+            #{sort,jdbcType=INTEGER},
+            #{described,jdbcType=VARCHAR},
+            #{disFlag,jdbcType=INTEGER},
+            #{createDate,jdbcType=TIMESTAMP},
+            #{updateDate,jdbcType=TIMESTAMP},
+            #{createUser,jdbcType=VARCHAR},
+            #{updateUser,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!-- 更新字典信息 -->
+    <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.fix.FixedDictionaryEntity">
+        UPDATE FIX_DICTIONARY
+        <trim prefix="set" suffixOverrides=",">
+            <if test="pid != null">PID=#{pid,jdbcType=INTEGER},</if>
+            <if test="dictionartyCode != null">DICTIONARTY_CODE=#{dictionartyCode,jdbcType=VARCHAR},</if>
+            <if test="dictionartyName != null">DICTIONARTY_NAME=#{dictionartyName,jdbcType=VARCHAR},</if>
+            <if test="dictionartyValue != null">DICTIONARTY_VALUE=#{dictionartyValue,jdbcType=INTEGER},</if>
+            <if test="sort != null">SORT=#{sort,jdbcType=INTEGER},</if>
+            <if test="described != null">DESCRIBED=#{described,jdbcType=VARCHAR},</if>
+            <if test="disFlag != null">DIS_FLAG=#{disFlag,jdbcType=INTEGER},</if>
+            <if test="updateDate != null">UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP},</if>
+            <if test="updateUser != null">UPDATE_USER=#{updateUser,jdbcType=VARCHAR},</if>
+
+        </trim>
+        WHERE ID=#{id,jdbcType=INTEGER}
+        AND FIX_DICTIONARY.DIS_FLAG = 0
+    </update>
+
+</mapper>

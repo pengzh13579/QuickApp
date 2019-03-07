@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>字典信息</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/font-awesome.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/animate.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet"/>
+
+</head>
+
+<body class="gray-bg">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="frm" method="post">
+                        <div class="form-group" th:style="${isParentFlag} ? 'display:none'">
+                            <label class="col-xs-3 control-label">父级字典</label>
+                            <div class="col-xs-6">
+                            <input disabled="disabled" id="pid" name="pid" class="form-control" type="text" th:value="${info?.pid}"/>
+                            </div>
+                        </div>
+                        <div class="form-group" th:style="${not isParentFlag} ? 'display:none'">
+                            <label class="col-xs-3 control-label">数据字典编码</label>
+                            <div class="col-xs-6">
+                            <input disabled="disabled" id="dictionartyCode" name="dictionartyCode" class="form-control" type="text" th:value="${info?.dictionartyCode}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">数据字典名</label>
+                            <div class="col-xs-6">
+                            <input disabled="disabled" id="dictionartyName" name="dictionartyName" class="form-control" type="text" th:value="${info?.dictionartyName}"/>
+                            </div>
+                        </div>
+                        <div class="form-group" th:style="${isParentFlag} ? 'display:none'">
+                            <label class="col-xs-3 control-label">数据字典值</label>
+                            <div class="col-xs-6">
+                            <input disabled="disabled" id="dictionartyValue" name="dictionartyValue" class="form-control" type="text" th:value="${info?.dictionartyValue}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">排序</label>
+                            <div class="col-xs-6">
+                            <input disabled="disabled" id="sort" name="sort" class="form-control" type="text" th:value="${info?.sort}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">提示</label>
+                            <div class="col-xs-6">
+                            <input disabled="disabled" id="described" name="described" class="form-control" type="text" th:value="${info?.describe}"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script th:src="@{/assets/js/jquery.min.js}"></script>
+    <script th:src="@{/assets/js/bootstrap.min.js}"></script>
+
+    <!-- 自定义js -->
+    <script th:src="@{/assets/js/content.js}"></script>
+
+    <!-- jQuery Validation plugin javascript-->
+    <script th:src="@{/assets/js/plugins/validate/jquery.validate.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/validate/messages_zh.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/layer/layer.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/layer/laydate/laydate.js}"></script>
+
+</body>
+
+</html>

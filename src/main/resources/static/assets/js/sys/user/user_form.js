@@ -74,13 +74,12 @@ $(function () {
         success: function (data) {  //服务器成功响应处理函数
           // 解决返回值带<pre style="word-wrap: break-word; white-space: pre-wrap;">的问题
           data = $.parseJSON(data.replace(/<.*?>/ig, ""));
-          layer.msg(data.msg);
-
-          //先得到当前iframe层的索引
-          var index = parent.layer.getFrameIndex(window.name);
-          if (data.success) {
-            parent.layer.close(index);
-          }
+          layer.msg(data.msg, {time: 2000}, function () {
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            if (data.success) {
+              parent.layer.close(index);
+            }
+          });
         }
       });
     }
@@ -92,11 +91,12 @@ $(function () {
       if (data.success) {
         var result = "<option>选择城市</option>";
         $.each(data.obj, function (n, value) {
-          result += "<option value='" + value.cityId + "'>" + value.city
+          result += "<option value='" + value.countyId + "'>" + value.countyName
               + "</option>";
         });
         $("#cityId").html('');
         $("#cityId").append(result);
+        $('#cityId').val($('#cityId').attr("value")).change();
       }
     }, "json");
   });
@@ -107,11 +107,12 @@ $(function () {
           if (data.success) {
             var result = "<option>选择区域</option>";
             $.each(data.obj, function (n, value) {
-              result += "<option value='" + value.areaId + "'>" + value.area
+              result += "<option value='" + value.districtId + "'>" + value.districtName
                   + "</option>";
             });
             $("#areaId").html('');
             $("#areaId").append(result);
+            $('#areaId').val($('#areaId').attr("value")).change();
           }
         }, "json");
   });
@@ -122,11 +123,12 @@ $(function () {
       if (data.success) {
         var result = "<option>选择城市</option>";
         $.each(data.obj, function (n, value) {
-          result += "<option value='" + value.cityId + "'>" + value.city
+          result += "<option value='" + value.countyId + "'>" + value.countyName
               + "</option>";
         });
         $("#cityIdAddr").html('');
         $("#cityIdAddr").append(result);
+        $('#cityIdAddr').val($('#cityIdAddr').attr("value")).change();
       }
     }, "json");
   });
@@ -137,14 +139,19 @@ $(function () {
           if (data.success) {
             var result = "<option>选择区域</option>";
             $.each(data.obj, function (n, value) {
-              result += "<option value='" + value.areaId + "'>" + value.area
+              result += "<option value='" + value.districtId + "'>" + value.districtName
                   + "</option>";
             });
             $("#areaIdAddr").html('');
             $("#areaIdAddr").append(result);
+            $('#areaIdAddr').val($('#areaIdAddr').attr("value")).change();
           }
         }, "json");
   });
+
+  $('#provinceId').val($('#provinceId').attr("value")).change();
+
+  $('#provinceIdAddr').val($('#provinceIdAddr').attr("value")).change();
 });
 
 function contact_change(index) {
