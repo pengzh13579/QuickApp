@@ -12,9 +12,6 @@
     <link th:href="@{/assets/css/animate.css}" rel="stylesheet"/>
     <link th:href="@{/assets/css/style.css}" rel="stylesheet"/>
     <link th:href="@{/assets/css/login.css}" rel="stylesheet"/>
-    <!--[if lt IE 9]>
-    <meta http-equiv="refresh" content="0;ie.html" />
-    <![endif]-->
     <script>
         if (window.top !== window.self) {
             window.top.location = window.location;
@@ -35,9 +32,16 @@
             </div>
             <form method="post" action="/systemUserController/userLogin" id="frm">
                 <h4 class="no-margins">登录：</h4>
-                <p class="m-t-md">登录到H+后台主题UI框架</p>
                 <input th:value="${userName}" type="text" class="form-control uname" name="userName" id="userName" placeholder="用户名" />
                 <input type="password" class="form-control pword m-b" name="password" id="password"  placeholder="密码" />
+                <div class="row" th:style="${validateFlag} == null ? 'display: none' : ''">
+                    <div class="col-xs-6">
+                        <img id="loginValidateCode" height="35" width="130"  style="cursor: pointer;margin-top:12px" src="/commonController/loginValidateCode" onclick="uploadLoginValidateCode();"/>
+                    </div>
+                    <div class="col-xs-5">
+                        <input type="text" class="form-control" name="validateCode" id="validateCode" placeholder="验证码" th:value="${validateFlag} == null ? '#' : ''"/>
+                    </div>
+                </div>
                 <a href="" class="forget">忘记密码了？</a>
                 <button class="btn btn-success btn-block">登录</button>
             </form>
@@ -104,6 +108,10 @@
           }
         });
 
+    }
+
+    function uploadLoginValidateCode() {
+      $("#loginValidateCode").attr("src","/commonController/loginValidateCode?random="+new Date().getMilliseconds());
     }
 
 </script>

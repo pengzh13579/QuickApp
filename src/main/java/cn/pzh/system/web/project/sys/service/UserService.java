@@ -110,4 +110,12 @@ public interface UserService {
      * @return 用户列表信息
      */
     List<SystemUserEntity> listDepartmentUsers(String code);
+
+    /***
+     * 修改用户表登录次数，主要判断是否超过3次
+     * @param success 是否成功
+     * @param userName 用户名
+     * @return 登录次数
+     */
+    int updateUserLoginNumber(boolean success, String userName);
 }

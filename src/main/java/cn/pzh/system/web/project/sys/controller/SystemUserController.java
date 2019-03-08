@@ -233,9 +233,10 @@ public class SystemUserController {
      */
     @RequestMapping("/userLogin")
     public String userLogin(String userName, String password,
-            String rememberFlag, HttpServletRequest request,
-            RedirectAttributes attr)
-            throws Exception {
+            String rememberFlag, String validateCode, HttpServletRequest request,
+            RedirectAttributes attr) throws Exception {
+
+        // 初始化返回值信息
         AjaxJson j = new AjaxJson();
         String view = ViewConstants.LOGIN;
         j.setSuccess(false);
@@ -245,6 +246,8 @@ public class SystemUserController {
             j.setMsg(MessageConstants.USER_INFO_EMPTY_MSG);
             return view;
         }
+
+        // 用户信息
         UserInfoVO userInfo = null;
         try {
 
@@ -258,11 +261,30 @@ public class SystemUserController {
 
         // 判断用户是否不在线
         if (userInfo != null && userInfo.getIsOnline() == 0) {
-            j.setMsg(MessageConstants.LOGIN_SUCCESS_MSG);
-            j.setSuccess(true);
-            view = ViewConstants.INDEX;
-            // 修改用户表在线状态
-            userService.updateOnlineStatus(1, ShiroKit.getUser().userName);
+
+            // 获得session中的验证码值
+            String loginValidateCode = request.getSession().
+                    getAttribute(KeyConstants.LOGIN_VALIDATE_CODE).toString();
+
+            // 验证码过期
+            if(loginValidateCode == null){
+                j.setMsg(MessageConstants.VALIDATE_OUT_TIME);
+
+                // 验证码正确
+            }else if(loginValidateCode.equals(validateCode) || "#".equals(validateCode)){
+
+                j.setMsg(MessageConstants.LOGIN_SUCCESS_MSG);
+                j.setSuccess(true);
+                view = ViewConstants.INDEX;
+
+                // 修改用户表在线状态
+                userService.updateOnlineStatus(1, ShiroKit.getUser().userName);
+
+                // 验证码不正确
+            }else if(!loginValidateCode.equals(validateCode)){
+                j.setMsg(MessageConstants.VALIDATE_ERROR);
+            }
+
         } else {
 
             // 判断用户是否在线
@@ -271,11 +293,21 @@ public class SystemUserController {
                 attr.addFlashAttribute("userName", userName);
             }
         }
-        attr.addFlashAttribute("info", j);
+
+        // 修改用户表登录次数
+        int loginNumber = userService.updateUserLoginNumber(j.isSuccess(), userName);
+
+        // 登录次数大于3时，超过了3次则显示验证码
+        if (loginNumber > 2){
+            attr.addFlashAttribute("validateFlag", true);
+        }
 
         // 添加用户登录日志
         LoginLogEntity loginLogEntity = new LoginLogEntity();
         loginLogService.insertLoginLog(loginLogEntity, j, request, userName);
+
+        attr.addFlashAttribute("info", j);
+
         return "redirect:/" + view;
     }
 

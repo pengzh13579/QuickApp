@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.dao.first.mapper.sys.UserLoginNumberMapper">
+
+    <!--  -->
+    <select id="selectUserLoginNumber" parameterType="String" resultType="Integer">
+        SELECT
+        LOGIN_NUMBER
+        FROM SYS_USER_LOGIN_NUMBER
+        WHERE USER_NAME = #{userName,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertUserLoginNumber" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemUserLoginNumber">
+        INSERT INTO SYS_USER_LOGIN_NUMBER (USER_NAME,LOGIN_NUMBER)
+        VALUES
+        (#{userName,jdbcType=VARCHAR},#{loginNumber,jdbcType=INTEGER})
+    </insert>
+
+    <update id="updateUserLoginNumber" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemUserLoginNumber">
+        UPDATE SYS_USER_LOGIN_NUMBER
+        SET LOGIN_NUMBER=#{loginNumber,jdbcType=INTEGER}
+        where USER_NAME=#{userName,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

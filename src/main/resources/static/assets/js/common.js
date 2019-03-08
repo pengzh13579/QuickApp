@@ -26,7 +26,7 @@ function openUserSimpleList(title, url, jsonStr) {
     title: title,
     shadeClose: true,
     shade: false,
-    area: ['700px', '500px'],
+    area: ['900px', '500px'],
     btn: ['确定', '关闭'],
     content: "/systemUserController/userSimpleList",
     yes: function (index) {

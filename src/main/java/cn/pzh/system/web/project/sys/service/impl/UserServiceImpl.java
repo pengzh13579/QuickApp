@@ -8,6 +8,7 @@ import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
 import cn.pzh.system.web.project.common.utils.DateUtil;
 import cn.pzh.system.web.project.common.utils.support.ShiroKit;
 import cn.pzh.system.web.project.dao.first.mapper.sys.ContactMapper;
+import cn.pzh.system.web.project.dao.first.mapper.sys.UserLoginNumberMapper;
 import cn.pzh.system.web.project.dao.first.mapper.sys.UserMapper;
 import cn.pzh.system.web.project.dao.first.mapper.sys.UserNativePlaceMapper;
 import cn.pzh.system.web.project.sys.service.UserService;
@@ -45,6 +46,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserNativePlaceMapper userNativePlaceMapper;
+
+    @Autowired
+    private UserLoginNumberMapper userLoginNumberMapper;
 
     /***
      * 用户列表信息查询
@@ -322,6 +326,38 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<SystemUserEntity> listDepartmentUsers(String code) {
         return userMapper.listDepartmentUsers(code);
+    }
+
+    /***
+     * 修改用户表登录次数，主要判断是否超过3次
+     * @param success 是否成功
+     * @param userName 用户名
+     * @return 登录次数
+     */
+    @Override
+    @Transactional (readOnly = false)
+    public int updateUserLoginNumber(boolean success, String userName) {
+
+        // 获取登录次数
+        Integer loginNumber = userLoginNumberMapper.selectUserLoginNumber(userName);
+
+        // 判断登录次数是不是空，如果为空，则代表用户登录次数没有数据，初始化登录次数
+        if (loginNumber == null){
+
+            loginNumber = 0;
+            userLoginNumberMapper.insertUserLoginNumber(userName, loginNumber);
+        }
+
+        // 判断用户登录是否成功
+        if (success) {
+            loginNumber = 0;
+        } else {
+            loginNumber += 1;
+        }
+
+        // 插入或更新登录次数
+        userLoginNumberMapper.updateUserLoginNumber(userName, loginNumber);
+        return loginNumber;
     }
 
     /***
