@@ -3539,9 +3539,9 @@ CREATE TABLE IF NOT EXISTS `log_login` (
   `message` varchar(255) DEFAULT NULL COMMENT '具体消息',
   `ip` char(15) NOT NULL COMMENT '登录ip',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=645 DEFAULT CHARSET=utf8 COMMENT='登录LOG表';
+) ENGINE=InnoDB AUTO_INCREMENT=678 DEFAULT CHARSET=utf8 COMMENT='登录LOG表';
 
--- Dumping data for table db_quick_app.log_login: ~662 rows (approximately)
+-- Dumping data for table db_quick_app.log_login: ~552 rows (approximately)
 DELETE FROM `log_login`;
 /*!40000 ALTER TABLE `log_login` DISABLE KEYS */;
 INSERT INTO `log_login` (`id`, `log_name`, `create_user`, `create_date`, `succeed`, `message`, `ip`) VALUES
@@ -4181,7 +4181,40 @@ INSERT INTO `log_login` (`id`, `log_name`, `create_user`, `create_date`, `succee
 	(641, '用户登录', 'admin', '2019-03-07 16:07:07', 'false', '用户已在线!', '127.0.0.1'),
 	(642, '用户登录', 'admin', '2019-03-07 16:07:12', 'true', '用户登录成功!', '127.0.0.1'),
 	(643, '用户登录', 'admin', '2019-03-07 16:13:12', 'false', '用户已在线!', '127.0.0.1'),
-	(644, '用户登录', 'admin', '2019-03-07 16:14:52', 'true', '用户登录成功!', '127.0.0.1');
+	(644, '用户登录', 'admin', '2019-03-07 16:14:52', 'true', '用户登录成功!', '127.0.0.1'),
+	(645, '用户登录', 'admin', '2019-03-08 11:52:21', 'false', '用户已在线!', '127.0.0.1'),
+	(646, '用户登录', 'admin', '2019-03-08 14:50:22', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(647, '用户登录', 'admin', '2019-03-08 14:50:39', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(648, '用户登录', 'admin', '2019-03-08 15:13:27', 'false', '用户已在线!', '127.0.0.1'),
+	(649, '用户登录', 'admin', '2019-03-08 16:42:26', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(650, '用户登录', 'admin', '2019-03-08 16:42:39', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(651, '用户登录', 'admin', '2019-03-08 16:42:42', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(652, '用户登录', 'admin', '2019-03-08 16:42:47', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(653, '用户登录', 'admin', '2019-03-08 16:42:51', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(654, '用户登录', 'admin', '2019-03-08 16:44:44', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(655, '用户登录', 'admin', '2019-03-08 16:49:55', 'false', '验证码错误!', '127.0.0.1'),
+	(656, '用户登录', 'admin', '2019-03-08 16:51:05', 'false', '验证码错误!', '127.0.0.1'),
+	(657, '用户登录', 'admin', '2019-03-08 17:01:50', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(658, '用户登录', 'admin', '2019-03-08 17:02:01', 'false', '验证码错误!', '127.0.0.1'),
+	(659, '用户登录', 'admin', '2019-03-08 17:05:02', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(660, '用户登录', 'admin', '2019-03-08 17:05:21', 'false', '验证码错误!', '127.0.0.1'),
+	(661, '用户登录', 'admin', '2019-03-08 17:06:33', 'true', '用户登录成功!', '127.0.0.1'),
+	(662, '用户登录', 'admin', '2019-03-08 17:16:14', 'false', '用户已在线!', '127.0.0.1'),
+	(663, '用户登录', 'admin', '2019-03-08 17:16:20', 'true', '用户登录成功!', '127.0.0.1'),
+	(664, '用户登录', 'admin', '2019-03-08 17:18:46', 'false', '用户已在线!', '127.0.0.1'),
+	(665, '用户登录', 'admin', '2019-03-08 17:18:50', 'true', '用户登录成功!', '127.0.0.1'),
+	(666, '用户登录', 'admin', '2019-03-08 17:20:24', 'false', '用户已在线!', '127.0.0.1'),
+	(667, '用户登录', 'admin', '2019-03-08 17:20:29', 'true', '用户登录成功!', '127.0.0.1'),
+	(668, '用户登录', 'admin', '2019-03-08 17:22:36', 'false', '用户已在线!', '127.0.0.1'),
+	(669, '用户登录', 'admin', '2019-03-08 17:22:41', 'true', '用户登录成功!', '127.0.0.1'),
+	(670, '用户登录', 'admin', '2019-03-08 17:29:56', 'false', '用户已在线!', '127.0.0.1'),
+	(671, '用户登录', 'admin', '2019-03-08 17:30:32', 'true', '用户登录成功!', '127.0.0.1'),
+	(672, '用户登录', 'admin', '2019-03-08 17:40:14', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(673, '用户登录', 'admin', '2019-03-08 17:40:22', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(674, '用户登录', 'admin', '2019-03-08 17:40:27', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(675, '用户登录', 'admin', '2019-03-08 17:41:00', 'false', '用户名或密码错误!', '127.0.0.1'),
+	(676, '用户登录', 'admin', '2019-03-08 17:41:09', 'false', '用户已在线!', '127.0.0.1'),
+	(677, '用户登录', 'admin', '2019-03-08 17:41:18', 'true', '用户登录成功!', '127.0.0.1');
 /*!40000 ALTER TABLE `log_login` ENABLE KEYS */;
 
 
@@ -4217,7 +4250,7 @@ CREATE TABLE IF NOT EXISTS `sys_contact` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COMMENT='用户联系信息表';
 
--- Dumping data for table db_quick_app.sys_contact: ~10 rows (approximately)
+-- Dumping data for table db_quick_app.sys_contact: ~17 rows (approximately)
 DELETE FROM `sys_contact`;
 /*!40000 ALTER TABLE `sys_contact` DISABLE KEYS */;
 INSERT INTO `sys_contact` (`id`, `user_name`, `contact_type`, `contact_info`, `dis_flag`) VALUES
@@ -4419,7 +4452,7 @@ CREATE TABLE IF NOT EXISTS `sys_user` (
 DELETE FROM `sys_user`;
 /*!40000 ALTER TABLE `sys_user` DISABLE KEYS */;
 INSERT INTO `sys_user` (`id`, `user_name`, `REAL_NAME`, `avatar`, `sex`, `PASSWORD`, `SALT`, `birthday`, `is_online`, `role_id`, `dept_id`, `dis_flag`, `create_date`, `update_date`, `create_user`, `update_user`) VALUES
-	(1, 'admin', '管理员', NULL, 0, 'ecfadcde9305f8891bcfe5a1e28c253e', '8pgby', '2018-08-23 19:28:47', 1, '1,2', 1, 0, '2018-08-23 19:29:05', '2019-03-07 16:14:52', 'admin', 'admin'),
+	(1, 'admin', '管理员', NULL, 0, 'ecfadcde9305f8891bcfe5a1e28c253e', '8pgby', '2018-08-23 19:28:47', 1, '1,2', 1, 0, '2018-08-23 19:29:05', '2019-03-08 17:41:18', 'admin', 'admin'),
 	(3, 'admin22', '11', NULL, 1, 'ecfadcde9305f8891bcfe5a1e28c253e', '8pgby', '2018-08-26 13:55:22', 0, '1', 1, 0, '2018-08-26 13:55:26', '2019-02-27 17:31:09', 'admin', 'admin'),
 	(4, 'zhangsan', '张三', NULL, 0, 'f06c1e017c2a663dfa47dee896d55bb4', 'mfbyp', '2019-02-27 00:00:00', 0, NULL, NULL, 1, '2019-02-27 13:55:48', '2019-02-27 15:26:49', 'admin', 'admin'),
 	(9, 'wang', 'wf', '5', 1, 'd2f3a339f9461226cff281cc191e95d2', 'qlm0p', '2019-02-27 00:00:00', 0, NULL, NULL, 1, '2019-03-04 16:02:53', '2019-03-04 16:39:26', 'admin', 'admin'),
@@ -4448,6 +4481,22 @@ INSERT INTO `sys_user_department` (`user_id`, `department_id`) VALUES
 /*!40000 ALTER TABLE `sys_user_department` ENABLE KEYS */;
 
 
+-- Dumping structure for テーブル db_quick_app.sys_user_login_number
+DROP TABLE IF EXISTS `sys_user_login_number`;
+CREATE TABLE IF NOT EXISTS `sys_user_login_number` (
+  `user_name` varchar(50) NOT NULL,
+  `login_number` int(11) NOT NULL,
+  PRIMARY KEY (`user_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户登录次数';
+
+-- Dumping data for table db_quick_app.sys_user_login_number: ~2 rows (approximately)
+DELETE FROM `sys_user_login_number`;
+/*!40000 ALTER TABLE `sys_user_login_number` DISABLE KEYS */;
+INSERT INTO `sys_user_login_number` (`user_name`, `login_number`) VALUES
+	('admin', 0);
+/*!40000 ALTER TABLE `sys_user_login_number` ENABLE KEYS */;
+
+
 -- Dumping structure for テーブル db_quick_app.sys_user_native_place
 DROP TABLE IF EXISTS `sys_user_native_place`;
 CREATE TABLE IF NOT EXISTS `sys_user_native_place` (
@@ -4460,7 +4509,7 @@ CREATE TABLE IF NOT EXISTS `sys_user_native_place` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='用户籍贯表';
 
--- Dumping data for table db_quick_app.sys_user_native_place: ~0 rows (approximately)
+-- Dumping data for table db_quick_app.sys_user_native_place: ~2 rows (approximately)
 DELETE FROM `sys_user_native_place`;
 /*!40000 ALTER TABLE `sys_user_native_place` DISABLE KEYS */;
 INSERT INTO `sys_user_native_place` (`id`, `user_name`, `province_id`, `city_id`, `area_id`, `native_type`) VALUES
