@@ -45,7 +45,7 @@ public class FixedDictionaryController {
         // 子节点的话获取父节点名
         if (pid != 0) {
             model.addAttribute("pidName", dictionaryService.get(pid)
-                    .getDictionartyName());
+                    .getDictionaryName());
         }
 
         // 前台传入的父节点ID为0，则为父节点
@@ -73,7 +73,7 @@ public class FixedDictionaryController {
         // 子节点的话获取父节点名
         if (fixedDictionaryEntity.getPid() != 0) {
             model.addAttribute("pidName", dictionaryService.get(fixedDictionaryEntity.getPid())
-                    .getDictionartyName());
+                    .getDictionaryName());
         }
 
         // 字典信息
@@ -98,7 +98,7 @@ public class FixedDictionaryController {
         // 子节点的话获取父节点名
         if (fixedDictionaryEntity.getPid() != 0) {
             model.addAttribute("pidName", dictionaryService.get(fixedDictionaryEntity.getPid())
-                    .getDictionartyName());
+                    .getDictionaryName());
         }
 
         // 是否为父节点，如果父节点ID为0的话则为父节点
@@ -110,11 +110,39 @@ public class FixedDictionaryController {
     }
 
     /***
+     * 根据字典编码查询数据字典集合
+     * @param dictionaryCode 字典编码
+     * @return 数据字典集合
+     */
+    @RequestMapping ("/getDictionarys/{dictionaryCode}")
+    @ResponseBody
+    public String getDictionarys(@PathVariable String dictionaryCode) {
+
+        FixedDictionaryEntity fixedDictionaryEntity = dictionaryService.get(dictionaryCode);
+        if (null == fixedDictionaryEntity) {
+            return null;
+        }
+
+        // 根据查询实体类得到列表
+        List<FixedDictionaryEntity> list = dictionaryService.getDictionarys(fixedDictionaryEntity.getId());
+
+        // JSONObject
+        JSONObject result = new JSONObject();
+
+        // rows存放每页记录 ，这里的两个参数名是固定的，必须为 total和 rows
+        result.put(KeyConstants.DICTIONARY_RETURN_HAS_EMPTY, fixedDictionaryEntity.getHasEmpty());
+
+        // rows存放每页记录 ，这里的两个参数名是固定的，必须为 total和 rows
+        result.put(KeyConstants.DICTIONARY_RETURN_DATA_LIST, list);
+        return result.toJSONString();
+    }
+
+    /***
      * 字典列表信息查询
      * @param fixedDictionaryEntity 查询实体类
      * @return 字典列表信息
      */
-    @RequestMapping ("/dictionaryList")
+    @RequestMapping ("/listDictionarys")
     @ResponseBody
     public String listDictionarys(FixedDictionaryEntity fixedDictionaryEntity) {
 

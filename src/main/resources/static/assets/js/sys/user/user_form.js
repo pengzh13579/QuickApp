@@ -1,4 +1,8 @@
 $(function () {
+  $("select").each(function(){
+      loadSelectData(this);
+  });
+
   var itemNum = 0;
   //外部js调用
   laydate({
@@ -11,13 +15,8 @@ $(function () {
         "           <label class=\"col-xs-3 control-label\" style=\"margin-top:-7px\">\n"
         +
         "               <select id=\"contactTypeSelect" + itemNum
-        + "\" class=\"form-control\" onchange=\"contact_change(" + itemNum
+        + "\" class=\"form-control\"  dictionary-code=\"user_contact\" onchange=\"contact_change(" + itemNum
         + ")\">\n" +
-        "                   <option value=\"1\"  >邮箱</option>\n" +
-        "                   <option value=\"2\"  >电话</option>\n" +
-        "                   <option value=\"3\"  >QQ</option>\n" +
-        "                   <option value=\"4\"  >微信</option>\n" +
-        "                   <option value=\"5\"  >地址</option>\n" +
         "               </select>\n" +
         "           </label>\n" +
         "           <div class=\"col-xs-4\">\n" +
@@ -33,8 +32,9 @@ $(function () {
         + "\" class=\"btn btn-primary\" type=\"button\" onclick=\"del_contact(this)\">删除</button>\n"
         + "         </div>" +
         "       </div>"
-    itemNum = itemNum + 1;
     $("#control_info").after(item);
+    loadSelectData($('#contactTypeSelect' + itemNum));
+    itemNum = itemNum + 1;
   });
   $("#frm").validate({
     rules: {
@@ -86,67 +86,75 @@ $(function () {
   });
 
   $("#provinceId").change(function () {
-    $.get("/provinceAreaController/getCityByProvinceId/" + $(
-        "#provinceId").val(), function (data) {
-      if (data.success) {
-        var result = "<option>选择城市</option>";
-        $.each(data.obj, function (n, value) {
-          result += "<option value='" + value.countyId + "'>" + value.countyName
-              + "</option>";
-        });
-        $("#cityId").html('');
-        $("#cityId").append(result);
-        $('#cityId').val($('#cityId').attr("value")).change();
-      }
-    }, "json");
+    if("" != $("#provinceId").val()){
+        $.get("/provinceAreaController/getCityByProvinceId/" +
+            $("#provinceId").val(), function (data) {
+            if (data.success) {
+                var result = "<option value=''>选择城市</option>";
+                $.each(data.obj, function (n, value) {
+                    result += "<option value='" + value.countyId + "'>" + value.countyName
+                        + "</option>";
+                });
+                $("#cityId").html('');
+                $("#cityId").append(result);
+                $('#cityId').val($('#cityId').attr("value")).change();
+            }
+        }, "json");
+    }
   });
 
   $("#cityId").change(function () {
-    $.get("/provinceAreaController/getAreaByCityId/" + $("#cityId").val(),
-        function (data) {
-          if (data.success) {
-            var result = "<option>选择区域</option>";
-            $.each(data.obj, function (n, value) {
-              result += "<option value='" + value.districtId + "'>" + value.districtName
-                  + "</option>";
-            });
-            $("#areaId").html('');
-            $("#areaId").append(result);
-            $('#areaId').val($('#areaId').attr("value")).change();
-          }
-        }, "json");
+      if("" != $("#cityId").val()){
+          $.get("/provinceAreaController/getAreaByCityId/" + $("#cityId").val(),
+              function (data) {
+                  if (data.success) {
+                      var result = "<option value=''>选择区域</option>";
+                      $.each(data.obj, function (n, value) {
+                          result += "<option value='" + value.districtId + "'>" + value.districtName
+                              + "</option>";
+                      });
+                      $("#areaId").html('');
+                      $("#areaId").append(result);
+                      $('#areaId').val($('#areaId').attr("value")).change();
+                  }
+              }, "json");
+      }
   });
 
   $("#provinceIdAddr").change(function () {
-    $.get("/provinceAreaController/getCityByProvinceId/" + $(
-        "#provinceIdAddr").val(), function (data) {
-      if (data.success) {
-        var result = "<option>选择城市</option>";
-        $.each(data.obj, function (n, value) {
-          result += "<option value='" + value.countyId + "'>" + value.countyName
-              + "</option>";
-        });
-        $("#cityIdAddr").html('');
-        $("#cityIdAddr").append(result);
-        $('#cityIdAddr').val($('#cityIdAddr').attr("value")).change();
+      if("" != $("#provinceIdAddr").val()){
+          $.get("/provinceAreaController/getCityByProvinceId/" +
+              $("#provinceIdAddr").val(), function (data) {
+              if (data.success) {
+                  var result = "<option value=''>选择城市</option>";
+                  $.each(data.obj, function (n, value) {
+                      result += "<option value='" + value.countyId + "'>" + value.countyName
+                          + "</option>";
+                  });
+                  $("#cityIdAddr").html('');
+                  $("#cityIdAddr").append(result);
+                  $('#cityIdAddr').val($('#cityIdAddr').attr("value")).change();
+              }
+          }, "json");
       }
-    }, "json");
   });
 
   $("#cityIdAddr").change(function () {
-    $.get("/provinceAreaController/getAreaByCityId/" + $("#cityIdAddr").val(),
-        function (data) {
-          if (data.success) {
-            var result = "<option>选择区域</option>";
-            $.each(data.obj, function (n, value) {
-              result += "<option value='" + value.districtId + "'>" + value.districtName
-                  + "</option>";
-            });
-            $("#areaIdAddr").html('');
-            $("#areaIdAddr").append(result);
-            $('#areaIdAddr').val($('#areaIdAddr').attr("value")).change();
-          }
-        }, "json");
+      if("" != $("#cityIdAddr").val()){
+          $.get("/provinceAreaController/getAreaByCityId/" + $("#cityIdAddr").val(),
+              function (data) {
+                  if (data.success) {
+                      var result = "<option value=''>选择区域</option>";
+                      $.each(data.obj, function (n, value) {
+                          result += "<option value='" + value.districtId + "'>" + value.districtName
+                              + "</option>";
+                      });
+                      $("#areaIdAddr").html('');
+                      $("#areaIdAddr").append(result);
+                      $('#areaIdAddr').val($('#areaIdAddr').attr("value")).change();
+                  }
+              }, "json");
+      }
   });
 
   $('#provinceId').val($('#provinceId').attr("value")).change();

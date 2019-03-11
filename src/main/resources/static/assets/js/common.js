@@ -1,3 +1,5 @@
+var dictionary;
+
 $.fn.serializeObject = function () {
   var o = {};
   var a = this.serializeArray();
@@ -77,3 +79,40 @@ function getBootstrapTableIds(tableId) {
     return ids;
 }
 
+function loadSelectData(ele) {
+    var code = $(ele).attr("dictionary-code");
+    if(typeof(code) == "undefined"){
+        return;
+    }
+    if(dictionary == undefined){
+        dictionary = {};
+    }
+    var nameOpt = "";
+    if(!dictionary.hasOwnProperty(code)){
+        $.ajax({
+            url: "/fixedDictionaryController/getDictionarys/" + code,
+            type: "get",
+            async: false,
+            success: function(data){
+                if(data != ""){
+                    data = JSON.parse(data);
+                    dictionary[code] = data.list;
+                    if(data.empty == 1){
+                        nameOpt += "<option value='' selected='selected'>--请选择--</option>";
+                    }
+                }
+            },
+            error: function(){}
+        });
+    }
+    if(dictionary.hasOwnProperty(code)) {
+        for (var i = 0; i < dictionary[code].length; i++) {
+            if ($(ele).attr("value") == dictionary[code][i].dictionaryValue) {
+                nameOpt += "<option value='" + dictionary[code][i].dictionaryValue + "' selected='selected'>" + dictionary[code][i].dictionaryName + "</option>";
+            } else {
+                nameOpt += "<option value='" + dictionary[code][i].dictionaryValue + "' >" + dictionary[code][i].dictionaryName + "</option>"
+            }
+        }
+        $(ele).html(nameOpt);
+    }
+}

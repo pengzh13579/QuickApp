@@ -26,6 +26,10 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public List<FixedDictionaryEntity> listDictionarys(FixedDictionaryEntity fixedDictionaryEntity) {
 
+        if (null == fixedDictionaryEntity.getSortName() ||
+                "".equals(fixedDictionaryEntity.getSortName())) {
+            fixedDictionaryEntity.setSortName("id");
+        }
         // 默认从第pageNum开始，每页pageSize条
         PageHelper.startPage(fixedDictionaryEntity.getPageNumber(), fixedDictionaryEntity.getPageSize(),
                 CommonFieldUtils.fieldNameToColumnName(fixedDictionaryEntity.getSortName()) + " " + fixedDictionaryEntity.getSortOrder());
@@ -53,6 +57,16 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public FixedDictionaryEntity get(Integer id) {
         return dictionaryMapper.selectDictionaryById(id);
+    }
+
+    /***
+     * 根据字典编码获得字典信息
+     * @param dictionaryCode 字典编码
+     * @return 字典信息
+     */
+    @Override
+    public FixedDictionaryEntity get(String dictionaryCode) {
+        return dictionaryMapper.selectDictionaryByCode(dictionaryCode);
     }
 
     /***
@@ -84,5 +98,20 @@ public class DictionaryServiceImpl implements DictionaryService {
 
         // 更新字典信息
         return dictionaryMapper.update(dictionary);
+    }
+
+
+    /***
+     * 根据父ID查询数据字典集合
+     * @param pid 父ID
+     * @return 数据字典集合
+     */
+    @Override
+    public List<FixedDictionaryEntity> getDictionarys(Integer pid) {
+        FixedDictionaryEntity fixedDictionary = new FixedDictionaryEntity();
+        fixedDictionary.setPid(pid);
+
+        // 根据字典编码查询数据字典集合
+        return dictionaryMapper.listDictionarys(fixedDictionary);
     }
 }

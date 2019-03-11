@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
@@ -58,6 +59,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<SystemUserEntity> listUsers(SystemUserEntity systemUserEntity) {
 
+        if (null == systemUserEntity.getSortName() ||
+                "".equals(systemUserEntity.getSortName())) {
+            systemUserEntity.setSortName("user_name");
+        }
         // 默认从第pageNum开始，每页pageSize条
         PageHelper.startPage(systemUserEntity.getPageNumber(), systemUserEntity.getPageSize(),
                 CommonFieldUtils.fieldNameToColumnName(systemUserEntity.getSortName()) + " " + systemUserEntity.getSortOrder());

@@ -1,6 +1,5 @@
 package cn.pzh.system.web.project.sys.controller;
 
-import cn.pzh.system.web.project.common.conf.UploadFileConfig;
 import cn.pzh.system.web.project.common.constant.KeyConstants;
 import cn.pzh.system.web.project.common.constant.MessageConstants;
 import cn.pzh.system.web.project.common.constant.ViewConstants;
@@ -8,6 +7,7 @@ import cn.pzh.system.web.project.dao.first.entity.monitor.LoginLogEntity;
 import cn.pzh.system.web.project.dao.first.entity.sys.SystemUserEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
 import cn.pzh.system.web.project.common.utils.support.ShiroKit;
+import cn.pzh.system.web.project.fix.service.ProvinceAreaService;
 import cn.pzh.system.web.project.sys.service.*;
 import cn.pzh.system.web.project.sys.vo.ChangePasswordVO;
 import cn.pzh.system.web.project.sys.vo.UserInfoVO;
@@ -18,7 +18,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import com.github.pagehelper.PageInfo;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.CredentialsException;
@@ -262,9 +261,9 @@ public class SystemUserController {
         // 判断用户是否不在线
         if (userInfo != null && userInfo.getIsOnline() == 0) {
 
+            Object code = request.getSession().getAttribute(KeyConstants.LOGIN_VALIDATE_CODE);
             // 获得session中的验证码值
-            String loginValidateCode = request.getSession().
-                    getAttribute(KeyConstants.LOGIN_VALIDATE_CODE).toString();
+            String loginValidateCode = (null == code ? "#" : code.toString());
 
             // 验证码过期
             if(loginValidateCode == null){

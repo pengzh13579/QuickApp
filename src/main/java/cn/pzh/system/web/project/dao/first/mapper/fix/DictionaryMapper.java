@@ -39,4 +39,11 @@ public interface DictionaryMapper {
      * @return 更新记录数
      */
     int update(FixedDictionaryEntity role);
+
+    /***
+     * 根据字典CODE查询字典信息
+     * @param dictionaryCode 字典CODE
+     * @return 字典信息
+     */
+    FixedDictionaryEntity selectDictionaryByCode(String dictionaryCode);
 }

@@ -37,9 +37,7 @@
                         <div class="form-group">
                             <label class="col-xs-3 control-label">性别</label>
                             <div class="col-xs-6">
-                                <select name="sex" class="form-control">
-                                    <option value="0" th:selected="${user?.sex==0}">男</option>
-                                    <option value="1" th:selected="${user?.sex==1}">女</option>
+                                <select dictionary-code="user_sex" id="sex" name="sex" class="form-control" th:value="${user?.sex}">
                                 </select>
                             </div>
                         </div>
@@ -111,16 +109,12 @@
                         </div>
                         <tr th:each="contact,iter : ${user?.contacts}" >
                             <div th:id="|contact_div${iter.index}|" class="form-group">
-                                <label class="col-xs-3 control-label" th:switch="${contact.contactType}">
-                                    <label th:align="right" th:case="1" th:text="邮箱"></label>
-                                    <label th:align="right" th:case="2" th:text="电话"></label>
-                                    <label th:align="right" th:case="3" th:text="QQ"></label>
-                                    <label th:align="right" th:case="4" th:text="微信"></label>
-                                    <label th:align="right" th:case="5" th:text="地址"></label>
-                                </label>
+                                <div class="col-xs-3">
+                                    <select class="form-control" dictionary-code="user_contact" th:name="|contacts[${iter.index}].contactType|" th:value="${contact.contactType}">
+                                    </select>
+                                </div>
                                 <div class="col-xs-4">
-                                    <input type="hidden" id="telType1" th:name="|contacts[${iter.index}].contactType|" class="form-control" th:value="${contact.contactType}" />
-                                    <input th:type="${contact.contactType == '1'}?'email'" id="telephone" th:name="|contacts[${iter.index}].contactInfo|" class="form-control" th:value="${contact.contactInfo}"/>
+                                    <input id="telephone" th:name="|contacts[${iter.index}].contactInfo|" class="form-control" th:value="${contact.contactInfo}"/>
                                 </div>
                                 <div class="col-xs-2">
                                     <button th:id="|contact_del_btn${iter.index}|" class="btn btn-primary" type="button" onclick="del_contact(this)">删除</button>
@@ -131,10 +125,7 @@
                         <div class="form-group">
                             <label class="col-xs-3 control-label">状态</label>
                             <div class="col-xs-6">
-                                <select name="disFlag" class="form-control">
-                                    <option value="0" th:selected="${user?.disFlag==0}" >激活</option>
-                                    <option value="2" th:selected="${user?.disFlag==2}" >锁定</option>
-                                    <option value="1" th:selected="${user?.disFlag==1}" >删除</option>
+                                <select name="disFlag" dictionary-code="user_flag" class="form-control" th:value="${user?.disFlag}">
                                 </select>
                             </div>
                         </div>

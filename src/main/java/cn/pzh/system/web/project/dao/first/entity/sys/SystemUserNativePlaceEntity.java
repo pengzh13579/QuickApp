@@ -9,7 +9,6 @@ import cn.pzh.system.web.project.dao.CommonEntity;
 @EqualsAndHashCode (callSuper = true)
 public class SystemUserNativePlaceEntity extends CommonEntity implements Serializable {
 
-    private Integer id;
     private String userName;
     private String provinceId;
     private String cityId;

@@ -31,19 +31,28 @@
                         <div class="form-group" th:style="${not isParentFlag} ? 'display:none'">
                             <label class="col-xs-3 control-label">数据字典编码</label>
                             <div class="col-xs-6">
-                            <input disabled="disabled" id="dictionartyCode" name="dictionartyCode" class="form-control" type="text" th:value="${info?.dictionartyCode}"/>
+                            <input disabled="disabled" id="dictionaryCode" name="dictionaryCode" class="form-control" type="text" th:value="${info?.dictionaryCode}"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-3 control-label">数据字典名</label>
                             <div class="col-xs-6">
-                            <input disabled="disabled" id="dictionartyName" name="dictionartyName" class="form-control" type="text" th:value="${info?.dictionartyName}"/>
+                            <input disabled="disabled" id="dictionaryName" name="dictionaryName" class="form-control" type="text" th:value="${info?.dictionaryName}"/>
                             </div>
                         </div>
                         <div class="form-group" th:style="${isParentFlag} ? 'display:none'">
                             <label class="col-xs-3 control-label">数据字典值</label>
                             <div class="col-xs-6">
-                            <input disabled="disabled" id="dictionartyValue" name="dictionartyValue" class="form-control" type="text" th:value="${info?.dictionartyValue}"/>
+                            <input disabled="disabled" id="dictionaryValue" name="dictionaryValue" class="form-control" type="text" th:value="${info?.dictionaryValue}"/>
+                            </div>
+                        </div>
+                        <div class="form-group" th:style="${not isParentFlag} ? 'display:none'">
+                            <label class="col-xs-3 control-label">是否允许空值</label>
+                            <div class="col-xs-6">
+                                <select id="hasEmpty" name="hasEmpty" class="form-control">
+                                    <option value="0" th:selected="${info?.hasEmpty=='0'}">否</option>
+                                    <option value="1" th:selected="${info?.hasEmpty=='1'}">是</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">

@@ -30,6 +30,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<SystemRoleEntity> listRoles(SystemRoleEntity systemRoleEntity) {
 
+        if (null == systemRoleEntity.getSortName() ||
+                "".equals(systemRoleEntity.getSortName())) {
+            systemRoleEntity.setSortName("num");
+        }
+
         // 默认从第pageNum开始，每页pageSize条
         PageHelper.startPage(systemRoleEntity.getPageNumber(), systemRoleEntity.getPageSize(),
                 CommonFieldUtils.fieldNameToColumnName(systemRoleEntity.getSortName()) + " " + systemRoleEntity.getSortOrder());

@@ -10,9 +10,10 @@ import cn.pzh.system.web.project.dao.CommonEntity;
 public class FixedDictionaryEntity extends CommonEntity implements Serializable {
     private Integer id;
     private Integer pid;
-    private String dictionartyCode;
-    private String dictionartyName;
-    private Integer dictionartyValue;
+    private String dictionaryCode;
+    private String dictionaryName;
+    private Integer dictionaryValue;
+    private String hasEmpty;
     private Integer sort;
     private String described;
 }

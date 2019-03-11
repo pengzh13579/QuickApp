@@ -3,7 +3,6 @@
 <mapper namespace="cn.pzh.system.web.project.dao.first.mapper.sys.UserNativePlaceMapper">
 
     <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.sys.SystemUserNativePlaceEntity" >
-        <result column="ID" property="id" jdbcType="INTEGER" />
         <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
         <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
         <result column="CITY_ID" property="cityId" jdbcType="VARCHAR" />
@@ -13,7 +12,6 @@
 
     <select id="selectNativePlaceByUserName" parameterType="String" resultMap="BaseResultMap">
         SELECT
-        SYS_USER_NATIVE_PLACE.ID,
         SYS_USER_NATIVE_PLACE.USER_NAME,
         SYS_USER_NATIVE_PLACE.PROVINCE_ID,
         SYS_USER_NATIVE_PLACE.CITY_ID,

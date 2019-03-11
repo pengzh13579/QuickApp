@@ -3,7 +3,6 @@
 <mapper namespace="cn.pzh.system.web.project.dao.first.mapper.sys.ContactMapper">
 
     <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.sys.SystemContactEntity" >
-        <result column="ID" property="id" jdbcType="INTEGER" />
         <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
         <result column="CONTACT_TYPE" property="contactType" jdbcType="INTEGER" />
         <result column="CONTACT_INFO" property="contactInfo" jdbcType="VARCHAR" />
@@ -12,7 +11,6 @@
     <!--  -->
     <select id="selectContactByUserName" parameterType="String" resultMap="BaseResultMap">
         SELECT
-            SYS_CONTACT.ID,
             SYS_CONTACT.USER_NAME,
             SYS_CONTACT.CONTACT_TYPE,
             SYS_CONTACT.CONTACT_INFO

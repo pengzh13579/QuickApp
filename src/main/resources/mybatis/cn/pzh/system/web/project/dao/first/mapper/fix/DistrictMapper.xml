@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.dao.first.mapper.fix.DistrictMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.fix.FixedDistrictEntity" >
+        <result column="DISTRICT_ID" property="districtId" jdbcType="VARCHAR" />
+        <result column="DISTRICT_NAME" property="districtName" jdbcType="VARCHAR" />
+        <result column="FATHER_COUNTY" property="fatherCounty" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <sql id="selectColumn">
+        FIX_DISTRICT.DISTRICT_ID,
+        FIX_DISTRICT.DISTRICT_NAME,
+        FIX_DISTRICT.FATHER_COUNTY
+    </sql>
+
+    <!-- 列表信息查询语句 -->
+    <select id="listDistricts" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM FIX_DISTRICT
+        WHERE FATHER_COUNTY=#{id,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 根据ID查询信息 -->
+    <select id="selectDistrictById" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM FIX_DISTRICT
+        WHERE FIX_DISTRICT.DISTRICT_ID = #{id,jdbcType=VARCHAR}
+        AND FIX_DISTRICT.DIS_FLAG = 0
+    </select>
+
+    <!-- 批量保存信息 -->
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO FIX_DISTRICT (
+            DISTRICT_ID,
+            DISTRICT_NAME,
+            FATHER_COUNTY
+        )
+        VALUES
+        <foreach collection="list" item="item" index= "index" separator =",">
+        (
+            #{item.districtId,jdbcType=VARCHAR},
+            #{item.districtName,jdbcType=VARCHAR},
+            #{item.fatherCounty,jdbcType=VARCHAR}
+        )
+        </foreach>
+    </insert>
+
+    <!-- 保存信息 -->
+    <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.fix.FixedDistrictEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO FIX_DISTRICT (
+            DISTRICT_ID,
+            DISTRICT_NAME,
+            FATHER_COUNTY
+        )
+        VALUES (
+            #{districtId,jdbcType=VARCHAR},
+            #{districtName,jdbcType=VARCHAR},
+            #{fatherCounty,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!-- 更新信息 -->
+    <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.fix.FixedDistrictEntity">
+        UPDATE FIX_DISTRICT
+        <trim prefix="set" suffixOverrides=",">
+            <if test="districtId != null">DISTRICT_ID=#{districtId,jdbcType=VARCHAR},</if>
+            <if test="districtName != null">DISTRICT_NAME=#{districtName,jdbcType=VARCHAR},</if>
+            <if test="fatherCounty != null">FATHER_COUNTY=#{fatherCounty,jdbcType=VARCHAR},</if>
+        </trim>
+        WHERE DISTRICT_ID=#{districtId,jdbcType=VARCHAR}
+        AND FIX_DISTRICT.DIS_FLAG = 0
+    </update>
+
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.dao.first.mapper.fix.CountyMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.fix.FixedCountyEntity" >
+        <result column="COUNTY_ID" property="countyId" jdbcType="VARCHAR" />
+        <result column="COUNTY_NAME" property="countyName" jdbcType="VARCHAR" />
+        <result column="FATHER_PROVINCE" property="fatherProvince" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <sql id="selectColumn">
+        FIX_COUNTY.COUNTY_ID,
+        FIX_COUNTY.COUNTY_NAME,
+        FIX_COUNTY.FATHER_PROVINCE
+    </sql>
+
+    <!-- 省级固定存储列表信息查询语句 -->
+    <select id="listCountys" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM FIX_COUNTY
+        WHERE FATHER_PROVINCE=#{id,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 根据省级固定存储ID查询省级固定存储信息 -->
+    <select id="selectCountyById" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM FIX_COUNTY
+        WHERE FIX_COUNTY.COUNTY_ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 批量保存省级固定存储信息 -->
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO FIX_COUNTY (
+            COUNTY_ID,
+            COUNTY_NAME,
+            FATHER_PROVINCE
+        )
+        VALUES
+        <foreach collection="list" item="item" index= "index" separator =",">
+        (
+            #{item.countyId,jdbcType=VARCHAR},
+            #{item.countyName,jdbcType=VARCHAR},
+            #{item.fatherProvince,jdbcType=VARCHAR}
+        )
+        </foreach>
+    </insert>
+
+    <!-- 保存省级固定存储信息 -->
+    <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.fix.FixedCountyEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO FIX_COUNTY (
+            COUNTY_ID,
+            COUNTY_NAME,
+            FATHER_PROVINCE
+        )
+        VALUES (
+            #{countyId,jdbcType=VARCHAR},
+            #{countyName,jdbcType=VARCHAR},
+            #{fatherProvince,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!-- 更新省级固定存储信息 -->
+    <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.fix.FixedCountyEntity">
+        UPDATE FIX_COUNTY
+        <trim prefix="set" suffixOverrides=",">
+            <if test="countyId != null">COUNTY_ID=#{countyId,jdbcType=VARCHAR},</if>
+            <if test="countyName != null">COUNTY_NAME=#{countyName,jdbcType=VARCHAR},</if>
+            <if test="fatherProvince != null">FATHER_PROVINCE=#{fatherProvince,jdbcType=VARCHAR},</if>
+        </trim>
+        WHERE COUNTY_ID=#{countyId,jdbcType=INTEGER}
+        AND FIX_COUNTY.DIS_FLAG = 0
+    </update>
+
+</mapper>

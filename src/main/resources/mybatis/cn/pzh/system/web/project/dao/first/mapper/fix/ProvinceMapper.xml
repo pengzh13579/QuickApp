@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.dao.first.mapper.fix.ProvinceMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.fix.FixedProvinceEntity" >
+        <result column="PROVINCE_NAME" property="provinceName" jdbcType="VARCHAR" />
+        <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <sql id="selectColumn">
+        FIX_PROVINCE.PROVINCE_NAME,
+        FIX_PROVINCE.PROVINCE_ID
+    </sql>
+
+    <!-- 列表信息查询语句 -->
+    <select id="listProvinces" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM FIX_PROVINCE
+    </select>
+
+    <!-- 根据ID查询信息 -->
+    <select id="selectProvinceById" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM FIX_PROVINCE
+        WHERE FIX_PROVINCE.PROVINCE_ID = #{provinceId,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 批量保存信息 -->
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO FIX_PROVINCE (
+            PROVINCE_NAME,
+            PROVINCE_ID
+        )
+        VALUES
+        <foreach collection="list" item="item" index= "index" separator =",">
+        (
+            #{item.provinceName,jdbcType=VARCHAR},
+            #{item.provinceId,jdbcType=VARCHAR}
+        )
+        </foreach>
+    </insert>
+
+    <!-- 保存信息 -->
+    <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.fix.FixedProvinceEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO FIX_PROVINCE (
+            PROVINCE_NAME,
+            PROVINCE_ID
+        )
+        VALUES (
+            #{provinceName,jdbcType=VARCHAR},
+            #{provinceId,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!-- 更新信息 -->
+    <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.fix.FixedProvinceEntity">
+        UPDATE FIX_PROVINCE
+        <trim prefix="set" suffixOverrides=",">
+            <if test="provinceName != null">PROVINCE_NAME=#{provinceName,jdbcType=VARCHAR},</if>
+        </trim>
+        WHERE PROVINCE_ID=#{provinceId,jdbcType=VARCHAR}
+        AND FIX_PROVINCE.DIS_FLAG = 0
+    </update>
+
+</mapper>

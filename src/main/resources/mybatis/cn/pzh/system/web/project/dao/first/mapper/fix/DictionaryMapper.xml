@@ -5,9 +5,10 @@
     <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.fix.FixedDictionaryEntity" >
         <result column="ID" property="id" jdbcType="INTEGER" />
         <result column="PID" property="pid" jdbcType="INTEGER" />
-        <result column="DICTIONARTY_CODE" property="dictionartyCode" jdbcType="VARCHAR" />
-        <result column="DICTIONARTY_NAME" property="dictionartyName" jdbcType="VARCHAR" />
-        <result column="DICTIONARTY_VALUE" property="dictionartyValue" jdbcType="INTEGER" />
+        <result column="DICTIONARY_CODE" property="dictionaryCode" jdbcType="VARCHAR" />
+        <result column="DICTIONARY_NAME" property="dictionaryName" jdbcType="VARCHAR" />
+        <result column="DICTIONARY_VALUE" property="dictionaryValue" jdbcType="INTEGER" />
+        <result column="HAS_EMPTY" property="hasEmpty" jdbcType="VARCHAR" />
         <result column="SORT" property="sort" jdbcType="INTEGER" />
         <result column="DESCRIBED" property="described" jdbcType="VARCHAR" />
         <result column="DIS_FLAG" property="disFlag" jdbcType="INTEGER" />
@@ -21,9 +22,10 @@
     <sql id="selectColumn">
         FIX_DICTIONARY.ID,
         FIX_DICTIONARY.PID,
-        FIX_DICTIONARY.DICTIONARTY_CODE,
-        FIX_DICTIONARY.DICTIONARTY_NAME,
-        FIX_DICTIONARY.DICTIONARTY_VALUE,
+        FIX_DICTIONARY.DICTIONARY_CODE,
+        FIX_DICTIONARY.DICTIONARY_NAME,
+        FIX_DICTIONARY.DICTIONARY_VALUE,
+        FIX_DICTIONARY.HAS_EMPTY,
         FIX_DICTIONARY.SORT,
         FIX_DICTIONARY.DESCRIBED,
         FIX_DICTIONARY.DIS_FLAG,
@@ -36,7 +38,15 @@
     <sql id="whereCause">
         <where>
             FIX_DICTIONARY.DIS_FLAG = 0
-            AND FIX_DICTIONARY.PID = #{pid,jdbcType=INTEGER}
+            <if test="pid != null">
+                AND FIX_DICTIONARY.PID = #{pid,jdbcType=INTEGER}
+            </if>
+            <if test="dictionaryCode != null and dictionaryCode != ''">
+                AND FIX_DICTIONARY.DICTIONARY_CODE = #{dictionaryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="dictionaryName != null and dictionaryName != ''">
+                AND FIX_DICTIONARY.DICTIONARY_NAME like CONCAT('%',#{dictionaryName},'%')
+            </if>
         </where>
     </sql>
 
@@ -46,6 +56,15 @@
         <include refid="selectColumn"></include>
         FROM FIX_DICTIONARY
         <include refid="whereCause"></include>
+    </select>
+
+    <!-- 根据字典CODE查询字典信息 -->
+    <select id="selectDictionaryByCode" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM FIX_DICTIONARY
+        WHERE FIX_DICTIONARY.DICTIONARY_CODE = #{dictionaryCode,jdbcType=VARCHAR}
+        AND FIX_DICTIONARY.DIS_FLAG = 0
     </select>
 
     <!-- 根据字典ID查询字典信息 -->
@@ -61,9 +80,10 @@
     <insert id="saveList" parameterType="java.util.List">
         INSERT INTO FIX_DICTIONARY (
             PID,
-            DICTIONARTY_CODE,
-            DICTIONARTY_NAME,
-            DICTIONARTY_VALUE,
+            DICTIONARY_CODE,
+            DICTIONARY_NAME,
+            DICTIONARY_VALUE,
+            HAS_EMPTY,
             SORT,
             DESCRIBED,
             DIS_FLAG,
@@ -76,9 +96,10 @@
         <foreach collection="list" item="item" index= "index" separator =",">
         (
             #{item.pid,jdbcType=INTEGER},
-            #{item.dictionartyCode,jdbcType=VARCHAR},
-            #{item.dictionartyName,jdbcType=VARCHAR},
-            #{item.dictionartyValue,jdbcType=INTEGER},
+            #{item.dictionaryCode,jdbcType=VARCHAR},
+            #{item.dictionaryName,jdbcType=VARCHAR},
+            #{item.dictionaryValue,jdbcType=INTEGER},
+            #{item.hasEmpty,jdbcType=VARCHAR},
             #{item.sort,jdbcType=INTEGER},
             #{item.described,jdbcType=VARCHAR},
             #{item.disFlag,jdbcType=INTEGER},
@@ -94,9 +115,10 @@
     <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.fix.FixedDictionaryEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO FIX_DICTIONARY (
             PID,
-            DICTIONARTY_CODE,
-            DICTIONARTY_NAME,
-            DICTIONARTY_VALUE,
+            DICTIONARY_CODE,
+            DICTIONARY_NAME,
+            DICTIONARY_VALUE,
+            HAS_EMPTY,
             SORT,
             DESCRIBED,
             DIS_FLAG,
@@ -107,9 +129,10 @@
         )
         VALUES (
             #{pid,jdbcType=INTEGER},
-            #{dictionartyCode,jdbcType=VARCHAR},
-            #{dictionartyName,jdbcType=VARCHAR},
-            #{dictionartyValue,jdbcType=INTEGER},
+            #{dictionaryCode,jdbcType=VARCHAR},
+            #{dictionaryName,jdbcType=VARCHAR},
+            #{dictionaryValue,jdbcType=INTEGER},
+            #{hasEmpty,jdbcType=VARCHAR},
             #{sort,jdbcType=INTEGER},
             #{described,jdbcType=VARCHAR},
             #{disFlag,jdbcType=INTEGER},
@@ -125,9 +148,10 @@
         UPDATE FIX_DICTIONARY
         <trim prefix="set" suffixOverrides=",">
             <if test="pid != null">PID=#{pid,jdbcType=INTEGER},</if>
-            <if test="dictionartyCode != null">DICTIONARTY_CODE=#{dictionartyCode,jdbcType=VARCHAR},</if>
-            <if test="dictionartyName != null">DICTIONARTY_NAME=#{dictionartyName,jdbcType=VARCHAR},</if>
-            <if test="dictionartyValue != null">DICTIONARTY_VALUE=#{dictionartyValue,jdbcType=INTEGER},</if>
+            <if test="dictionaryCode != null">DICTIONARY_CODE=#{dictionaryCode,jdbcType=VARCHAR},</if>
+            <if test="dictionaryName != null">DICTIONARY_NAME=#{dictionaryName,jdbcType=VARCHAR},</if>
+            <if test="dictionaryValue != null">DICTIONARY_VALUE=#{dictionaryValue,jdbcType=INTEGER},</if>
+            <if test="hasEmpty != null">HAS_EMPTY=#{hasEmpty,jdbcType=VARCHAR},</if>
             <if test="sort != null">SORT=#{sort,jdbcType=INTEGER},</if>
             <if test="described != null">DESCRIBED=#{described,jdbcType=VARCHAR},</if>
             <if test="disFlag != null">DIS_FLAG=#{disFlag,jdbcType=INTEGER},</if>

@@ -4,15 +4,15 @@ $(function () {
       pid: {
         required: true
       },
-      dictionartyCode: {
+      dictionaryCode: {
         required: true,
         maxlength: 50
       },
-      dictionartyName: {
+      dictionaryName: {
         required: true,
         maxlength: 50
       },
-      dictionartyValue: {
+      dictionaryValue: {
       },
       sort: {
         required: true

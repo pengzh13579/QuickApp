@@ -6,7 +6,7 @@ $(function () {
         //必须设置，不然request.getParameter获取不到请求参数
         contentType: "application/x-www-form-urlencoded",
         //获取数据的Servlet地址
-        url: "/fixedDictionaryController/dictionaryList",
+        url: "/fixedDictionaryController/listDictionarys",
         //表格显示条纹
         striped: true,
         //启动分页
@@ -50,16 +50,26 @@ $(function () {
           visible: false
         },{
             title: "数据字典编码",
-            field: "dictionartyCode"
+            sortable: true,
+            field: "dictionaryCode"
         },{
             title: "数据字典名",
-            field: "dictionartyName"
+            sortable: true,
+            field: "dictionaryName"
         },{
-            title: "描述",
-            field: "described"
+            title: "允许空值",
+            field: "hasEmpty",
+            sortable: true,
+            formatter: function (value, row, index) {
+                if (value == '1') {
+                    return '<span class="label label-warning">允许</span>';
+                }
+                return '<span class="label label-primary">不允许</span>';
+            }
         },{
           title: "更新时间",
           field: "updateDate",
+          sortable: true,
           formatter: function (value, row, index) {
             return changeDateFormat(value)
           },
@@ -92,7 +102,7 @@ $(function () {
             //必须设置，不然request.getParameter获取不到请求参数
             contentType: "application/x-www-form-urlencoded",
             //获取数据的Servlet地址
-            url: "/fixedDictionaryController/dictionaryList",
+            url: "/fixedDictionaryController/listDictionarys",
             //表格显示条纹
             striped: true,
             //启动分页
@@ -136,10 +146,12 @@ $(function () {
               visible: false
             },{
               title: "数据字典名",
-              field: "dictionartyName"
+              sortable: true,
+              field: "dictionaryName"
             },{
               title: "数据字典值",
-              field: "dictionartyValue"
+              sortable: true,
+              field: "dictionaryValue"
             },{
               title: "操作",
               field: "empty",
@@ -175,6 +187,7 @@ function edit(id){
         area: ['420px', '320px'],
         content: '/fixedDictionaryController/edit/' + id,
         end: function(index){
+            $('#parent_table_list').bootstrapTable("refresh");
             $('#table_list').bootstrapTable("refresh");
         }
     });

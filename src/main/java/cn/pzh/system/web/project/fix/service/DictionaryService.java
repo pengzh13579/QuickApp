@@ -27,6 +27,13 @@ public interface DictionaryService {
     FixedDictionaryEntity get(Integer id);
 
     /***
+     * 根据字典编码获得字典信息
+     * @param dictionaryCode 字典编码
+     * @return 字典信息
+     */
+    FixedDictionaryEntity get(String dictionaryCode);
+
+    /***
      * 修改字典信息
      * @param info 字典信息
      * @return 修改字典记录数
@@ -39,4 +46,11 @@ public interface DictionaryService {
      * @return 删除字典记录数
      */
     int delete(Integer id);
+
+    /***
+     * 根据父ID查询其下所有数据字典集合
+     * @param pid 父ID
+     * @return 数据字典集合
+     */
+    List<FixedDictionaryEntity> getDictionarys(Integer pid);
 }
