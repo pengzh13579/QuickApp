@@ -1,8 +1,8 @@
 package cn.pzh.system.web.project.common.conf.shiro;
 
 import cn.pzh.system.web.project.common.model.ShiroUserModel;
-import cn.pzh.system.web.project.sys.shiro.factory.IShiro;
-import cn.pzh.system.web.project.sys.shiro.factory.ShiroFactroy;
+import cn.pzh.system.web.project.business.sys.shiro.factory.IShiro;
+import cn.pzh.system.web.project.business.sys.shiro.factory.ShiroFactroy;
 import cn.pzh.system.web.project.dao.first.entity.sys.SystemUserEntity;
 import cn.pzh.system.web.project.common.utils.support.ShiroKit;
 import cn.pzh.system.web.project.dao.first.mapper.sys.UserMapper;

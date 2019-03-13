@@ -1,4 +1,6 @@
+var layerName;
 $(function () {
+  layerName = window.name;
   $("select").each(function(){
       loadSelectData(this);
   });
@@ -75,7 +77,7 @@ $(function () {
           // 解决返回值带<pre style="word-wrap: break-word; white-space: pre-wrap;">的问题
           data = $.parseJSON(data.replace(/<.*?>/ig, ""));
           layer.msg(data.msg, {time: 2000}, function () {
-            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            var index = parent.layer.getFrameIndex(layerName); //先得到当前iframe层的索引
             if (data.success) {
               parent.layer.close(index);
             }

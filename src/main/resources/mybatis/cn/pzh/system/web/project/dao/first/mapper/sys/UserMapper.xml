@@ -143,7 +143,7 @@
         VALUES (
             #{userName,jdbcType=VARCHAR},
             #{realName,jdbcType=VARCHAR},
-            #{avatar,jdbcType=INTEGER},
+            #{avatar,jdbcType=VARCHAR},
             #{sex,jdbcType=INTEGER},
             #{password,jdbcType=VARCHAR},
             #{salt,jdbcType=VARCHAR},
@@ -159,7 +159,7 @@
     <update id="updateUser" parameterType="cn.pzh.system.web.project.dao.first.entity.sys.SystemUserEntity">
         UPDATE SYS_USER
         <trim prefix="set" suffixOverrides=",">
-            <if test="avatar != null">AVATAR=#{avatar,jdbcType=INTEGER},</if>
+            <if test="avatar != null">AVATAR=#{avatar,jdbcType=VARCHAR},</if>
             <if test="realName != null">REAL_NAME=#{realName,jdbcType=VARCHAR},</if>
             <if test="sex != null">SEX=#{sex,jdbcType=VARCHAR},</if>
             <if test="roleId != null">ROLE_ID=#{roleId,jdbcType=VARCHAR},</if>

@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class LoginLogEntity implements Serializable {
 
-    private Integer id;
     private String logName;
     private String createUser;
     private Date createDate;

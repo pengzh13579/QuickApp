@@ -7,6 +7,7 @@ $(function(){
         return false;
     });
 });
+
 function changePassword(){
   layer.open({
     type: 2,

@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Data
 public class CommonFileEntity implements Serializable {
 
-    private Integer id;
+    private String id;
     private String fileName;
     private String fileSuffix;
     private String path;

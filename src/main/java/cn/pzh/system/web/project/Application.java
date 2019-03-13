@@ -3,7 +3,7 @@ package cn.pzh.system.web.project;
 import cn.pzh.system.web.project.common.constant.ViewConstants;
 import cn.pzh.system.web.project.common.utils.Convert;
 import cn.pzh.system.web.project.common.utils.support.ShiroKit;
-import cn.pzh.system.web.project.sys.service.MenuService;
+import cn.pzh.system.web.project.business.sys.service.MenuService;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

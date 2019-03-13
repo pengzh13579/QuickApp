@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 
-    <title> - 登录</title>
+    <title>登录</title>
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
     <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet"/>
@@ -42,7 +42,7 @@
                         <input type="text" class="form-control" name="validateCode" id="validateCode" placeholder="验证码" th:value="${validateFlag} == null ? '#' : ''"/>
                     </div>
                 </div>
-                <a href="" class="forget">忘记密码了？</a>
+                <a onclick="forget_password()" href="" class="forget">忘记密码了？</a>
                 <button class="btn btn-success btn-block">登录</button>
             </form>
         </div>
@@ -93,6 +93,19 @@
             }
         });
     });
+
+    function forget_password(){
+      layer.open({
+        type: 2,
+        title: '忘记密码',
+        shadeClose: true,
+        shade: false,
+        area: ['400px', '400px'],
+        content: '/systemUserController/forgetPassword',
+        end: function(index){
+        }
+      });
+    }
 
     function user_online_out(){
         $.ajax({

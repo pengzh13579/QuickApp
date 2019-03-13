@@ -34,6 +34,7 @@ var setting = {
 };
 
 $(function () {
+
   $.post("/systemMenuController/selectMenuTreeList", {}, function (data) {  //id=3是初始输入，确立根节点的id=3
     zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, eval(data));
     zTreeObj.selectNode(zTreeObj.getNodeByParam("id", $('#pid').val()));
@@ -56,7 +57,11 @@ $(function () {
     },
     messages: {},
     submitHandler: function (form) {
-      $('#pid').val(zTreeObj.getSelectedNodes()[0].id);
+      if (zTreeObj.getSelectedNodes().length == 0){
+        $('#pid').val(0);
+      } else {
+        $('#pid').val(zTreeObj.getSelectedNodes()[0].id);
+      }
       var url = "/systemMenuController/addMenu";
       if ($('#id').val() != "") {
         var url = "/systemMenuController/editMenu";
@@ -76,6 +81,11 @@ $(function () {
         }
       });
     }
+  });
+
+  $("#clearParentMenuBtn").click(function() {
+    $('#pid').val(0);
+    zTreeObj.cancelSelectedNode();
   });
 });
 
