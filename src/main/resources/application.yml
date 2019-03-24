@@ -56,3 +56,6 @@ druid:
   deny: "192.168.128.28"
   exclusions: "*.js,*.gif,*.jpg,*.css,/druid/*"
 
+wx:
+  appid: 1234567
+  secret: 1234567
