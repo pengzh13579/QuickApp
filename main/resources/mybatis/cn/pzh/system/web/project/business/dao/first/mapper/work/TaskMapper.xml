@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.dao.first.mapper.work.TaskMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.work.WorkTaskEntity" >
+        <result column="ID" property="id" jdbcType="INTEGER" />
+        <result column="TASK_NAME" property="taskName" jdbcType="VARCHAR" />
+        <result column="TASK_CONTENT" property="taskContent" jdbcType="VARCHAR" />
+        <result column="TASK_STATUS" property="taskStatus" jdbcType="INTEGER" />
+        <result column="DIS_FLAG" property="disFlag" jdbcType="INTEGER" />
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+        <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <sql id="selectColumn">
+        WORK_TASK.ID,
+        WORK_TASK.TASK_NAME,
+        WORK_TASK.TASK_CONTENT,
+        WORK_TASK.TASK_STATUS,
+        WORK_TASK.DIS_FLAG,
+        WORK_TASK.CREATE_DATE,
+        WORK_TASK.UPDATE_DATE,
+        WORK_TASK.CREATE_USER,
+        WORK_TASK.UPDATE_USER
+    </sql>
+
+    <sql id="whereCause">
+        <where>
+            WORK_TASK.DIS_FLAG = 0
+        </where>
+    </sql>
+
+    <!-- 列表信息查询语句 -->
+    <select id="listTasks" parameterType="cn.pzh.system.web.project.dao.first.entity.work.WorkTaskEntity" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM WORK_TASK
+        <include refid="whereCause"></include>
+    </select>
+
+    <!-- 根据ID查询信息 -->
+    <select id="selectTaskById" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM WORK_TASK
+        WHERE WORK_TASK.ID = #{id,jdbcType=INTEGER}
+        AND WORK_TASK.DIS_FLAG = 0
+    </select>
+
+    <!-- 批量保存信息 -->
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO WORK_TASK (
+            TASK_NAME,
+            TASK_CONTENT,
+            TASK_STATUS,
+            DIS_FLAG,
+            CREATE_DATE,
+            UPDATE_DATE,
+            CREATE_USER,
+            UPDATE_USER
+        )
+        VALUES
+        <foreach collection="list" item="item" index= "index" separator =",">
+        (
+            #{item.taskName,jdbcType=VARCHAR},
+            #{item.taskContent,jdbcType=VARCHAR},
+            #{item.taskStatus,jdbcType=INTEGER},
+            #{item.disFlag,jdbcType=INTEGER},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.updateDate,jdbcType=TIMESTAMP},
+            #{item.createUser,jdbcType=VARCHAR},
+            #{item.updateUser,jdbcType=VARCHAR}
+        )
+        </foreach>
+    </insert>
+
+    <!-- 保存信息 -->
+    <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.work.WorkTaskEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO WORK_TASK (
+            TASK_NAME,
+            TASK_CONTENT,
+            TASK_STATUS,
+            DIS_FLAG,
+            CREATE_DATE,
+            UPDATE_DATE,
+            CREATE_USER,
+            UPDATE_USER
+        )
+        VALUES (
+            #{taskName,jdbcType=VARCHAR},
+            #{taskContent,jdbcType=VARCHAR},
+            #{taskStatus,jdbcType=INTEGER},
+            #{disFlag,jdbcType=INTEGER},
+            #{createDate,jdbcType=TIMESTAMP},
+            #{updateDate,jdbcType=TIMESTAMP},
+            #{createUser,jdbcType=VARCHAR},
+            #{updateUser,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!-- 更新信息 -->
+    <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.work.WorkTaskEntity">
+        UPDATE WORK_TASK
+        <trim prefix="set" suffixOverrides=",">
+            <if test="taskName != null">TASK_NAME=#{taskName,jdbcType=VARCHAR},</if>
+            <if test="taskContent != null">TASK_CONTENT=#{taskContent,jdbcType=VARCHAR},</if>
+            <if test="taskStatus != null">TASK_STATUS=#{taskStatus,jdbcType=INTEGER},</if>
+            <if test="disFlag != null">DIS_FLAG=#{disFlag,jdbcType=INTEGER},</if>
+            <if test="updateDate != null">UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP},</if>
+            <if test="updateUser != null">UPDATE_USER=#{updateUser,jdbcType=VARCHAR},</if>
+
+        </trim>
+        WHERE ID=#{id,jdbcType=INTEGER}
+        AND WORK_TASK.DIS_FLAG = 0
+    </update>
+
+</mapper>
