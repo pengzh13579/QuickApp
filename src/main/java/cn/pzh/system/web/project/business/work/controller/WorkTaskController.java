@@ -4,7 +4,7 @@ import cn.pzh.system.web.project.common.constant.KeyConstants;
 import cn.pzh.system.web.project.common.constant.ViewConstants;
 import cn.pzh.system.web.project.dao.first.entity.work.WorkTaskEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
-import cn.pzh.system.web.project.business.work.service.TaskService;
+import cn.pzh.system.web.project.business.work.service.WorkTaskService;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class WorkTaskController {
 
     @Autowired
-    private TaskService taskService;
+    private WorkTaskService taskService;
 
     /***
      * 列表页面

@@ -2,8 +2,8 @@ package cn.pzh.system.web.project.business.work.service.impl;
 
 import cn.pzh.system.web.project.dao.first.entity.work.WorkTaskEntity;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
-import cn.pzh.system.web.project.dao.first.mapper.work.TaskMapper;
-import cn.pzh.system.web.project.business.work.service.TaskService;
+import cn.pzh.system.web.project.dao.first.mapper.work.WorkTaskMapper;
+import cn.pzh.system.web.project.business.work.service.WorkTaskService;
 import java.util.List;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional (propagation = Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
-public class TaskServiceImpl implements TaskService {
+public class WorkTaskServiceImpl implements WorkTaskService {
 
     @Autowired
-    private TaskMapper taskMapper;
+    private WorkTaskMapper taskMapper;
 
     /***
      * 列表信息查询

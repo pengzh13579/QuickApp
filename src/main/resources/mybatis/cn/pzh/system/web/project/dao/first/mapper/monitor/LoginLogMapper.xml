@@ -11,7 +11,7 @@
         <result column="IP" property="ip" jdbcType="VARCHAR" />
     </resultMap>
 
-    <insert id="saveLoginLog" parameterType="cn.pzh.system.web.project.dao.first.entity.monitor.LoginLogEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="saveLoginLog" parameterType="cn.pzh.system.web.project.dao.first.entity.monitor.LoginLogEntity">
         insert into log_login (
             LOG_NAME,
             CREATE_USER,

@@ -1,9 +1,9 @@
 package cn.pzh.system.web.project.business.work.service;
 
-import cn.pzh.system.web.project.dao.first.entity.sys.WorkTaskEntity;
+import cn.pzh.system.web.project.dao.first.entity.work.WorkTaskEntity;
 import java.util.List;
 
-public interface TaskService {
+public interface WorkTaskService {
 
     /***
      * 列表信息查询
