@@ -20,7 +20,9 @@
         SELECT
         <include refid="selectColumn"></include>
         FROM FIX_COUNTY
-        WHERE FATHER_PROVINCE=#{id,jdbcType=VARCHAR}
+        <if test="id != null">
+          WHERE FATHER_PROVINCE=#{id,jdbcType=VARCHAR}
+        </if>
     </select>
 
     <!-- 根据省级固定存储ID查询省级固定存储信息 -->

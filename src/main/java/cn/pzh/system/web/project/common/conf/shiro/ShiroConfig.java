@@ -143,7 +143,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/systemUserController/userLogin", "anon");
         filterChainDefinitionMap.put("/systemUserController/userOnlineOut", "anon");
         filterChainDefinitionMap.put("/commonController/loginValidateCode", "anon");
-        filterChainDefinitionMap.put("/wxController/", "anon");
+        filterChainDefinitionMap.put("/wxController/**", "anon");
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainDefinitionMap.put("/systemUserController/logout", "logout");
 

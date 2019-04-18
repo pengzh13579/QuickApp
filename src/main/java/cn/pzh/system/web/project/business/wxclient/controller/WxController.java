@@ -1,19 +1,22 @@
 package cn.pzh.system.web.project.business.wxclient.controller;
 
 import cn.pzh.system.web.project.base.cache.OpenIDCache;
+import cn.pzh.system.web.project.business.fix.service.ProvinceAreaService;
 import cn.pzh.system.web.project.business.wx.service.WxUserService;
 import cn.pzh.system.web.project.common.conf.wx.WxConfig;
+import cn.pzh.system.web.project.common.constant.KeyConstants;
+import cn.pzh.system.web.project.common.model.PageInfo;
 import cn.pzh.system.web.project.common.utils.HttpUtil;
 import cn.pzh.system.web.project.common.utils.WeixinUtil;
+import cn.pzh.system.web.project.dao.first.entity.fix.FixedCountyEntity;
+import cn.pzh.system.web.project.dao.first.entity.fix.FixedDistrictEntity;
+import cn.pzh.system.web.project.dao.first.entity.fix.FixedProvinceEntity;
 import cn.pzh.system.web.project.dao.first.entity.wx.WxUserEntity;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -28,8 +31,10 @@ public class WxController {
     @Autowired
     private WxUserService wxUserService;
 
+    @Autowired
+    private ProvinceAreaService provinceAreaService;
+
     /**
-     *
      * 获取用户基本信息的接口
      * @param request
      * @return
@@ -40,10 +45,12 @@ public class WxController {
         Map<String, String> ret = new HashMap<String, String>();
         String mycode = request.getParameter("code");
         String session_key = "";
-        try
-        {
+        try {
             String resData = HttpUtil.requestCommonByHttpGet("https://api.weixin.qq.com/sns/jscode2session?appid="+wxConfig.getAppid()+"&secret="+wxConfig.getSecret()+"&js_code="+mycode+"&grant_type=authorization_code", null, true);
             JSONObject accessObj = JSONObject.parseObject(resData);
+            // openid 用户唯一标识
+            // session_key 会话密钥
+            // expires_in 会话有效期, 以秒为单位, 例如2592000代表会话有效期为30天
             session_key = accessObj.getString("session_key");
             String openid = accessObj.getString("openid");
             //String openid = "oswcO0eJrrPRkZHjLEfypgJiL24o";
@@ -68,11 +75,9 @@ public class WxController {
      */
     @RequestMapping(value="decodeWxInfo",method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, String> decodeWxInfo(HttpServletRequest request)
-    {
+    public Map<String, String> decodeWxInfo(HttpServletRequest request) {
         Map<String, String> ret = new HashMap<String, String>();
-        try
-        {
+        try {
             String dianToken = request.getParameter("dianToken");
             String encryptedData = request.getParameter("encryptedData");
             String iv = request.getParameter("iv");
@@ -82,12 +87,14 @@ public class WxController {
 
             WxUserEntity wxUserEntity = wxUserService.getWxUserByOpenId(openId);
             if(wxUserEntity == null) {
+
                 //保存微信用户信息
                 JSONObject watermarkObj = obj.getJSONObject("watermark");
                 String appid = watermarkObj.getString("appid");
 
                 wxUserEntity = new WxUserEntity();
                 wxUserEntity.setAccesstoken(sessionKey);
+                wxUserEntity.setOpenid(openId);
                 wxUserEntity.setNickname(obj.getString("nickName"));
                 wxUserEntity.setHeadimg(obj.getString("avatarUrl"));
                 wxUserEntity.setCreateTime(new Date());
@@ -104,7 +111,7 @@ public class WxController {
         return ret;
     }
 
-    @RequestMapping(value = "/getTaskList", method = RequestMethod.POST, consumes="application/json")
+    @RequestMapping(value = "/getTaskList", consumes="application/json")
     @ResponseBody
     public Map<String, Object> getTaskList(HttpServletRequest request,
                                            @RequestBody Map<String, String> json) {
@@ -116,120 +123,7 @@ public class WxController {
         String dianToken = json.get("dian_token");
         String openid = OpenIDCache.getCacheMap().get(dianToken).split("#")[0];
         try {
-//            int start = ( new Integer(pageIndex) - 1) * new Integer(pageSize);
-//            String sql = "SELECT * FROM market_task  order by createtime desc limit "+start+","+pageSize+"";
-//            if(keyword != null && keyword.length() > 0) {
-//                sql = "SELECT * FROM market_task where title like '%"+keyword+"%' or des like '%"+keyword+"%' order by createtime desc limit "+start+","+pageSize+"";
-//            }
-//            List<Object[]> list = marketTaskService.doExecuteSql(sql);
-//
-//            JSONArray jsonArr = new JSONArray();
-//            for(Object[] oneObj : list)
-//            {
-//                JSONObject detail = new JSONObject();
-//                detail.put("id", oneObj[0]);
-//                detail.put("title", oneObj[1]);
-//                detail.put("des", oneObj[2]);
-//                if(oneObj[3] != null && oneObj[3].toString().length() > 0)
-//                {
-//                    if(oneObj[3].toString().equals("0"))
-//                    {
-//                        detail.put("type", "项目外包");
-//                    } else
-//                    {
-//                        detail.put("type", "功能外包");
-//                    }
-//                }
-//                detail.put("money", oneObj[4]);
-//                detail.put("workday", oneObj[5]);
-//                if(oneObj[6] != null && oneObj[6].toString().length() > 0)
-//                {
-//                    String writeTime = DateHandle.format(oneObj[6].toString());
-//                    detail.put("writetime", writeTime);
-//                }
-//
-//                if(oneObj[7] != null && oneObj[7].toString().length() > 0)
-//                {
-//                    if(oneObj[7].toString().equals("1"))
-//                    {
-//                        detail.put("status", "竞标中");
-//                    } else if(oneObj[7].toString().equals("2"))
-//                    {
-//                        detail.put("status", "开发中");
-//                    } else if(oneObj[7].toString().equals("3"))
-//                    {
-//                        detail.put("status", "已完成");
-//                    }
-//                }
-//
-//                if(oneObj[8] != null && oneObj[8].toString().length() > 0)
-//                {
-//                    detail.put("onlyID", oneObj[8].toString());
-//                }
-//
-//                //查询该记录下的图片
-//                String imgSql = "SELECT * FROM market_taskimg where type= 1 and mainid=" + oneObj[0];
-//                List<Object[]> imgList = taskImgService.doExecuteSql(imgSql);
-//                JSONArray imgArr = new JSONArray();
-//                int imgIndex = 0;
-//                if(imgList != null && imgList.size() > 0)
-//                {
-//                    for(Object[] oneImg : imgList)
-//                    {
-//                        JSONObject imgDetail = new JSONObject();
-//                        imgDetail.put("img", Constant.HOST + oneImg[5]);
-//                        imgDetail.put("imgID", oneObj[0].toString() + imgIndex);
-//                        imgArr.add(imgDetail);
-//                        imgIndex++;
-//                    }
-//                }
-//                detail.put("imglist", imgArr);
-//
-//                //查询该记录下的竞标者
-//                String bidderSql = "SELECT b.headimg FROM market_bidder a, wxuser b  where a.mainid=" + oneObj[0] + " and a.applyid=b.openid";
-//                List<Object[]> bidderList = taskImgService.doExecuteSql(bidderSql);
-//                JSONArray  bidderArr = new JSONArray();
-//                int headimgIndex = 0;
-//                if(bidderList != null && bidderList.size() > 0)
-//                {
-//                    for(int i = 0; i < bidderList.size(); i++)
-//                    {
-//                        JSONObject oneDetail = new JSONObject();
-//                        oneDetail.put("headimg", bidderList.get(i));
-//                        oneDetail.put("headimgID", "headimg" + oneObj[0].toString() + imgIndex);
-//                        bidderArr.add(oneDetail);
-//                    }
-//                }
-//                detail.put("bidderlist", bidderArr);
-//
-//                String checkSql = "select id from market_collect where collectid='"+openid+"' and mainid=" + oneObj[0];
-//                List<Object[]> checkList = marketTaskService.doExecuteSql(checkSql);
-//                if(checkList != null && checkList.size() > 0)
-//                {
-//                    detail.put("isCollect", "1");
-//                } else
-//                {
-//                    detail.put("isCollect", "0");
-//                }
-//
-//                String wxUserSql = "select nickname, headimg from wxuser where openid='"+oneObj[8].toString()+"'";
-//                List<Object[]> wxUserList = commonService.doExecuteSql(wxUserSql);
-//                String nickName = "";
-//                String headimg = "";
-//                if(wxUserList != null && wxUserList.size() > 0)
-//                {
-//                    nickName = wxUserList.get(0)[0].toString();
-//                    headimg = wxUserList.get(0)[1].toString();
-//                }
-//
-//                detail.put("nickName", nickName);
-//                detail.put("headimg", headimg);
-//
-//                jsonArr.add(detail);
-//
-//            }
-//
-//            ret.put("data", jsonArr);
+
         } catch(Exception e) {
         }
         return ret;
@@ -247,4 +141,62 @@ public class WxController {
         }
         return sb.toString();
     }
+
+    /***
+     * 列表信息查询
+     * @return 列表信息
+     */
+    @RequestMapping("/provinceList")
+    @ResponseBody
+    public String listProvinces() {
+
+        // 根据查询实体类得到列表
+        List<FixedProvinceEntity> list = provinceAreaService.getAllProvince();
+
+        // JSONObject
+        JSONObject result = new JSONObject();
+
+        // rows存放每页记录 ，这里的两个参数名是固定的，必须为 total和 rows
+        result.put(KeyConstants.PAGE_RETURN_ROWS, list);
+        return result.toJSONString();
+    }
+
+    /***
+     * 省级固定存储列表信息查询
+     * @return 省级固定存储列表信息
+     */
+    @RequestMapping("/countyList")
+    @ResponseBody
+    public String listCountys() {
+
+        // 根据查询实体类得到列表
+        List<FixedCountyEntity> list = provinceAreaService.listCountys(null);
+
+        // JSONObject
+        JSONObject result = new JSONObject();
+
+        // rows存放每页记录 ，这里的两个参数名是固定的，必须为 total和 rows
+        result.put(KeyConstants.PAGE_RETURN_ROWS, list);
+        return result.toJSONString();
+    }
+
+    /***
+     * 列表信息查询
+     * @return 列表信息
+     */
+    @RequestMapping("/districtList")
+    @ResponseBody
+    public String listDistricts() {
+
+        // 根据查询实体类得到列表
+        List<FixedDistrictEntity> list = provinceAreaService.listDistricts(null);
+
+        // JSONObject
+        JSONObject result = new JSONObject();
+
+        // rows存放每页记录 ，这里的两个参数名是固定的，必须为 total和 rows
+        result.put(KeyConstants.PAGE_RETURN_ROWS, list);
+        return result.toJSONString();
+    }
+
 }
