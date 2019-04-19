@@ -56,7 +56,18 @@ druid:
   deny: "192.168.128.28"
   exclusions: "*.js,*.gif,*.jpg,*.css,/druid/*"
 
-
 wx:
   appid: wxda0b5a2b182a2def
   secret: aaac8162b12511ccebbd6bc683438bf4
+
+org:
+  quartz:
+    # 线程调度器实例名
+    scheduler:
+      instanceName: quartzScheduler
+    # 线程池的线程数，即最多3个任务同时跑
+    threadPool:
+      threadCount: 3
+    # 使用内存存储任务和触发器等信息
+    jobStore:
+      class: org.quartz.simpl.RAMJobStore

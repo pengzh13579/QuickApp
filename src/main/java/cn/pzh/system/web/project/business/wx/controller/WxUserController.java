@@ -41,25 +41,25 @@ public class WxUserController {
 
     /***
      * 修改页面
-     * @param id ID
+     * @param openid openid
      * @param model 模型
      * @return 修改页面
      */
-    @RequestMapping("/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
-        model.addAttribute("info", userService.get(id));
+    @RequestMapping("/edit/{openid}")
+    public String edit(@PathVariable String openid, Model model) {
+        model.addAttribute("info", userService.getWxUserByOpenId(openid));
         return "/wx/user/user_form";
     }
 
     /***
      * 信息页面
-     * @param id ID
+     * @param openid ID
      * @param model 模型
      * @return 信息页面
      */
-    @RequestMapping("/info/{id}")
-    public String info(@PathVariable Integer id, Model model) {
-        model.addAttribute("info", userService.get(id));
+    @RequestMapping("/info/{openid}")
+    public String info(@PathVariable String openid, Model model) {
+        model.addAttribute("info", userService.getWxUserByOpenId(openid));
         return "/wx/user/user_read_form";
     }
 
@@ -137,16 +137,16 @@ public class WxUserController {
 
     /***
      * 逻辑删除--将disFlag变为1
-     * @param id ID
+     * @param openid ID
      * @return 删除结果
      */
     @RequestMapping("/delete")
-    public AjaxJson delete(Integer id) {
+    public AjaxJson delete(String openid) {
 
         AjaxJson j = new AjaxJson();
 
         // 逻辑删除
-        if (userService.delete(id) > 0) {
+        if (userService.delete(openid) > 0) {
             j.setMsg("删除成功");
             j.setSuccess(true);
             return j;

@@ -48,7 +48,7 @@ public class WeixinUtil {
      * @param iv 加密算法的初始向量
      * @return
      */
-    public static JSONObject getUserInfo(String encryptedData,String sessionKey,String iv){
+    public static JSONObject getUserInfo(String encryptedData, String sessionKey, String iv){
         // 被加密的数据
         byte[] dataByte = Base64.decode(encryptedData);
         // 加密秘钥

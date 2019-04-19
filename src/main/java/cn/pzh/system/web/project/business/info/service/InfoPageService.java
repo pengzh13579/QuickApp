@@ -3,7 +3,7 @@ package cn.pzh.system.web.project.business.info.service;
 import cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity;
 import java.util.List;
 
-public interface PageService {
+public interface InfoPageService {
 
     /***
      * 列表信息查询

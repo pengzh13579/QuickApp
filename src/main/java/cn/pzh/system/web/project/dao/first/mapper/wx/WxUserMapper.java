@@ -13,13 +13,6 @@ public interface WxUserMapper {
     List<WxUserEntity> listUsers(WxUserEntity wxUserEntity);
 
     /***
-     * 根据ID查询信息
-     * @param id ID
-     * @return 信息
-     */
-    WxUserEntity selectUserById(Integer id);
-
-    /***
      * 批量保存信息
      * @param list 信息
      * @return 保存记录数

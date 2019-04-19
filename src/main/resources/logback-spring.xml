@@ -44,7 +44,21 @@
             <pattern>${PATTERN}</pattern>
         </encoder>
     </appender>
-	
+
+    <appender name="weiXinAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/logs/bribery.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/logs/wx-%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="cn.pzh.system.web.project.business.wx" level="INFO" additivity="false">
+        <appender-ref ref="weiXinAppender" />
+    </logger>
+
     <logger name="cn.pzh.system"  additivity="false">
         <level value="${log_level}" />
         <appender-ref ref="STDOUT" />

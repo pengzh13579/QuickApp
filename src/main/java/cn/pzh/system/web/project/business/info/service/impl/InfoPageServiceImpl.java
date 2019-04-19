@@ -2,8 +2,8 @@ package cn.pzh.system.web.project.business.info.service.impl;
 
 import cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
-import cn.pzh.system.web.project.dao.first.mapper.info.PageMapper;
-import cn.pzh.system.web.project.business.info.service.PageService;
+import cn.pzh.system.web.project.dao.first.mapper.info.InfoPageMapper;
+import cn.pzh.system.web.project.business.info.service.InfoPageService;
 import java.util.List;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional (propagation = Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
-public class PageServiceImpl implements PageService {
+public class InfoPageServiceImpl implements InfoPageService {
 
     @Autowired
-    private PageMapper pageMapper;
+    private InfoPageMapper pageMapper;
 
     /***
      * 列表信息查询

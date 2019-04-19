@@ -216,8 +216,8 @@ public class HttpUtil {
 	  		return result;
 	  	}
 	     
-	     public static String requestCommonByHttpGet(String url, String paramJson, boolean isHttps)
-	   	{
+		public static String requestCommonByHttpGet(String url, String paramJson, boolean isHttps) {
+			logger.info("url=============" + url);
 	   		// 声明请求httpclient对象
 	   		CloseableHttpClient client = null;
 	   		

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.dao.first.mapper.info.InfoPageMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity" >
+        <result column="ID" property="ID" jdbcType="INTEGER" />
+        <result column="AREA_ID" property="AREAId" jdbcType="VARCHAR" />
+        <result column="PAGE_TITLE" property="PAGETitle" jdbcType="VARCHAR" />
+        <result column="PAGE_CONTENT" property="PAGEContent" jdbcType="VARCHAR" />
+        <result column="RELEASE_DATE" property="RELEASEDate" jdbcType="DATE" />
+        <result column="INDUSTRY_INFO" property="INDUSTRYInfo" jdbcType="VARCHAR" />
+        <result column="DIS_FLAG" property="disFlag" jdbcType="INTEGER" />
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+        <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <sql id="selectColumn">
+        INFO_PAGE.ID,
+        INFO_PAGE.AREA_ID,
+        INFO_PAGE.PAGE_TITLE,
+        INFO_PAGE.PAGE_CONTENT,
+        INFO_PAGE.RELEASE_DATE,
+        INFO_PAGE.INDUSTRY_INFO,
+        INFO_PAGE.DIS_FLAG,
+        INFO_PAGE.CREATE_DATE,
+        INFO_PAGE.UPDATE_DATE,
+        INFO_PAGE.CREATE_USER,
+        INFO_PAGE.UPDATE_USER
+    </sql>
+
+    <sql id="whereCause">
+        <where>
+            INFO_PAGE.DIS_FLAG = 0
+        </where>
+    </sql>
+
+    <!-- 列表信息查询语句 -->
+    <select id="listPages" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM INFO_PAGE
+        <include refid="whereCause"></include>
+    </select>
+
+    <!-- 根据ID查询信息 -->
+    <select id="selectPageById" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM INFO_PAGE
+        WHERE INFO_PAGE.ID = #{id,jdbcType=INTEGER}
+        AND INFO_PAGE.DIS_FLAG = 0
+    </select>
+
+    <!-- 批量保存信息 -->
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO INFO_PAGE (
+            ID,
+            AREA_ID,
+            PAGE_TITLE,
+            PAGE_CONTENT,
+            RELEASE_DATE,
+            INDUSTRY_INFO,
+            DIS_FLAG,
+            CREATE_DATE,
+            UPDATE_DATE,
+            CREATE_USER,
+            UPDATE_USER
+        )
+        VALUES
+        <foreach collection="list" item="item" index= "index" separator =",">
+        (
+            #{item.ID,jdbcType=INTEGER},
+            #{item.AREAId,jdbcType=VARCHAR},
+            #{item.PAGETitle,jdbcType=VARCHAR},
+            #{item.PAGEContent,jdbcType=VARCHAR},
+            #{item.RELEASEDate,jdbcType=DATE},
+            #{item.INDUSTRYInfo,jdbcType=VARCHAR},
+            #{item.disFlag,jdbcType=INTEGER},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.updateDate,jdbcType=TIMESTAMP},
+            #{item.createUser,jdbcType=VARCHAR},
+            #{item.updateUser,jdbcType=VARCHAR}
+        )
+        </foreach>
+    </insert>
+
+    <!-- 保存信息 -->
+    <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO INFO_PAGE (
+            ID,
+            AREA_ID,
+            PAGE_TITLE,
+            PAGE_CONTENT,
+            RELEASE_DATE,
+            INDUSTRY_INFO,
+            DIS_FLAG,
+            CREATE_DATE,
+            UPDATE_DATE,
+            CREATE_USER,
+            UPDATE_USER
+        )
+        VALUES (
+            #{ID,jdbcType=INTEGER},
+            #{AREAId,jdbcType=VARCHAR},
+            #{PAGETitle,jdbcType=VARCHAR},
+            #{PAGEContent,jdbcType=VARCHAR},
+            #{RELEASEDate,jdbcType=DATE},
+            #{INDUSTRYInfo,jdbcType=VARCHAR},
+            #{disFlag,jdbcType=INTEGER},
+            #{createDate,jdbcType=TIMESTAMP},
+            #{updateDate,jdbcType=TIMESTAMP},
+            #{createUser,jdbcType=VARCHAR},
+            #{updateUser,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!-- 更新信息 -->
+    <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity">
+        UPDATE INFO_PAGE
+        <trim prefix="set" suffixOverrides=",">
+            <if test="ID != null">ID=#{ID,jdbcType=INTEGER},</if>
+            <if test="AREAId != null">AREA_ID=#{AREAId,jdbcType=VARCHAR},</if>
+            <if test="PAGETitle != null">PAGE_TITLE=#{PAGETitle,jdbcType=VARCHAR},</if>
+            <if test="PAGEContent != null">PAGE_CONTENT=#{PAGEContent,jdbcType=VARCHAR},</if>
+            <if test="RELEASEDate != null">RELEASE_DATE=#{RELEASEDate,jdbcType=DATE},</if>
+            <if test="INDUSTRYInfo != null">INDUSTRY_INFO=#{INDUSTRYInfo,jdbcType=VARCHAR},</if>
+            <if test="disFlag != null">DIS_FLAG=#{disFlag,jdbcType=INTEGER},</if>
+            <if test="updateDate != null">UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP},</if>
+            <if test="updateUser != null">UPDATE_USER=#{updateUser,jdbcType=VARCHAR},</if>
+
+        </trim>
+        WHERE ID=#{id,jdbcType=INTEGER}
+        AND INFO_PAGE.DIS_FLAG = 0
+    </update>
+
+</mapper>

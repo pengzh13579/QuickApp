@@ -20,11 +20,11 @@ public interface WxUserService {
     int insert(WxUserEntity info);
 
     /***
-     * 根据ID获得信息
-     * @param id ID
-     * @return 信息
+     * 添加或更新信息
+     * @param info 信息
+     * @return 添加记录数
      */
-    WxUserEntity get(Integer id);
+    void insertOrUpdate(WxUserEntity info);
 
     /***
      * 修改信息
@@ -38,7 +38,7 @@ public interface WxUserService {
      * @param id ID
      * @return 删除记录数
      */
-    int delete(Integer id);
+    int delete(String id);
 
     /***
      * 根据openid获得微信信息

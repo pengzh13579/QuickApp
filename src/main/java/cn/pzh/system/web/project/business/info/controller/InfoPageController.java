@@ -4,7 +4,7 @@ import cn.pzh.system.web.project.common.constant.KeyConstants;
 import cn.pzh.system.web.project.common.constant.ViewConstants;
 import cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
-import cn.pzh.system.web.project.business.info.service.PageService;
+import cn.pzh.system.web.project.business.info.service.InfoPageService;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class InfoPageController {
 
     @Autowired
-    private PageService pageService;
+    private InfoPageService pageService;
 
     /***
      * 列表页面

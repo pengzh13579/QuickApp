@@ -54,10 +54,6 @@ $(function () {
         },
         //数据列
         columns: [{
-          title: "id",
-          field: "id",
-          visible: false
-        },{
             title: "访问令牌",
             field: "accesstoken"
         },{
@@ -92,8 +88,8 @@ $(function () {
             title: "操作",
             field: "empty",
             formatter: function (value, row, index) {
-                var operateHtml = '<button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;';
-                operateHtml = operateHtml + '<button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button>';
+                var operateHtml = '<button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.openid+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;';
+                operateHtml = operateHtml + '<button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.openid+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button>';
                 return operateHtml;
             }
         }]
@@ -101,14 +97,14 @@ $(function () {
 });
 
 
-function edit(id){
+function edit(openid){
     layer.open({
         type: 2,
         title: '修改',
         shadeClose: true,
         shade: false,
         area: ['420px', '280px'],
-        content: '/wxUserController/edit/' + id,
+        content: '/wxUserController/edit/' + openid,
         end: function(index){
             $('#table_list').bootstrapTable("refresh");
         }
@@ -129,13 +125,13 @@ function add(){
     });
 }
 
-function del(id){
+function del(openid){
     layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
         $.ajax({
             type: "POST",
             dataType: "json",
             url: "/wxUserController/delete",
-            data: {id : id},
+            data: {openid : openid},
             success: function(data){
                 layer.msg(data.message);
                 $('#table_list').bootstrapTable("refresh");

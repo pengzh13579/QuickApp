@@ -3,7 +3,7 @@ package cn.pzh.system.web.project.dao.first.mapper.info;
 import cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity;
 import java.util.List;
 
-public interface PageMapper {
+public interface InfoPageMapper {
 
     /***
      * 列表信息查询语句

@@ -45,14 +45,17 @@ public class WxUserServiceImpl implements WxUserService {
         return wxUserMapper.save(user);
     }
 
-    /***
-     * 根据ID获得信息
-     * @param id ID
-     * @return 信息
-     */
     @Override
-    public WxUserEntity get(Integer id) {
-        return wxUserMapper.selectUserById(id);
+    @Transactional (readOnly = false)
+    public void insertOrUpdate(WxUserEntity info) {
+
+        // 根据OPENID获得信息
+        WxUserEntity user = wxUserMapper.getWxUserByOpenId(info.getOpenid());
+        if (user == null) {
+            wxUserMapper.save(info);
+        } else {
+            wxUserMapper.update(info);
+        }
     }
 
     /***
@@ -73,10 +76,10 @@ public class WxUserServiceImpl implements WxUserService {
      */
     @Override
     @Transactional (readOnly = false)
-    public int delete(Integer id) {
+    public int delete(String id) {
 
         // 根据ID获得信息
-        WxUserEntity user = wxUserMapper.selectUserById(id);
+        WxUserEntity user = wxUserMapper.getWxUserByOpenId(id);
 
         // 更新信息
         return wxUserMapper.update(user);
