@@ -3,12 +3,13 @@
 <mapper namespace="cn.pzh.system.web.project.dao.first.mapper.info.InfoPageMapper">
 
     <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity" >
-        <result column="ID" property="ID" jdbcType="INTEGER" />
-        <result column="AREA_ID" property="AREAId" jdbcType="VARCHAR" />
-        <result column="PAGE_TITLE" property="PAGETitle" jdbcType="VARCHAR" />
-        <result column="PAGE_CONTENT" property="PAGEContent" jdbcType="VARCHAR" />
-        <result column="RELEASE_DATE" property="RELEASEDate" jdbcType="DATE" />
-        <result column="INDUSTRY_INFO" property="INDUSTRYInfo" jdbcType="VARCHAR" />
+        <result column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="AREA_ID" property="areaId" jdbcType="VARCHAR" />
+        <result column="AREA_FLAG" property="areaFlag" jdbcType="VARCHAR" />
+        <result column="PAGE_TITLE" property="pageTitle" jdbcType="VARCHAR" />
+        <result column="PAGE_CONTENT" property="pageContent" jdbcType="VARCHAR" />
+        <result column="RELEASE_DATE" property="releaseDate" jdbcType="DATE" />
+        <result column="INDUSTRY_INFO" property="industryInfo" jdbcType="VARCHAR" />
         <result column="DIS_FLAG" property="disFlag" jdbcType="INTEGER" />
         <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
         <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP" />
@@ -20,6 +21,7 @@
     <sql id="selectColumn">
         INFO_PAGE.ID,
         INFO_PAGE.AREA_ID,
+        INFO_PAGE.AREA_FLAG,
         INFO_PAGE.PAGE_TITLE,
         INFO_PAGE.PAGE_CONTENT,
         INFO_PAGE.RELEASE_DATE,
@@ -46,11 +48,11 @@
     </select>
 
     <!-- 根据ID查询信息 -->
-    <select id="selectPageById" parameterType="Integer" resultMap="BaseResultMap">
+    <select id="selectPageById" parameterType="String" resultMap="BaseResultMap">
         SELECT
         <include refid="selectColumn"></include>
         FROM INFO_PAGE
-        WHERE INFO_PAGE.ID = #{id,jdbcType=INTEGER}
+        WHERE INFO_PAGE.ID = #{id,jdbcType=VARCHAR}
         AND INFO_PAGE.DIS_FLAG = 0
     </select>
 
@@ -59,6 +61,7 @@
         INSERT INTO INFO_PAGE (
             ID,
             AREA_ID,
+            AREA_FLAG,
             PAGE_TITLE,
             PAGE_CONTENT,
             RELEASE_DATE,
@@ -72,12 +75,13 @@
         VALUES
         <foreach collection="list" item="item" index= "index" separator =",">
         (
-            #{item.ID,jdbcType=INTEGER},
-            #{item.AREAId,jdbcType=VARCHAR},
-            #{item.PAGETitle,jdbcType=VARCHAR},
-            #{item.PAGEContent,jdbcType=VARCHAR},
-            #{item.RELEASEDate,jdbcType=DATE},
-            #{item.INDUSTRYInfo,jdbcType=VARCHAR},
+            #{item.id,jdbcType=VARCHAR},
+            #{item.areaId,jdbcType=VARCHAR},
+            #{item.areaFlag,jdbcType=VARCHAR},
+            #{item.pageTitle,jdbcType=VARCHAR},
+            #{item.pageContent,jdbcType=VARCHAR},
+            #{item.releaseDate,jdbcType=DATE},
+            #{item.industryInfo,jdbcType=VARCHAR},
             #{item.disFlag,jdbcType=INTEGER},
             #{item.createDate,jdbcType=TIMESTAMP},
             #{item.updateDate,jdbcType=TIMESTAMP},
@@ -92,6 +96,7 @@
         INSERT INTO INFO_PAGE (
             ID,
             AREA_ID,
+            AREA_FLAG,
             PAGE_TITLE,
             PAGE_CONTENT,
             RELEASE_DATE,
@@ -103,12 +108,13 @@
             UPDATE_USER
         )
         VALUES (
-            #{ID,jdbcType=INTEGER},
-            #{AREAId,jdbcType=VARCHAR},
-            #{PAGETitle,jdbcType=VARCHAR},
-            #{PAGEContent,jdbcType=VARCHAR},
-            #{RELEASEDate,jdbcType=DATE},
-            #{INDUSTRYInfo,jdbcType=VARCHAR},
+            #{id,jdbcType=VARCHAR},
+            #{areaId,jdbcType=VARCHAR},
+            #{areaFlag,jdbcType=VARCHAR},
+            #{pageTitle,jdbcType=VARCHAR},
+            #{pageContent,jdbcType=VARCHAR},
+            #{releaseDate,jdbcType=DATE},
+            #{industryInfo,jdbcType=VARCHAR},
             #{disFlag,jdbcType=INTEGER},
             #{createDate,jdbcType=TIMESTAMP},
             #{updateDate,jdbcType=TIMESTAMP},
@@ -121,18 +127,19 @@
     <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity">
         UPDATE INFO_PAGE
         <trim prefix="set" suffixOverrides=",">
-            <if test="ID != null">ID=#{ID,jdbcType=INTEGER},</if>
-            <if test="AREAId != null">AREA_ID=#{AREAId,jdbcType=VARCHAR},</if>
-            <if test="PAGETitle != null">PAGE_TITLE=#{PAGETitle,jdbcType=VARCHAR},</if>
-            <if test="PAGEContent != null">PAGE_CONTENT=#{PAGEContent,jdbcType=VARCHAR},</if>
-            <if test="RELEASEDate != null">RELEASE_DATE=#{RELEASEDate,jdbcType=DATE},</if>
-            <if test="INDUSTRYInfo != null">INDUSTRY_INFO=#{INDUSTRYInfo,jdbcType=VARCHAR},</if>
+            <if test="id != null">ID=#{id,jdbcType=INTEGER},</if>
+            <if test="areaId != null">AREA_ID=#{areaId,jdbcType=VARCHAR},</if>
+            <if test="areaFlag != null">AREA_FLAG=#{areaFlag,jdbcType=VARCHAR},</if>
+            <if test="pageTitle != null">PAGE_TITLE=#{pageTitle,jdbcType=VARCHAR},</if>
+            <if test="pageContent != null">PAGE_CONTENT=#{pageContent,jdbcType=VARCHAR},</if>
+            <if test="releaseDate != null">RELEASE_DATE=#{releaseDate,jdbcType=DATE},</if>
+            <if test="industryInfo != null">INDUSTRY_INFO=#{industryInfo,jdbcType=VARCHAR},</if>
             <if test="disFlag != null">DIS_FLAG=#{disFlag,jdbcType=INTEGER},</if>
             <if test="updateDate != null">UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP},</if>
             <if test="updateUser != null">UPDATE_USER=#{updateUser,jdbcType=VARCHAR},</if>
 
         </trim>
-        WHERE ID=#{id,jdbcType=INTEGER}
+        WHERE ID=#{id,jdbcType=VARCHAR}
         AND INFO_PAGE.DIS_FLAG = 0
     </update>
 

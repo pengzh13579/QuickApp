@@ -51,7 +51,7 @@ public class InfoPageServiceImpl implements InfoPageService {
      * @return 信息
      */
     @Override
-    public InfoPageEntity get(Integer id) {
+    public InfoPageEntity get(String id) {
         return pageMapper.selectPageById(id);
     }
 
@@ -74,7 +74,7 @@ public class InfoPageServiceImpl implements InfoPageService {
      */
     @Override
     @Transactional (readOnly = false)
-    public int delete(Integer id) {
+    public int delete(String id) {
 
         // 根据ID获得信息
         InfoPageEntity page = pageMapper.selectPageById(id);

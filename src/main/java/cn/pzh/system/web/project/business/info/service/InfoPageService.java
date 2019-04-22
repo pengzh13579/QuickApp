@@ -24,7 +24,7 @@ public interface InfoPageService {
      * @param id ID
      * @return 信息
      */
-    InfoPageEntity get(Integer id);
+    InfoPageEntity get(String id);
 
     /***
      * 修改信息
@@ -38,5 +38,5 @@ public interface InfoPageService {
      * @param id ID
      * @return 删除记录数
      */
-    int delete(Integer id);
+    int delete(String id);
 }

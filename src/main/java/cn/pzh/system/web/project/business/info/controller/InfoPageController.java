@@ -47,7 +47,7 @@ public class InfoPageController {
      * @return 修改页面
      */
     @RequestMapping("/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
+    public String edit(@PathVariable String id, Model model) {
         model.addAttribute("info", pageService.get(id));
         return "/info/page/page_form";
     }
@@ -59,7 +59,7 @@ public class InfoPageController {
      * @return 信息页面
      */
     @RequestMapping("/info/{id}")
-    public String info(@PathVariable Integer id, Model model) {
+    public String info(@PathVariable String id, Model model) {
         model.addAttribute("info", pageService.get(id));
         return "/info/page/page_read_form";
     }
@@ -142,7 +142,7 @@ public class InfoPageController {
      * @return 删除结果
      */
     @RequestMapping("/delete")
-    public AjaxJson delete(Integer id) {
+    public AjaxJson delete(String id) {
 
         AjaxJson j = new AjaxJson();
 

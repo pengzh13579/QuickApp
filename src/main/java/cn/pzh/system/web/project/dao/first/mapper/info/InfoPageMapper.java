@@ -17,7 +17,7 @@ public interface InfoPageMapper {
      * @param id ID
      * @return 信息
      */
-    InfoPageEntity selectPageById(Integer id);
+    InfoPageEntity selectPageById(String id);
 
     /***
      * 批量保存信息

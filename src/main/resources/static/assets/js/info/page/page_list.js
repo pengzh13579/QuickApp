@@ -46,7 +46,7 @@ $(function () {
               title: '信息',
               shadeClose: true,
               shade: false,
-              area: ['420px', '280px'],
+              area: ['920px', '650px'],
               content: '/infoPageController/info/' + row.id,
               end: function(index){
               }
@@ -58,23 +58,20 @@ $(function () {
           field: "id",
           visible: false
         },{
-            title: "",
-            field: "ID"
-        },{
             title: "地区",
-            field: "AREAId"
+            field: "areaId"
+        },{
+            title: "政策等级",
+            field: "areaFlag"
         },{
             title: "文章标题",
-            field: "PAGETitle"
-        },{
-            title: "文章内容",
-            field: "PAGEContent"
+            field: "pageTitle"
         },{
             title: "发布日期",
-            field: "RELEASEDate"
+            field: "releaseDate"
         },{
             title: "所属行业",
-            field: "INDUSTRYInfo"
+            field: "industryInfo"
         },{
           title: "更新时间",
           field: "updateDate",

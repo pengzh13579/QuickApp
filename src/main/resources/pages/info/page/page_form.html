@@ -23,43 +23,42 @@
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="frm" method="post">
                         <input type="hidden" id="id" name="id" th:value="${info?.id}"/>
-
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label"></label>
-                                        <div class="col-xs-6">
-                                        <input id="ID" name="ID" class="form-control" type="text" th:value="${info?.ID}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">地区</label>
-                                        <div class="col-xs-6">
-                                        <input id="AREAId" name="AREAId" class="form-control" type="text" th:value="${info?.AREAId}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">文章标题</label>
-                                        <div class="col-xs-6">
-                                        <input id="PAGETitle" name="PAGETitle" class="form-control" type="text" th:value="${info?.PAGETitle}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">文章内容</label>
-                                        <div class="col-xs-6">
-                                        <input id="PAGEContent" name="PAGEContent" class="form-control" type="text" th:value="${info?.PAGEContent}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">发布日期</label>
-                                        <div class="col-xs-6">
-                                        <input id="RELEASEDate" name="RELEASEDate" class="form-control" type="text" th:value="${info?.RELEASEDate}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">所属行业</label>
-                                        <div class="col-xs-6">
-                                        <input id="INDUSTRYInfo" name="INDUSTRYInfo" class="form-control" type="text" th:value="${info?.INDUSTRYInfo}"/>
-                                        </div>
-                                    </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label"></label>
+                            <div class="col-xs-6">
+                            <input id="id" name="id" class="form-control" type="text" th:value="${info?.id}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">地区</label>
+                            <div class="col-xs-6">
+                            <input id="areaId" name="areaId" class="form-control" type="text" th:value="${info?.areaId}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">文章标题</label>
+                            <div class="col-xs-6">
+                            <input id="pageTitle" name="pageTitle" class="form-control" type="text" th:value="${info?.pageTitle}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">文章内容</label>
+                            <div class="col-xs-6">
+                            <input id="pageContent" name="pageContent" class="form-control" type="text" th:value="${info?.pageContent}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">发布日期</label>
+                            <div class="col-xs-6">
+                            <input id="releaseDate" name="releaseDate" class="form-control" type="text" th:value="${info?.releaseDate}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">所属行业</label>
+                            <div class="col-xs-6">
+                            <input id="industryInfo" name="industryInfo" class="form-control" type="text" th:value="${info?.industryInfo}"/>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="col-xs-5 col-xs-offset-3">
                                 <button class="btn btn-primary" type="submit">提交</button>

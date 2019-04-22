@@ -3514,13 +3514,13 @@ CREATE TABLE `FIX_VILLAGE`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `INFO_PAGE`;
 CREATE TABLE `INFO_PAGE`  (
-  `ID` int(11) NOT NULL,
+  `ID` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '抓取日期+地区标记+地区(17+1+12)',
   `AREA_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '地区',
-  `AREA_FLAG` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地区标记：1省级，2市级',
+  `AREA_FLAG` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '地区标记：1省级，2市级',
   `PAGE_TITLE` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文章标题',
   `PAGE_CONTENT` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文章内容',
   `RELEASE_DATE` date NOT NULL COMMENT '发布日期',
-  `INDUSTRY_INFO` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '所属行业',
+  `INDUSTRY_INFO` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '所属行业(废弃)',
   `DIS_FLAG` int(1) NOT NULL DEFAULT 0 COMMENT '删除标记：0：有效1：无效',
   `CREATE_DATE` datetime(0) NOT NULL COMMENT '创建日期',
   `UPDATE_DATE` datetime(0) NOT NULL COMMENT '更新日期',

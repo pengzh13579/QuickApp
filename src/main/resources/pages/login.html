@@ -32,8 +32,8 @@
             </div>
             <form method="post" action="/systemUserController/userLogin" id="frm">
                 <h4 class="no-margins">登录：</h4>
-                <input th:value="${userName}" type="text" class="form-control uname" name="userName" id="userName" placeholder="用户名" />
-                <input type="password" class="form-control pword m-b" name="password" id="password"  placeholder="密码" />
+                <input th:value="${userName}" type="text" class="form-control uname" name="userName" id="userName" placeholder="用户名" value="admin"/>
+                <input type="password" class="form-control pword m-b" name="password" id="password"  placeholder="密码"  value="111111"/>
                 <div class="row" th:style="${validateFlag} == null ? 'display: none' : ''">
                     <div class="col-xs-6">
                         <img id="loginValidateCode" height="35" width="130"  style="cursor: pointer;margin-top:12px" src="/commonController/loginValidateCode" onclick="uploadLoginValidateCode();"/>

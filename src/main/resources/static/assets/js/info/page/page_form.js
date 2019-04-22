@@ -1,25 +1,25 @@
 $(function () {
   $("#frm").validate({
     rules: {
-      ID: {
+      id: {
         required: true
       },
-      AREAId: {
+      areaId: {
         required: true,
         maxlength: 20
       },
-      PAGETitle: {
+      pageTitle: {
         required: true,
         maxlength: 255
       },
-      PAGEContent: {
+      pageContent: {
         required: true,
         maxlength: 65535
       },
-      RELEASEDate: {
+      releaseDate: {
         required: true
       },
-      INDUSTRYInfo: {
+      industryInfo: {
         maxlength: 100
       }
     },

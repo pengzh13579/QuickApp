@@ -9,10 +9,11 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode (callSuper = true)
 public class InfoPageEntity extends CommonEntity implements Serializable {
-    private Integer ID;
-    private String AREAId;
-    private String PAGETitle;
-    private String PAGEContent;
-    private Date RELEASEDate;
-    private String INDUSTRYInfo;
+    private String id;
+    private String areaId;
+    private String areaFlag;
+    private String pageTitle;
+    private String pageContent;
+    private Date releaseDate;
+    private String industryInfo;
 }
