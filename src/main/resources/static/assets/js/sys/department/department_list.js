@@ -79,6 +79,7 @@ $(function () {
         },
         messages: {},
         submitHandler: function (form) {
+            var loadIndex = layer.load(0, {shade: [0.3, '#C6C2B6']})
             var url = "/systemDepartmentController/addDepartment";
             if ($('#id').val() != "") {
                 var url = "/systemDepartmentController/editDepartment";
@@ -91,6 +92,9 @@ $(function () {
                 success: function (data) {
                     $('#department_tree').jstree(true).refresh();
                     layer.msg(data.msg);
+                },
+                complete: function(){
+                    parent.layer.close(loadIndex);
                 }
             });
         }

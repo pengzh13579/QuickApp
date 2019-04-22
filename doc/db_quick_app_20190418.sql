@@ -396,7 +396,7 @@ DROP TABLE IF EXISTS `FIX_DICTIONARY`;
 CREATE TABLE `FIX_DICTIONARY`  (
   `ID` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `PID` int(10) NOT NULL COMMENT '父级字典',
-  `DICTIONARY_CODE` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '编码',
+  `DICTIONARY_CODE` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编码',
   `DICTIONARY_NAME` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称',
   `DICTIONARY_VALUE` int(5) NULL DEFAULT NULL COMMENT '值',
   `HAS_EMPTY` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否存在空值',
@@ -425,6 +425,10 @@ INSERT INTO `FIX_DICTIONARY` VALUES (9, 0, 'user_flag', '用户状态', NULL, '0
 INSERT INTO `FIX_DICTIONARY` VALUES (10, 9, '', '激活', 0, '0', 1, '用户状态-激活', 0, '2019-03-11 20:06:16', '2019-03-11 20:06:16', 'admin', 'admin');
 INSERT INTO `FIX_DICTIONARY` VALUES (11, 9, '', '锁定', 2, '0', 3, '用户状态-锁定', 0, '2019-03-11 20:06:36', '2019-03-11 20:06:36', 'admin', 'admin');
 INSERT INTO `FIX_DICTIONARY` VALUES (12, 9, '', '删除', 1, '0', 2, '用户状态-删除', 0, '2019-03-11 20:06:51', '2019-03-11 20:06:51', 'admin', 'admin');
+INSERT INTO `fix_dictionary` VALUES (14, 0, 'industry_code', '行业代码', NULL, '0', 4, '行业代码', 0, '2019-04-22 14:24:28', '2019-04-22 14:24:28', 'admin', 'admin');
+INSERT INTO `fix_dictionary` VALUES (15, 14, 'industry_code', '全行业', 0, '0', 1, '行业代码-全行业', 0, '2019-04-22 14:37:27', '2019-04-22 14:37:27', 'admin', 'admin');
+INSERT INTO `fix_dictionary` VALUES (16, 14, 'industry_code', '互联网', 1, '0', 1, '行业代码-互联网', 0, '2019-04-22 14:37:45', '2019-04-22 14:37:45', 'admin', 'admin');
+INSERT INTO `fix_dictionary` VALUES (17, 14, 'industry_code', '工业', 2, '0', 2, '行业代码-工业', 0, '2019-04-22 15:52:14', '2019-04-22 15:52:14', 'admin', 'admin');
 
 -- ----------------------------
 -- Table structure for FIX_DISTRICT
@@ -3518,6 +3522,7 @@ CREATE TABLE `INFO_PAGE`  (
   `AREA_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '地区',
   `AREA_FLAG` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '地区标记：1省级，2市级',
   `PAGE_TITLE` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文章标题',
+  `PAGE_DESCRIBED` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文章摘要',
   `PAGE_CONTENT` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文章内容',
   `RELEASE_DATE` date NOT NULL COMMENT '发布日期',
   `INDUSTRY_INFO` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '所属行业(废弃)',
@@ -3879,5 +3884,15 @@ INSERT INTO `wx_user` VALUES ('oKw_x0McoirE6zeF7XsYwoEOfw-c', 'IxkJ8qU5YnHqci3aj
 INSERT INTO `wx_user` VALUES ('oKw_x0Oi73jGVQ9wxBasBkF4a-eY', '/FyUCCsjeo/g7mLMcFZAoA==', 'rdgztest_BWHMAZ', '', '2017-08-11 12:49:11', '', '', 0, NULL, NULL);
 INSERT INTO `wx_user` VALUES ('oR6790EE2Ue9CwDAAiYj-Z4cHCrA', 'mGaXurY0c1lRhsehD0whWg==', NULL, NULL, '2019-04-19 13:12:03', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `wx_user` VALUES ('test123', '8ByxGWAJBk_R4Ul7hGbIW9YHDUaP3-36mDy8sqChT4dOuaUX1T3FhedXq9BWnKFUFAvOMUgW6GSKUAhZQRlzqJ5nO3faIMNZzDpc7okTOno', '安然', 'http://wx.qlogo.cn/mmopen/Qtlt1z4oEAXxiaNSvQCWuia6UHMyQgs1ricolviab4Cwf4ROpcyg7qRLtsNJWFia6LQyDqXXmtqv21W2pz8lvqgEibPpZnHyoncGkic/0', '2017-05-16 17:14:57', '河北', '石家庄', 0, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for info_page_industry
+-- ----------------------------
+DROP TABLE IF EXISTS `info_page_industry`;
+CREATE TABLE `info_page_industry`  (
+  `industry_id` int(11) NOT NULL COMMENT '所属行业ID，从数据字典取值',
+  `page_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'info_page的ID',
+  PRIMARY KEY (`industry_id`, `page_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '行业页面n对1关系表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

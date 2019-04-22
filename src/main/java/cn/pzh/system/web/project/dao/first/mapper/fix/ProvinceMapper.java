@@ -1,6 +1,8 @@
 package cn.pzh.system.web.project.dao.first.mapper.fix;
 
 import cn.pzh.system.web.project.dao.first.entity.fix.FixedProvinceEntity;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface ProvinceMapper {
@@ -16,7 +18,7 @@ public interface ProvinceMapper {
      * @param id ID
      * @return 信息
      */
-    FixedProvinceEntity selectProvinceById(String id);
+    FixedProvinceEntity selectProvinceById(@Param("id")String id);
 
     /***
      * 批量保存信息

@@ -1,6 +1,8 @@
 package cn.pzh.system.web.project.dao.first.mapper.fix;
 
 import cn.pzh.system.web.project.dao.first.entity.fix.FixedDistrictEntity;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface DistrictMapper {
@@ -10,14 +12,14 @@ public interface DistrictMapper {
      * @param id 父ID
      * @return 列表
      */
-    List<FixedDistrictEntity> listDistricts(String id);
+    List<FixedDistrictEntity> listDistricts(@Param("id")String id);
 
     /***
      * 根据ID查询信息
      * @param id ID
      * @return 信息
      */
-    FixedDistrictEntity selectDistrictById(String id);
+    FixedDistrictEntity selectDistrictById(@Param("id")String id);
 
     /***
      * 批量保存信息

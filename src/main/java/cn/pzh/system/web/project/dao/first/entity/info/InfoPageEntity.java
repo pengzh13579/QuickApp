@@ -11,8 +11,10 @@ import java.util.Date;
 public class InfoPageEntity extends CommonEntity implements Serializable {
     private String id;
     private String areaId;
+    private String areaName;
     private String areaFlag;
     private String pageTitle;
+    private String pageDescribed;
     private String pageContent;
     private Date releaseDate;
     private String industryInfo;

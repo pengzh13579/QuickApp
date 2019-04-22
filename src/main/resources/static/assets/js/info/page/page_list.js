@@ -59,16 +59,25 @@ $(function () {
           visible: false
         },{
             title: "地区",
-            field: "areaId"
+            field: "areaName"
         },{
             title: "政策等级",
-            field: "areaFlag"
+            field: "areaFlag",
+            formatter: function (value, row, index) {
+                if (value == '1') {
+                    return '<span class="label label-warning">省级</span>';
+                }
+                return '<span class="label label-primary">市级</span>';
+            }
         },{
             title: "文章标题",
             field: "pageTitle"
         },{
             title: "发布日期",
-            field: "releaseDate"
+            field: "releaseDate",
+            formatter: function (value, row, index) {
+                return changeDateFormat(value)
+            }
         },{
             title: "所属行业",
             field: "industryInfo"

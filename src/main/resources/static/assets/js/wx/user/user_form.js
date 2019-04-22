@@ -29,6 +29,7 @@ $(function () {
     },
     messages: {},
     submitHandler: function (form) {
+      var loadIndex = layer.load(0, {shade: [0.3, '#C6C2B6']});
       var url = "/wxUserController/addUser";
       if ($('#id').val() != "") {
         var url = "/wxUserController/editUser";
@@ -45,6 +46,9 @@ $(function () {
               parent.layer.close(index);
             }
           });
+        },
+        complete: function(){
+          parent.layer.close(loadIndex);
         }
       });
     }

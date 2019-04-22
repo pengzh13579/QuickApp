@@ -5,8 +5,10 @@
     <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity" >
         <result column="ID" property="id" jdbcType="VARCHAR" />
         <result column="AREA_ID" property="areaId" jdbcType="VARCHAR" />
+        <result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
         <result column="AREA_FLAG" property="areaFlag" jdbcType="VARCHAR" />
         <result column="PAGE_TITLE" property="pageTitle" jdbcType="VARCHAR" />
+        <result column="PAGE_DESCRIBED" property="pageDescribed" jdbcType="VARCHAR" />
         <result column="PAGE_CONTENT" property="pageContent" jdbcType="VARCHAR" />
         <result column="RELEASE_DATE" property="releaseDate" jdbcType="DATE" />
         <result column="INDUSTRY_INFO" property="industryInfo" jdbcType="VARCHAR" />
@@ -23,9 +25,17 @@
         INFO_PAGE.AREA_ID,
         INFO_PAGE.AREA_FLAG,
         INFO_PAGE.PAGE_TITLE,
-        INFO_PAGE.PAGE_CONTENT,
+        INFO_PAGE.PAGE_DESCRIBED,
         INFO_PAGE.RELEASE_DATE,
-        INFO_PAGE.INDUSTRY_INFO,
+        (
+            SELECT
+                GROUP_CONCAT(FIX_DICTIONARY.DICTIONARY_NAME ORDER BY FIX_DICTIONARY.DICTIONARY_VALUE ASC)
+            FROM FIX_DICTIONARY FIX_DICTIONARY
+            LEFT JOIN INFO_PAGE_INDUSTRY INFO_PAGE_INDUSTRY
+            ON FIX_DICTIONARY.DICTIONARY_VALUE = INFO_PAGE_INDUSTRY.INDUSTRY_ID
+            AND FIX_DICTIONARY.DICTIONARY_CODE='industry_code'
+            WHERE INFO_PAGE_INDUSTRY.PAGE_ID=INFO_PAGE.ID GROUP BY INFO_PAGE.ID
+        ) AS INDUSTRY_INFO,
         INFO_PAGE.DIS_FLAG,
         INFO_PAGE.CREATE_DATE,
         INFO_PAGE.UPDATE_DATE,
@@ -42,16 +52,33 @@
     <!-- 列表信息查询语句 -->
     <select id="listPages" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity" resultMap="BaseResultMap">
         SELECT
-        <include refid="selectColumn"></include>
-        FROM INFO_PAGE
+        <include refid="selectColumn"></include>,
+        CASE AREA_FLAG
+        WHEN '1' THEN FIX_PROVINCE.PROVINCE_NAME
+        WHEN '2' THEN FIX_COUNTY.COUNTY_NAME
+        END AREA_NAME
+        FROM INFO_PAGE INFO_PAGE
+        LEFT JOIN FIX_PROVINCE FIX_PROVINCE
+        ON INFO_PAGE.AREA_ID = CONCAT(FIX_PROVINCE.PROVINCE_ID, '0000000000')
+        LEFT JOIN FIX_COUNTY FIX_COUNTY
+        ON INFO_PAGE.AREA_ID = FIX_COUNTY.COUNTY_ID
         <include refid="whereCause"></include>
     </select>
 
     <!-- 根据ID查询信息 -->
     <select id="selectPageById" parameterType="String" resultMap="BaseResultMap">
         SELECT
-        <include refid="selectColumn"></include>
-        FROM INFO_PAGE
+        <include refid="selectColumn"></include>,
+        INFO_PAGE.PAGE_CONTENT,
+        CASE AREA_FLAG
+        WHEN '1' THEN fix_province.PROVINCE_NAME
+        WHEN '2' THEN fix_county.COUNTY_NAME
+        END AREA_NAME
+        FROM INFO_PAGE INFO_PAGE
+        LEFT JOIN FIX_PROVINCE FIX_PROVINCE
+        ON INFO_PAGE.AREA_ID = CONCAT(FIX_PROVINCE.PROVINCE_ID, '0000000000')
+        LEFT JOIN FIX_COUNTY FIX_COUNTY
+        ON INFO_PAGE.AREA_ID = FIX_COUNTY.COUNTY_ID
         WHERE INFO_PAGE.ID = #{id,jdbcType=VARCHAR}
         AND INFO_PAGE.DIS_FLAG = 0
     </select>
@@ -63,6 +90,7 @@
             AREA_ID,
             AREA_FLAG,
             PAGE_TITLE,
+            PAGE_DESCRIBED,
             PAGE_CONTENT,
             RELEASE_DATE,
             INDUSTRY_INFO,
@@ -79,6 +107,7 @@
             #{item.areaId,jdbcType=VARCHAR},
             #{item.areaFlag,jdbcType=VARCHAR},
             #{item.pageTitle,jdbcType=VARCHAR},
+            #{item.pageDescribed,jdbcType=VARCHAR},
             #{item.pageContent,jdbcType=VARCHAR},
             #{item.releaseDate,jdbcType=DATE},
             #{item.industryInfo,jdbcType=VARCHAR},
@@ -98,6 +127,7 @@
             AREA_ID,
             AREA_FLAG,
             PAGE_TITLE,
+            PAGE_DESCRIBED,
             PAGE_CONTENT,
             RELEASE_DATE,
             INDUSTRY_INFO,
@@ -112,6 +142,7 @@
             #{areaId,jdbcType=VARCHAR},
             #{areaFlag,jdbcType=VARCHAR},
             #{pageTitle,jdbcType=VARCHAR},
+            #{pageDescribed,jdbcType=VARCHAR},
             #{pageContent,jdbcType=VARCHAR},
             #{releaseDate,jdbcType=DATE},
             #{industryInfo,jdbcType=VARCHAR},
@@ -131,6 +162,7 @@
             <if test="areaId != null">AREA_ID=#{areaId,jdbcType=VARCHAR},</if>
             <if test="areaFlag != null">AREA_FLAG=#{areaFlag,jdbcType=VARCHAR},</if>
             <if test="pageTitle != null">PAGE_TITLE=#{pageTitle,jdbcType=VARCHAR},</if>
+            <if test="pageDescribed != null">PAGE_DESCRIBED=#{pageDescribed,jdbcType=VARCHAR},</if>
             <if test="pageContent != null">PAGE_CONTENT=#{pageContent,jdbcType=VARCHAR},</if>
             <if test="releaseDate != null">RELEASE_DATE=#{releaseDate,jdbcType=DATE},</if>
             <if test="industryInfo != null">INDUSTRY_INFO=#{industryInfo,jdbcType=VARCHAR},</if>

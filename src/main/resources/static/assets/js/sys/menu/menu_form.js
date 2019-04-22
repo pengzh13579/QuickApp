@@ -57,6 +57,7 @@ $(function () {
     },
     messages: {},
     submitHandler: function (form) {
+      var loadIndex = layer.load(0, {shade: [0.3, '#C6C2B6']});
       if (zTreeObj.getSelectedNodes().length == 0){
         $('#pid').val(0);
       } else {
@@ -78,6 +79,9 @@ $(function () {
               parent.layer.close(index);
             }
           });
+        },
+        complete: function(){
+          parent.layer.close(loadIndex);
         }
       });
     }

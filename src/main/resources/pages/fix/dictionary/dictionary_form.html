@@ -34,7 +34,7 @@
                         <div class="form-group" th:style="${not isParentFlag} ? 'display:none'">
                             <label class="col-xs-3 control-label">数据字典编码</label>
                             <div class="col-xs-6">
-                                <input id="dictionaryCode" name="dictionaryCode" class="form-control" type="text" th:value="${info?.dictionaryCode}"/>
+                                <input id="dictionaryCode" name="dictionaryCode" class="form-control" type="text" th:value="${isParentFlag ? info?.dictionaryCode : pidCode}"/>
                             </div>
                         </div>
                         <div class="form-group">

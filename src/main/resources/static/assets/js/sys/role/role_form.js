@@ -18,6 +18,7 @@ $(function () {
     },
     messages: {},
     submitHandler: function (form) {
+      var loadIndex = layer.load(0, {shade: [0.3, '#C6C2B6']});
       var url = "/systemRoleController/addRole";
       if ($('#id').val() != "") {
         var url = "/systemRoleController/editRole";
@@ -34,6 +35,9 @@ $(function () {
               parent.layer.close(index);
             }
           });
+        },
+        complete: function(){
+          parent.layer.close(loadIndex);
         }
       });
     }

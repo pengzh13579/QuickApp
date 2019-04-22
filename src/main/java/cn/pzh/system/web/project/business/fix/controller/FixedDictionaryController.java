@@ -44,8 +44,9 @@ public class FixedDictionaryController {
 
         // 子节点的话获取父节点名
         if (pid != 0) {
-            model.addAttribute("pidName", dictionaryService.get(pid)
-                    .getDictionaryName());
+            FixedDictionaryEntity pDictionary = dictionaryService.get(pid);
+            model.addAttribute("pidName", pDictionary.getDictionaryName());
+            model.addAttribute("pidCode", pDictionary.getDictionaryCode());
         }
 
         // 前台传入的父节点ID为0，则为父节点

@@ -58,6 +58,7 @@ $(function () {
 });
 
 function relatedRole() {
+  var loadIndex = layer.load(0, {shade: [0.3, '#C6C2B6']});
   //使用getSelections即可获得，row是json格式的数据
   var rows = $.map($('#role_table_list').bootstrapTable('getSelections'),
       function (row) {
@@ -84,6 +85,9 @@ function relatedRole() {
       if (data.success) {
         parent.layer.close(index);
       }
+    },
+    complete: function(){
+      parent.layer.close(loadIndex);
     }
   });
 }

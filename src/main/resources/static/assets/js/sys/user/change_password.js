@@ -19,6 +19,7 @@ $(function () {
     },
     messages: {},
     submitHandler: function (form) {
+      var loadIndex = layer.load(0, {shade: [0.3, '#C6C2B6']});
       if ($('#newPwd').val() == $('#againPwd').val()) {
         $.ajax({
           type: "POST",
@@ -30,6 +31,9 @@ $(function () {
             if (data.success) {
               window.location.href = "/login";
             }
+          },
+          complete: function(){
+            parent.layer.close(loadIndex);
           }
         });
       } else {
