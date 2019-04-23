@@ -15,6 +15,12 @@ public interface UserService {
      * @return 用户列表信息
      */
     List<SystemUserEntity> listUsers(SystemUserEntity systemUserEntity);
+    /***
+     * 用户列表全部信息查询
+     * @param systemUserEntity 查询实体类
+     * @return 用户列表信息
+     */
+    public List<SystemUserEntity> listAllUsers(SystemUserEntity systemUserEntity);
 
     /***
      * 添加用户信息

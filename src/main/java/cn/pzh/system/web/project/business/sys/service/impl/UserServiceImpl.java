@@ -65,6 +65,16 @@ public class UserServiceImpl implements UserService {
     }
 
     /***
+     * 用户列表全部信息查询
+     * @param systemUserEntity 查询实体类
+     * @return 用户列表信息
+     */
+    @Override
+    public List<SystemUserEntity> listAllUsers(SystemUserEntity systemUserEntity) {
+
+        return userMapper.listUsers(systemUserEntity);
+    }
+    /***
      * 添加用户信息
      * @param userInfo 用户信息
      * @param avatarId 用户头像

@@ -3,6 +3,7 @@ package cn.pzh.system.web.project.business.sys.controller;
 import cn.pzh.system.web.project.common.constant.KeyConstants;
 import cn.pzh.system.web.project.common.constant.MessageConstants;
 import cn.pzh.system.web.project.common.constant.ViewConstants;
+import cn.pzh.system.web.project.common.utils.excelUtils.anno.ExcelExportByAnno;
 import cn.pzh.system.web.project.dao.first.entity.monitor.LoginLogEntity;
 import cn.pzh.system.web.project.dao.first.entity.sys.SystemUserEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
@@ -11,11 +12,14 @@ import cn.pzh.system.web.project.business.fix.service.ProvinceAreaService;
 import cn.pzh.system.web.project.business.sys.service.*;
 import cn.pzh.system.web.project.business.sys.vo.ChangePasswordVO;
 import cn.pzh.system.web.project.business.sys.vo.UserInfoVO;
+import cn.pzh.system.web.project.dao.first.mapper.sys.UserMapper;
 import com.alibaba.fastjson.JSONObject;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -51,6 +55,21 @@ public class SystemUserController {
     @RequestMapping("/list")
     public String list() {
         return ViewConstants.USER_LIST;
+    }
+
+    /***
+     * 用户列表页面
+     * @return 用户列表页面
+     */
+    @RequestMapping("/listExport")
+    public void listExport(SystemUserEntity systemUserEntity, HttpServletResponse response) {
+
+        try {
+            ExcelExportByAnno.listToExcel(userService.listAllUsers(systemUserEntity),
+                    SystemUserEntity.class, "用户信息",response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /***

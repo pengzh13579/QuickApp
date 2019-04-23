@@ -196,6 +196,23 @@ function add() {
   });
 }
 
+function export_user() {
+  if ($('#exportExcel').length > 0) {
+    $('#exportExcel').remove();
+  }
+  var form = $('<form id="exportExcel" style="display:none"></form>');
+  var input1 = $('<input>').attr('name','disFlag').attr('value',$('#disFlagSearch').val())
+  form.append($('<input>').attr('name','userName').attr('value',$('#userNameSearch').val()));
+  form.append($('<input>').attr('name','realName').attr('value',$('#realNameSearch').val()));
+  form.append($('<input>').attr('name','sex').attr('value',$('#sexSearch').val()));
+  form.append($('<input>').attr('name','createDateStart').attr('value',$('#createDateStart').val()));
+  form.append($('<input>').attr('name','createDateEnd').attr('value',$('#createDateEnd').val()));
+  form.attr('action',"/systemUserController/listExport");
+  form.attr('method', 'post')
+  $(document.body).append(form);
+  form.submit();
+}
+
 function related_role(id) {
   layer.open({
     type: 2,
