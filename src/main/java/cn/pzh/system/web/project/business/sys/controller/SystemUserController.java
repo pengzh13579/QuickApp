@@ -4,6 +4,7 @@ import cn.pzh.system.web.project.common.constant.KeyConstants;
 import cn.pzh.system.web.project.common.constant.MessageConstants;
 import cn.pzh.system.web.project.common.constant.ViewConstants;
 import cn.pzh.system.web.project.common.utils.excelUtils.anno.ExcelExportByAnno;
+import cn.pzh.system.web.project.common.utils.excelUtils.anno.ExcelImportByAnno;
 import cn.pzh.system.web.project.dao.first.entity.monitor.LoginLogEntity;
 import cn.pzh.system.web.project.dao.first.entity.sys.SystemUserEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
@@ -221,6 +222,23 @@ public class SystemUserController {
         }
         j.setMsg("用户添加失败，请联系管理员");
         return j;
+    }
+
+    /***
+     * 批量添加用户信息
+     * @param userInfo 页面用户信息
+     * @param uploadFile 头像文件
+     * @return 添加结果
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     */
+    @RequestMapping(value = "/addUserByExcel")
+    @ResponseBody
+    public AjaxJson addUserByExcel(UserInfoVO userInfo,
+                            @RequestParam(value = "avatar") MultipartFile uploadFile)
+            throws Exception {
+        List<SystemUserEntity> users = ExcelImportByAnno.excelToList(SystemUserEntity.class);
+        return null;
     }
 
     /***
