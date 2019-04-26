@@ -190,4 +190,37 @@
         AND SYS_DEPARTMENT.DIS_FLAG <![CDATA[ <> ]]> 1
     </select>
 
+    <!-- 批量保存角色信息 -->
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO SYS_USER (
+            USER_NAME,
+            REAL_NAME,
+            AVATAR,
+            SEX,
+            PASSWORD,
+            SALT,
+            BIRTHDAY,
+            DIS_FLAG,
+            CREATE_USER,
+            CREATE_DATE,
+            UPDATE_USER,
+            UPDATE_DATE)
+        VALUES
+        <foreach collection="list" item="item" index= "index" separator =",">
+            (
+            #{item.userName,jdbcType=VARCHAR},
+            #{item.realName,jdbcType=VARCHAR},
+            #{item.avatar,jdbcType=VARCHAR},
+            #{item.sex,jdbcType=INTEGER},
+            #{item.password,jdbcType=VARCHAR},
+            #{item.salt,jdbcType=VARCHAR},
+            #{item.birthday,jdbcType=DATE},
+            #{item.disFlag,jdbcType=INTEGER},
+            #{item.createUser,jdbcType=VARCHAR},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.updateUser,jdbcType=VARCHAR},
+            #{item.updateDate,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
 </mapper>

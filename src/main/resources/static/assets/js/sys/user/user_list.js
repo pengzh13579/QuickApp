@@ -9,6 +9,43 @@ $(function () {
     elem: '#createDateEnd', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
     event: 'focus' //响应事件。如果没有传入event，则按照默认的click
   });
+  $("#excelFile").fileinput({
+    language: 'zh', //设置语言
+    uploadUrl: "/systemUserController/addUserByExcel", //上传的地址
+    allowedFileExtensions: ['apk'],//接收的文件后缀
+    uploadAsync: true, //默认异步上传
+    showUpload: false, //是否显示上传按钮
+    showRemove : false, //显示移除按钮
+    showPreview : false, //是否显示预览
+    showCaption: false,//是否显示标题
+    browseClass: "btn", //按钮样式
+    dropZoneEnabled: false,//是否显示拖拽区域
+    maxFileCount: 1, //表示允许同时上传的最大文件个数
+    enctype: 'multipart/form-data',
+    validateInitialCount:false
+  });
+  //异步上传返回结果处理
+  $("#importExcel").validate({
+    submitHandler: function (form) {
+      var loadIndex = layer.load(0, {shade: [0.3, '#C6C2B6']});
+      $.ajaxFileUpload({
+        url: "/systemUserController/addUserByExcel", //用于文件上传的服务器端请求地址
+        secureuri: false, //是否需要安全协议，一般设置为false
+        fileElementId: 'excelFile', //文件上传域的ID
+        cache: false,
+        dataType: 'JSON', //返回值类型 一般设置为json
+        success: function (data) {  //服务器成功响应处理函数
+          // 解决返回值带<pre style="word-wrap: break-word; white-space: pre-wrap;">的问题
+          data = $.parseJSON(data.replace(/<.*?>/ig, ""));
+          layer.closeAll();
+          layer.alert(data.msg);
+        },
+        complete: function () {
+          parent.layer.close(loadIndex);
+        }
+      });
+    }
+  });
   //初始化表格,动态从服务器加载数据
   $("#table_list").bootstrapTable({
     //使用get请求到服务器获取数据
@@ -193,6 +230,14 @@ function add() {
       $('#table_list').bootstrapTable("refresh");
       layer.close(index);
     }
+  });
+}
+
+function import_user() {
+  layer.open({
+    type: 1,
+    area: ['500px'],
+    content: $('#importExcelModel') //这里content是一个DOM，这个元素要放在body根节点下
   });
 }
 

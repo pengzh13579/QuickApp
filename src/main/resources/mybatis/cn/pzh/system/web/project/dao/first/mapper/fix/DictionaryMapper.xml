@@ -58,13 +58,14 @@
         <include refid="whereCause"></include>
     </select>
 
-    <!-- 根据字典CODE查询字典信息 -->
-    <select id="selectDictionaryByCode" parameterType="String" resultMap="BaseResultMap">
+    <!-- 根据字典CODE查询父字典信息 -->
+    <select id="selectParentDictionaryByCode" parameterType="String" resultMap="BaseResultMap">
         SELECT
         <include refid="selectColumn"></include>
         FROM FIX_DICTIONARY
         WHERE FIX_DICTIONARY.DICTIONARY_CODE = #{dictionaryCode,jdbcType=VARCHAR}
         AND FIX_DICTIONARY.DIS_FLAG = 0
+        AND FIX_DICTIONARY.PID = 0
     </select>
 
     <!-- 根据字典ID查询字典信息 -->

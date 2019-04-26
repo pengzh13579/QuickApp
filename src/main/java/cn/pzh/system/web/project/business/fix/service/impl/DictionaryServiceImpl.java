@@ -66,7 +66,7 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     public FixedDictionaryEntity get(String dictionaryCode) {
-        return dictionaryMapper.selectDictionaryByCode(dictionaryCode);
+        return dictionaryMapper.selectParentDictionaryByCode(dictionaryCode);
     }
 
     /***

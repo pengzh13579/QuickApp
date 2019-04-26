@@ -7,4 +7,5 @@ public interface FileService {
 
     String uploadFile(MultipartFile uploadFile, String modelPath) throws IOException;
 
+    void uploadFileToDisk(MultipartFile uploadFile, String modelPath) throws IOException;
 }

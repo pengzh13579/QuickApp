@@ -71,7 +71,3 @@ org:
     # 使用内存存储任务和触发器等信息
     jobStore:
       class: org.quartz.simpl.RAMJobStore
-
-excel:
-  page:
-    total: 1

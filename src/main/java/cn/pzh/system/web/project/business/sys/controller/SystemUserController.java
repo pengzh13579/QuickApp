@@ -3,6 +3,7 @@ package cn.pzh.system.web.project.business.sys.controller;
 import cn.pzh.system.web.project.common.constant.KeyConstants;
 import cn.pzh.system.web.project.common.constant.MessageConstants;
 import cn.pzh.system.web.project.common.constant.ViewConstants;
+import cn.pzh.system.web.project.common.utils.AesUtils;
 import cn.pzh.system.web.project.common.utils.excelUtils.anno.ExcelExportByAnno;
 import cn.pzh.system.web.project.common.utils.excelUtils.anno.ExcelImportByAnno;
 import cn.pzh.system.web.project.dao.first.entity.monitor.LoginLogEntity;
@@ -226,19 +227,36 @@ public class SystemUserController {
 
     /***
      * 批量添加用户信息
-     * @param userInfo 页面用户信息
-     * @param uploadFile 头像文件
+     * @param file 头像文件
+     * @param request request
      * @return 添加结果
      * @throws IOException
      * @throws NoSuchAlgorithmException
      */
     @RequestMapping(value = "/addUserByExcel")
     @ResponseBody
-    public AjaxJson addUserByExcel(UserInfoVO userInfo,
-                            @RequestParam(value = "avatar") MultipartFile uploadFile)
+    public AjaxJson addUserByExcel(@RequestParam(value = "excelFile") MultipartFile file, HttpServletRequest request)
             throws Exception {
-        List<SystemUserEntity> users = ExcelImportByAnno.excelToList(SystemUserEntity.class);
-        return null;
+        AjaxJson j = new AjaxJson();
+
+        // 上传的文件保存
+        fileService.uploadFileToDisk(file, "import");
+
+        String errorMsg = "";
+        List<SystemUserEntity> users = ExcelImportByAnno.excelToList(file, SystemUserEntity.class);
+        for (SystemUserEntity user : users) {
+            // 判断用户名是否重复
+            Boolean checkUserNameFlag = userService.checkRepeatUserName(user.getUserName());
+            if (checkUserNameFlag) {
+                errorMsg += "用户名" + user.getUserName() + "已存在！<br/>";
+                continue;
+            }
+            // 添加用户
+            errorMsg += userService.registration(user);
+        }
+        j.setMsg(errorMsg);
+        j.setSuccess(true);
+        return j;
     }
 
     /***
@@ -288,6 +306,9 @@ public class SystemUserController {
         AjaxJson j = new AjaxJson();
         String view = ViewConstants.LOGIN;
         j.setSuccess(false);
+
+        // 对密码进行解密
+        password = AesUtils.aesDecrypt(password);
 
         // 用户名和密码非空check
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {

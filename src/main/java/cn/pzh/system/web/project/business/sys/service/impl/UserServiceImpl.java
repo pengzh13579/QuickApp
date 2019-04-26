@@ -74,6 +74,33 @@ public class UserServiceImpl implements UserService {
 
         return userMapper.listUsers(systemUserEntity);
     }
+
+    /***
+     * 添加用户信息
+     * @param userEntity 用户信息
+     * @return 添加用户结果
+     */
+    @Override
+    @Transactional (readOnly = false)
+    public String registration(SystemUserEntity userEntity) throws Exception {
+
+
+        // 用户信息盐+密码
+        userEntity.setSalt(ShiroKit.getRandomSalt(5));
+        userEntity.setPassword(ShiroKit.md5("111111", userEntity.getSalt()));
+
+        CommonFieldUtils.setAdminCommon(userEntity, true);
+
+        try {
+            // 保存用户信息
+            userMapper.saveUser(userEntity);
+
+        } catch(Exception e) {
+            return "用户" + userEntity.getUserName() + "添加失败,请联系管理员!<br/>";
+        }
+        return "用户" + userEntity.getUserName() + "添加成功<br/>";
+    }
+
     /***
      * 添加用户信息
      * @param userInfo 用户信息

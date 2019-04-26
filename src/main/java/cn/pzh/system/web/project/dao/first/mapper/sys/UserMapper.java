@@ -18,4 +18,6 @@ public interface UserMapper {
     void updateUser(SystemUserEntity systemUserEntity);
 
     List<SystemUserEntity> listDepartmentUsers(String code);
+    
+    void saveList(List<SystemUserEntity> list);
 }

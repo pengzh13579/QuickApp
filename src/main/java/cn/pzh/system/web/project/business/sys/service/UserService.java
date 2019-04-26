@@ -31,6 +31,13 @@ public interface UserService {
     Boolean registration(UserInfoVO userInfo, String avatarId) throws UnsupportedEncodingException, NoSuchAlgorithmException;
 
     /***
+     * 添加用户信息
+     * @param userEntity 用户信息
+     * @return 添加用户结果
+     */
+    public String registration(SystemUserEntity userEntity) throws Exception;
+
+    /***
      * 用户登录
      * @param userName 用户名
      * @param password 密码

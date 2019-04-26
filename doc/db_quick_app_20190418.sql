@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `COMM_FILE`;
 CREATE TABLE `COMM_FILE`  (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `FILE_NAME` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `FILE_SUFFIX` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `PATH` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -3739,7 +3739,7 @@ CREATE TABLE `SYS_USER`  (
   `ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `USER_NAME` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '登录名',
   `REAL_NAME` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
-  `AVATAR` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像',
+  `AVATAR` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像',
   `SEX` int(1) NOT NULL COMMENT '性别（1：男 2：女）',
   `PASSWORD` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
   `SALT` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '盐',
@@ -3888,11 +3888,54 @@ INSERT INTO `wx_user` VALUES ('test123', '8ByxGWAJBk_R4Ul7hGbIW9YHDUaP3-36mDy8sq
 -- ----------------------------
 -- Table structure for info_page_industry
 -- ----------------------------
-DROP TABLE IF EXISTS `info_page_industry`;
-CREATE TABLE `info_page_industry`  (
-  `industry_id` int(11) NOT NULL COMMENT '所属行业ID，从数据字典取值',
-  `page_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'info_page的ID',
-  PRIMARY KEY (`industry_id`, `page_id`) USING BTREE
+DROP TABLE IF EXISTS `INFO_PAGE_INDUSTRY`;
+CREATE TABLE `INFO_PAGE_INDUSTRY`  (
+  `INDUSTRY_ID` int(11) NOT NULL COMMENT '所属行业ID，从数据字典取值',
+  `PAGE_ID` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'INFO_PAGE的ID',
+  PRIMARY KEY (`INDUSTRY_ID`, `PAGE_ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '行业页面n对1关系表' ROW_FORMAT = Dynamic;
+
+DROP TABLE IF EXISTS `INFO_DISHES`;
+CREATE TABLE `INFO_DISHES`  (
+  `ID` int(11) NOT NULL COMMENT '菜品ID',
+  `DISHES_TYPE` int(5) NULL DEFAULT NULL COMMENT '菜品分类',
+  `DISHES_NAME` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜品名称',
+  `DISHES_PRICE` decimal(10, 2) NULL DEFAULT NULL COMMENT '菜品金额',
+  `DISHES_DISCOUNT` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '菜品是否折扣：0不折扣，1折扣',
+  `DISHES_PAY` decimal(10, 2) NULL DEFAULT NULL COMMENT '折扣后金额',
+  `DISHES_IMAGE` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜品图片',
+  `DISHES_TASTE` int(5) NULL DEFAULT NULL COMMENT '菜品口味',
+  `DISHES_LEVEL` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜品口味程度',
+  `DIS_FLAG` int(1) NOT NULL DEFAULT 0 COMMENT '删除标记：0：有效1：无效',
+  `CREATE_DATE` datetime(0) NOT NULL COMMENT '创建日期',
+  `UPDATE_DATE` datetime(0) NOT NULL COMMENT '更新日期',
+  `CREATE_USER` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建者',
+  `UPDATE_USER` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新者',
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+DROP TABLE IF EXISTS `INFO_PAY`;
+CREATE TABLE `INFO_PAY`  (
+  `ID` int(11) NOT NULL COMMENT '订单ID',
+  `PAY_STATE` int(5) NULL DEFAULT NULL COMMENT '订单状态',
+  `PAY_TYPE` int(5) NULL DEFAULT NULL COMMENT '支付方式',
+  `PAY_AMOUNT` decimal(8, 2) NOT NULL COMMENT '支付金额',
+  `TABLE_NUMBER` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '桌号',
+  `CREATE_DATE` datetime(0) NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+DROP TABLE IF EXISTS `INFO_WX_SHOPPING`;
+CREATE TABLE `INFO_WX_SHOPPING`  (
+  `USER_OPENID` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '微信用户的openid',
+  `DISHES_ID` int(11) NOT NULL COMMENT '菜品ID',
+  `QUANTITY` int(2) NOT NULL DEFAULT 1 COMMENT '菜品数量',
+  `TABLE_NUMBER` int(5) NOT NULL COMMENT '桌号',
+  `DISHES_ADD` int(1) NOT NULL DEFAULT 0 COMMENT '菜品后期加菜0非加菜，1加菜',
+  `CREATE_DATE` datetime(0) NOT NULL COMMENT '创建时间',
+  `BUY_END` int(1) NOT NULL DEFAULT 0 COMMENT '菜品是否付款0未付款，1已付款',
+  `COOKED` int(5) NULL DEFAULT NULL COMMENT '菜品制作状态',
+  `PAY_ID` int(11) NULL DEFAULT NULL COMMENT '订单ID确认订单后插入'
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

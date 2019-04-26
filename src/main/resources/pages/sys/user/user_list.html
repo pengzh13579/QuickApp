@@ -15,6 +15,7 @@
     <link th:href="@{/assets/css/plugins/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
     <link th:href="@{/assets/css/animate.css}" rel="stylesheet"/>
     <link th:href="@{/assets/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/plugins/bootstrap-fileinput/fileinput.min.css}" rel="stylesheet"/>
 
 </head>
 
@@ -30,6 +31,7 @@
                         <button class="btn btn-success " type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
                         <button class="btn btn-success " type="button" onclick="lockUser();"><i class="fa fa-plus"></i>&nbsp;锁定用户</button>
                         <button class="btn btn-success " type="button" onclick="export_user();"><i class="fa fa-plus"></i>&nbsp;导出用户</button>
+                        <button class="btn btn-success " type="button" onclick="import_user();"><i class="fa fa-plus"></i>&nbsp;导入用户</button>
                     </p>
                     <hr/>
                     <div id="toolbar">
@@ -98,6 +100,16 @@
         </div>
     </div>
 
+    <!-- 模态框（Modal） -->
+    <div id="importExcelModel" style="display: none;padding: 20px">
+        <form method="post" id="importExcel" enctype="multipart/form-data" >
+            <div>
+                <label class="control-label">请选择要导入的Excel文件：</label>
+                <input id="excelFile" name="excelFile" type="file" class="file" accept=".xlsx" data-show-preview="false"/>
+                <br/>
+            </div>
+        </form>
+    </div>
     <!-- 全局js -->
     <script th:src="@{/assets/js/jquery.min.js}"></script>
     <script th:src="@{/assets/js/bootstrap.min.js}"></script>
@@ -107,6 +119,10 @@
     <script th:src="@{/assets/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js}"></script>
     <script th:src="@{/assets/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
 
+    <script th:src="@{/assets/js/plugins/validate/jquery.id_validate.min.js}"></script>
+
+    <script th:src="@{/assets/js/plugins/bootstrap-fileinput/fileinput.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/bootstrap-fileinput/fileinput_locale_zh.js}"></script>
     <!-- Peity -->
     <script th:src="@{/assets/js/plugins/peity/jquery.peity.min.js}"></script>
 
@@ -117,6 +133,8 @@
     <script th:src="@{/assets/js/common.js}"></script>
     <script th:src="@{/assets/js/content.js}"></script>
     <script th:src="@{/assets/js/sys/user/user_list.js}"></script>
+
+    <script th:src="@{/assets/js/ajaxfileupload.js}"></script>
 
 </body>
 </html>

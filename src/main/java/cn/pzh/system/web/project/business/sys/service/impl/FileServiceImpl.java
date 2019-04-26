@@ -31,7 +31,54 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional (readOnly = false)
     public String uploadFile(MultipartFile uploadFile, String modelPath) throws IOException {
-        return FileSave(uploadFile, modelPath);
+
+        return FileDbSave(uploadFile, modelPath);
+
+    }
+
+    @Override
+    @Transactional (readOnly = false)
+    public void uploadFileToDisk(MultipartFile uploadFile, String modelPath) throws IOException {
+        FileDbSave(uploadFile, modelPath);
+    }
+
+    /***
+     * 调用保存文件到磁盘的方法并且可以保存文件信息到数据库
+     * @param uploadFile
+     * @param modelPath
+     * @return
+     * @throws IOException
+     */
+    private String FileDbSave(MultipartFile uploadFile, String modelPath) throws IOException {
+
+        //获取文件的文件名
+        String filename = uploadFile.getOriginalFilename();
+
+        //获取文件扩展名
+        String fileSuffix = StringUtils.substringAfterLast(filename, ConfConstants.FILE_SPACE);
+
+        //设定一个序列以作为存储文件名
+        String fileName = UUID.randomUUID().toString() + ConfConstants.FILE_SPACE + fileSuffix;
+
+        boolean saveFlag = FileSave(uploadFile, uploadFile.getOriginalFilename(), modelPath);
+
+        //定义附件实体
+        CommonFileEntity commonFileEntity = new CommonFileEntity();
+        commonFileEntity.setFileName(filename);
+        commonFileEntity.setFileSuffix(fileSuffix);
+
+        // /file/model/file.xxx
+        commonFileEntity.setPath(File.separator
+                + ConfConstants.WEB_RESOURCE_FILE_PATH
+                + File.separator
+                + modelPath
+                + File.separator
+                + fileName);
+        commonFileEntity.setUpdateDate(new Date());
+        commonFileEntity.setUpdateUser(ShiroKit.getUser().getUserName());
+        fileMapper.saveFile(commonFileEntity);
+
+        return saveFlag ? commonFileEntity.getId() : null;
     }
 
     /**
@@ -41,20 +88,11 @@ public class FileServiceImpl implements FileService {
      * @return 是否成功
      * @throws IOException
      */
-    private String FileSave(MultipartFile uploadFile, String modelPath) throws IOException {
+    private boolean FileSave(MultipartFile uploadFile, String fileName, String modelPath) throws IOException {
 
         if (!uploadFile.isEmpty()) {
             //获取文件大小
             Long size = uploadFile.getSize();
-
-            //获取文件的文件名
-            String filename = uploadFile.getOriginalFilename();
-
-            //获取文件扩展名
-            String fileSuffix = StringUtils.substringAfterLast(filename, ConfConstants.FILE_SPACE);
-
-            //设定一个序列以作为存储文件名
-            String fileName = UUID.randomUUID().toString() + ConfConstants.FILE_SPACE + fileSuffix;
 
             //创建保存文件路径的File对象
             File uploadFoler = new File(uploadFileConfig.getReceiveRoot() + modelPath);
@@ -70,25 +108,10 @@ public class FileServiceImpl implements FileService {
             // 把文件重命名，上传到该目录下面，将上传文件写到服务器上指定的文件。
             uploadFile.transferTo(targetFile);
 
-            //定义附件实体
-            CommonFileEntity commonFileEntity = new CommonFileEntity();
-            commonFileEntity.setFileName(filename);
-            commonFileEntity.setFileSuffix(fileSuffix);
-
-            // /file/model/file.xxx
-            commonFileEntity.setPath(File.separator
-                    + ConfConstants.WEB_RESOURCE_FILE_PATH
-                    + File.separator
-                    + modelPath
-                    + File.separator
-                    + fileName);
-            commonFileEntity.setUpdateDate(new Date());
-            commonFileEntity.setUpdateUser(ShiroKit.getUser().getUserName());
-            fileMapper.saveFile(commonFileEntity);
-
-            return commonFileEntity.getId();
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
+
 }
