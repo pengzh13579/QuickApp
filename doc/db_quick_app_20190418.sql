@@ -3524,7 +3524,7 @@ CREATE TABLE `INFO_PAGE`  (
   `PAGE_TITLE` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文章标题',
   `PAGE_DESCRIBED` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文章摘要',
   `PAGE_CONTENT` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文章内容',
-  `RELEASE_DATE` date NOT NULL COMMENT '发布日期',
+  `RELEASE_DATE` datetime(0) NOT NULL COMMENT '发布日期',
   `INDUSTRY_INFO` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '所属行业(废弃)',
   `DIS_FLAG` int(1) NOT NULL DEFAULT 0 COMMENT '删除标记：0：有效1：无效',
   `CREATE_DATE` datetime(0) NOT NULL COMMENT '创建日期',
@@ -3533,6 +3533,16 @@ CREATE TABLE `INFO_PAGE`  (
   `UPDATE_USER` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新者',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '政策信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for info_page_file
+-- ----------------------------
+DROP TABLE IF EXISTS `INFO_PAGE_FILE`;
+CREATE TABLE `INFO_PAGE_FILE`  (
+  `PAGE_ID` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文章info_page的ID',
+  `FILE_URL` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件url',
+  `FILE_NAME` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件名'
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for log_login
@@ -3723,6 +3733,8 @@ CREATE TABLE `SYS_SCHEDULE`  (
   `SCHEDULE_CRON` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务执行周期',
   `SCHEDULE_CODE` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '任务执行代码',
   `SCHEDULE_PARAM` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '任务参数',
+  `SCHEDULE_START` datetime(0) NOT NULL COMMENT '爬取内容开始时间',
+  `SCHEDULE_END` datetime(0) NOT NULL COMMENT '爬取内容结束时间',
   `DIS_FLAG` int(1) NOT NULL DEFAULT 0 COMMENT '删除标记：0：有效1：无效',
   `CREATE_DATE` datetime(0) NOT NULL COMMENT '创建日期',
   `UPDATE_DATE` datetime(0) NOT NULL COMMENT '更新日期',
