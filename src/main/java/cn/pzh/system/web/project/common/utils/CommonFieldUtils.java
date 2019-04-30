@@ -35,10 +35,10 @@ public class CommonFieldUtils {
         //系统日期
         Date systemDate = new Date();
         String user = ShiroKit.getUser().getUserName();
-        entity.setDisFlag(0);
         entity.setUpdateUser(user);
         entity.setUpdateDate(systemDate);
         if (flag) {
+            entity.setDisFlag(0);
             entity.setCreateUser(user);
             entity.setCreateDate(systemDate);
         }
