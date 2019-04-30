@@ -2,7 +2,7 @@ package cn.pzh.system.web.project.business.sys.service.impl;
 
 import cn.pzh.system.web.project.dao.first.entity.sys.SystemScheduleEntity;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
-import cn.pzh.system.web.project.dao.first.mapper.sys.ScheduleMapper;
+import cn.pzh.system.web.project.dao.first.mapper.sys.SystemScheduleMapper;
 import cn.pzh.system.web.project.business.sys.service.SystemScheduleService;
 import java.util.List;
 import com.github.pagehelper.PageHelper;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SystemScheduleServiceImpl implements SystemScheduleService {
 
     @Autowired
-    private ScheduleMapper scheduleMapper;
+    private SystemScheduleMapper scheduleMapper;
 
     /***
      * 自定义定时任务列表信息查询

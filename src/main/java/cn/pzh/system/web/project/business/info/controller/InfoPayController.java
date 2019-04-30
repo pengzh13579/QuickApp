@@ -3,7 +3,7 @@ package cn.pzh.system.web.project.business.info.controller;
 import cn.pzh.system.web.project.common.constant.KeyConstants;
 import cn.pzh.system.web.project.dao.first.entity.info.InfoPayEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
-import cn.pzh.system.web.project.business.info.service.PayService;
+import cn.pzh.system.web.project.business.info.service.InfoPayService;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class InfoPayController {
 
     @Autowired
-    private PayService payService;
+    private InfoPayService payService;
 
     /***
      * 列表页面

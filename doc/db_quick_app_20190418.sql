@@ -3727,21 +3727,21 @@ INSERT INTO `SYS_ROLE` VALUES (2, 2, 'manager', '管理员1', '', NULL, 0, '2018
 -- ----------------------------
 DROP TABLE IF EXISTS `SYS_SCHEDULE`;
 CREATE TABLE `SYS_SCHEDULE`  (
-  `ID` int(11) NOT NULL COMMENT '主键ID',
+  `ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `SCHEDULE_NAME` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务名',
   `SCHEDULE_NAME_CN` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务中文名',
   `SCHEDULE_CRON` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务执行周期',
   `SCHEDULE_CODE` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '任务执行代码',
-  `SCHEDULE_PARAM` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '任务参数',
-  `SCHEDULE_START` datetime(0) NOT NULL COMMENT '爬取内容开始时间',
-  `SCHEDULE_END` datetime(0) NOT NULL COMMENT '爬取内容结束时间',
+  `SCHEDULE_PARAM` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT NULL COMMENT '任务参数',
+  `SCHEDULE_START` datetime(0) NULL COMMENT '爬取内容开始时间',
+  `SCHEDULE_END` datetime(0) NULL COMMENT '爬取内容结束时间',
   `DIS_FLAG` int(1) NOT NULL DEFAULT 0 COMMENT '删除标记：0：有效1：无效',
   `CREATE_DATE` datetime(0) NOT NULL COMMENT '创建日期',
   `UPDATE_DATE` datetime(0) NOT NULL COMMENT '更新日期',
   `CREATE_USER` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建者',
   `UPDATE_USER` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新者',
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '自定义定时任务表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '自定义定时任务表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_user

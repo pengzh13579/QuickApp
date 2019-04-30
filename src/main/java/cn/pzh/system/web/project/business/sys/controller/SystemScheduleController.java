@@ -1,12 +1,15 @@
 package cn.pzh.system.web.project.business.sys.controller;
 
+import cn.pzh.system.web.project.common.conf.schedule.DynamicScheduleTask;
 import cn.pzh.system.web.project.common.constant.KeyConstants;
 import cn.pzh.system.web.project.dao.first.entity.sys.SystemScheduleEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
-import cn.pzh.system.web.project.business.sys.service.ScheduleService;
+import cn.pzh.system.web.project.business.sys.service.SystemScheduleService;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
+
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SystemScheduleController {
 
     @Autowired
-    private ScheduleService scheduleService;
+    private SystemScheduleService scheduleService;
 
     /***
      * 自定义定时任务列表页面
@@ -97,7 +100,7 @@ public class SystemScheduleController {
      */
     @RequestMapping(value = "/addSchedule")
     @ResponseBody
-    public AjaxJson addEntity(SystemScheduleEntity info) {
+    public AjaxJson addEntity(SystemScheduleEntity info) throws SchedulerException {
 
         AjaxJson j = new AjaxJson();
 
@@ -105,6 +108,7 @@ public class SystemScheduleController {
         if (scheduleService.insert(info) > 0) {
             j.setMsg("自定义定时任务添加成功！");
             j.setSuccess(true);
+            DynamicScheduleTask.schedulerAdd(info.getScheduleName(), info.getScheduleCron(), info.getScheduleParam());
             return j;
         }
 

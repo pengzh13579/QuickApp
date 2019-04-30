@@ -2,7 +2,7 @@ package cn.pzh.system.web.project.business.info.service.impl;
 
 import cn.pzh.system.web.project.dao.first.entity.info.InfoDishesEntity;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
-import cn.pzh.system.web.project.dao.first.mapper.info.DishesMapper;
+import cn.pzh.system.web.project.dao.first.mapper.info.InfoDishesMapper;
 import cn.pzh.system.web.project.business.info.service.InfoDishesService;
 import java.util.List;
 import com.github.pagehelper.PageHelper;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class InfoDishesServiceImpl implements InfoDishesService {
 
     @Autowired
-    private DishesMapper dishesMapper;
+    private InfoDishesMapper dishesMapper;
 
     /***
      * 列表信息查询

@@ -58,9 +58,6 @@ $(function () {
           field: "id",
           visible: false
         },{
-            title: "主键ID",
-            field: "id"
-        },{
             title: "任务名",
             field: "scheduleName"
         },{
@@ -73,23 +70,17 @@ $(function () {
             title: "任务执行代码",
             field: "scheduleCode"
         },{
-            title: "任务参数",
+            title: "任务执行Python文件地址",
             field: "scheduleParam"
         },{
-            title: "删除标记：0：有效1：无效",
-            field: "disFlag"
-        },{
-            title: "创建日期",
-            field: "createDate"
-        },{
-            title: "更新日期",
-            field: "updateDate"
-        },{
-            title: "创建者",
-            field: "createUser"
-        },{
-            title: "更新者",
-            field: "updateUser"
+            title: "是否有效",
+            field: "disFlag",
+            formatter: function (value, row, index) {
+                if (value == '1') {
+                    return '<span class="label label-warning">无效</span>';
+                }
+                return '<span class="label label-primary">有效</span>';
+            }
         },{
           title: "更新时间",
           field: "updateDate",

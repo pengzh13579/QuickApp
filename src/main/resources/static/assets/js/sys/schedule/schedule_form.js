@@ -1,9 +1,6 @@
 $(function () {
   $("#frm").validate({
     rules: {
-      id: {
-        required: true
-      },
       scheduleName: {
         required: true,
         maxlength: 50
@@ -20,24 +17,8 @@ $(function () {
         maxlength: 50
       },
       scheduleParam: {
+        required: true,
         maxlength: 255
-      },
-      disFlag: {
-        required: true
-      },
-      createDate: {
-        required: true
-      },
-      updateDate: {
-        required: true
-      },
-      createUser: {
-        required: true,
-        maxlength: 20
-      },
-      updateUser: {
-        required: true,
-        maxlength: 20
       }
     },
     messages: {},
@@ -53,8 +34,6 @@ $(function () {
         url: url,
         data: $(form).serialize(),
         success: function (data) {
-          // 解决返回值带<pre style="word-wrap: break-word; white-space: pre-wrap;">的问题
-          data = $.parseJSON(data.replace(/<.*?>/ig, ""));
           layer.msg(data.msg, {time: 2000}, function () {
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             if (data.success) {

@@ -2,7 +2,7 @@ package cn.pzh.system.web.project.business.info.service.impl;
 
 import cn.pzh.system.web.project.dao.first.entity.info.InfoPayEntity;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
-import cn.pzh.system.web.project.dao.first.mapper.info.PayMapper;
+import cn.pzh.system.web.project.dao.first.mapper.info.InfoPayMapper;
 import cn.pzh.system.web.project.business.info.service.InfoPayService;
 import java.util.List;
 import com.github.pagehelper.PageHelper;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class InfoPayServiceImpl implements InfoPayService {
 
     @Autowired
-    private PayMapper payMapper;
+    private InfoPayMapper payMapper;
 
     /***
      * 列表信息查询

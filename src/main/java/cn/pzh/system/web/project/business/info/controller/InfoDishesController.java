@@ -3,7 +3,7 @@ package cn.pzh.system.web.project.business.info.controller;
 import cn.pzh.system.web.project.common.constant.KeyConstants;
 import cn.pzh.system.web.project.dao.first.entity.info.InfoDishesEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
-import cn.pzh.system.web.project.business.info.service.DishesService;
+import cn.pzh.system.web.project.business.info.service.InfoDishesService;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class InfoDishesController {
 
     @Autowired
-    private DishesService dishesService;
+    private InfoDishesService dishesService;
 
     /***
      * 列表页面

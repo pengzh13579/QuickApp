@@ -7,12 +7,11 @@ public class DynamicScheduleTask {
 
     /**
      * 添加定时任务
-     * @param jobClassName
+     * @param jobName
      * @param cronExpression
      * @param parameter
      */
-    public static void schedulerAdd(String jobName, String jobClassName,
-                              String cronExpression, String parameter)
+    public static void schedulerAdd(String jobName, String cronExpression, String parameter)
             throws SchedulerException {
 
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();

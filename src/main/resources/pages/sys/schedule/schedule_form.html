@@ -25,12 +25,6 @@
                         <input type="hidden" id="id" name="id" th:value="${info?.id}"/>
 
                                     <div class="form-group">
-                                        <label class="col-xs-3 control-label">主键ID</label>
-                                        <div class="col-xs-6">
-                                        <input id="id" name="id" class="form-control" type="text" th:value="${info?.id}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
                                         <label class="col-xs-3 control-label">任务名</label>
                                         <div class="col-xs-6">
                                         <input id="scheduleName" name="scheduleName" class="form-control" type="text" th:value="${info?.scheduleName}"/>
@@ -55,39 +49,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-xs-3 control-label">任务参数</label>
+                                        <label class="col-xs-3 control-label">任务执行Python文件地址</label>
                                         <div class="col-xs-6">
                                         <input id="scheduleParam" name="scheduleParam" class="form-control" type="text" th:value="${info?.scheduleParam}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">删除标记：0：有效1：无效</label>
-                                        <div class="col-xs-6">
-                                        <input id="disFlag" name="disFlag" class="form-control" type="text" th:value="${info?.disFlag}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">创建日期</label>
-                                        <div class="col-xs-6">
-                                        <input id="createDate" name="createDate" class="form-control" type="text" th:value="${info?.createDate}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">更新日期</label>
-                                        <div class="col-xs-6">
-                                        <input id="updateDate" name="updateDate" class="form-control" type="text" th:value="${info?.updateDate}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">创建者</label>
-                                        <div class="col-xs-6">
-                                        <input id="createUser" name="createUser" class="form-control" type="text" th:value="${info?.createUser}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">更新者</label>
-                                        <div class="col-xs-6">
-                                        <input id="updateUser" name="updateUser" class="form-control" type="text" th:value="${info?.updateUser}"/>
                                         </div>
                                     </div>
                         <div class="form-group">
