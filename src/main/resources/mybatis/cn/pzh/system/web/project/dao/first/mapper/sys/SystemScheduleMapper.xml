@@ -33,7 +33,9 @@
 
     <sql id="whereCause">
         <where>
-            SYS_SCHEDULE.DIS_FLAG = 0
+            <if test="disFlag != null">
+                SYS_SCHEDULE.DIS_FLAG = #{disFlag}
+            </if>
         </where>
     </sql>
 
@@ -51,7 +53,6 @@
         <include refid="selectColumn"></include>
         FROM SYS_SCHEDULE
         WHERE SYS_SCHEDULE.ID = #{id,jdbcType=INTEGER}
-        AND SYS_SCHEDULE.DIS_FLAG = 0
     </select>
 
     <!-- 批量保存自定义定时任务信息 -->
@@ -135,7 +136,6 @@
 
         </trim>
         WHERE ID=#{id,jdbcType=INTEGER}
-        AND SYS_SCHEDULE.DIS_FLAG = 0
     </update>
 
 </mapper>

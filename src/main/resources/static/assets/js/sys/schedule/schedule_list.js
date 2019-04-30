@@ -93,7 +93,8 @@ $(function () {
             field: "empty",
             formatter: function (value, row, index) {
                 var operateHtml = '<button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;';
-                operateHtml = operateHtml + '<button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button>';
+                operateHtml = operateHtml + '<button class="btn btn-primary btn-xs" type="button" onclick="enable(\''+row.id+'\',\''+row.scheduleNameCn+'\')"><i class="fa fa-edit"></i>&nbsp;启用</button> &nbsp;';
+                operateHtml = operateHtml + '<button class="btn btn-danger btn-xs" type="button" onclick="disable(\''+row.id+'\',\''+row.scheduleNameCn+'\')"><i class="fa fa-remove"></i>&nbsp;禁用</button>';
                 return operateHtml;
             }
         }]
@@ -129,12 +130,27 @@ function add(){
     });
 }
 
-function del(id){
-    layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
+function enable(id,scheduleNameCn){
+    layer.confirm('确定启用定时任务【' + scheduleNameCn + '】吗?', {icon: 3, title:'提示'}, function(index){
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: "/systemScheduleController/delete",
+            url: "/systemScheduleController/enable",
+            data: {id : id},
+            success: function(data){
+                layer.msg(data.message);
+                $('#table_list').bootstrapTable("refresh");
+            }
+        });
+    });
+}
+
+function disable(id,scheduleNameCn){
+    layer.confirm('确定禁用定时任务【' + scheduleNameCn + '】吗?', {icon: 3, title:'提示'}, function(index){
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/systemScheduleController/disable",
             data: {id : id},
             success: function(data){
                 layer.msg(data.message);

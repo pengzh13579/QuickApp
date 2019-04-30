@@ -32,12 +32,12 @@ public class DynamicScheduleTask {
 
     /**
      * 删除定时任务
-     * @param jobClassName
+     * @param jobName
      */
-    public static void schedulerDelete(String jobClassName) throws SchedulerException {
+    public static void schedulerDelete(String jobName) throws SchedulerException {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
-        scheduler.pauseTrigger(TriggerKey.triggerKey(jobClassName));
-        scheduler.unscheduleJob(TriggerKey.triggerKey(jobClassName));
-        scheduler.deleteJob(JobKey.jobKey(jobClassName));
+        scheduler.pauseTrigger(TriggerKey.triggerKey(jobName));
+        scheduler.unscheduleJob(TriggerKey.triggerKey(jobName));
+        scheduler.deleteJob(JobKey.jobKey(jobName));
     }
 }

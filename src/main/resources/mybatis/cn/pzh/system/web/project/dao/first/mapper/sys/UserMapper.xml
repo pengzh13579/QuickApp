@@ -48,10 +48,10 @@
 
     <sql id="whereCause">
         <where>
-            <if test="disFlag == null or disFlag == ''">
+            <if test="disFlag == null">
                 SYS_USER.DIS_FLAG <![CDATA[ <> ]]> 1
             </if>
-            <if test="disFlag != null and disFlag != ''">
+            <if test="disFlag != null">
                 SYS_USER.DIS_FLAG = #{disFlag}
             </if>
             <if test="userName != null and userName != ''">

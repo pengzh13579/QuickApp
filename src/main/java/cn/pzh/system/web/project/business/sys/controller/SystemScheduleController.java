@@ -8,7 +8,6 @@ import cn.pzh.system.web.project.business.sys.service.SystemScheduleService;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
-
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -108,7 +107,6 @@ public class SystemScheduleController {
         if (scheduleService.insert(info) > 0) {
             j.setMsg("自定义定时任务添加成功！");
             j.setSuccess(true);
-            DynamicScheduleTask.schedulerAdd(info.getScheduleName(), info.getScheduleCron(), info.getScheduleParam());
             return j;
         }
 
@@ -124,7 +122,7 @@ public class SystemScheduleController {
      */
     @RequestMapping(value = "/editSchedule")
     @ResponseBody
-    public AjaxJson editEntity(SystemScheduleEntity info) {
+    public AjaxJson editEntity(SystemScheduleEntity info) throws SchedulerException {
 
         AjaxJson j = new AjaxJson();
 
@@ -140,25 +138,56 @@ public class SystemScheduleController {
     }
 
     /***
-     * 逻辑删除自定义定时任务--将disFlag变为1
+     * 可用
      * @param id 自定义定时任务ID
-     * @return 自定义定时任务删除结果
+     * @return 结果
      */
-    @RequestMapping("/delete")
-    public AjaxJson delete(Integer id) {
+    @RequestMapping("/enable")
+    @ResponseBody
+    public AjaxJson enable(Integer id) throws SchedulerException {
 
         AjaxJson j = new AjaxJson();
 
-        // 逻辑删除自定义定时任务
-        if (scheduleService.delete(id) > 0) {
-            j.setMsg("自定义定时任务删除成功");
+        // 启用自定义定时任务
+        if (scheduleService.updateDisFlag(id, 0) > 0) {
+            j.setMsg("定时任务启动成功");
             j.setSuccess(true);
             return j;
         }
 
         j.setSuccess(false);
-        j.setMsg("自定义定时任务删除失败，请联系管理员！");
+        j.setMsg("定时任务启动失败，请联系管理员！");
         return j;
     }
 
+    /***
+     * 不可用
+     * @param id 自定义定时任务ID
+     * @return 结果
+     */
+    @RequestMapping("/disable")
+    @ResponseBody
+    public AjaxJson disable(Integer id) throws SchedulerException {
+        return setDisFlag(id, 1, "暂停");
+    }
+
+    private AjaxJson setDisFlag(Integer id, Integer disFlag, String message) throws SchedulerException {
+
+        AjaxJson j = new AjaxJson();
+
+        int num = scheduleService.updateDisFlag(id, 1);
+        // 禁用自定义定时任务
+        if (num > 0) {
+            j.setMsg("定时任务" + message + "成功");
+            j.setSuccess(true);
+            return j;
+        } else if (num == -999){
+            j.setMsg("定时任务已经是" + message + "状态，请确认！");
+        } else {
+            j.setMsg("定时任务" + message + "失败，请联系管理员！");
+        }
+
+        j.setSuccess(false);
+        return j;
+    }
 }
