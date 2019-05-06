@@ -2,6 +2,7 @@ package cn.pzh.system.web.project.business.wxclient.controller;
 
 import cn.pzh.system.web.project.base.cache.OpenIDCache;
 import cn.pzh.system.web.project.business.fix.service.ProvinceAreaService;
+import cn.pzh.system.web.project.business.info.service.InfoPageService;
 import cn.pzh.system.web.project.business.wx.service.WxUserService;
 import cn.pzh.system.web.project.common.conf.wx.WxConfig;
 import cn.pzh.system.web.project.common.constant.KeyConstants;
@@ -12,6 +13,7 @@ import cn.pzh.system.web.project.common.utils.WeixinUtil;
 import cn.pzh.system.web.project.dao.first.entity.fix.FixedCountyEntity;
 import cn.pzh.system.web.project.dao.first.entity.fix.FixedDistrictEntity;
 import cn.pzh.system.web.project.dao.first.entity.fix.FixedProvinceEntity;
+import cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity;
 import cn.pzh.system.web.project.dao.first.entity.wx.WxUserEntity;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +38,9 @@ public class WxController {
 
     @Autowired
     private ProvinceAreaService provinceAreaService;
+
+    @Autowired
+    private InfoPageService pageService;
 
     /**
      * 微信用户登录系统，返回UUID作为缓存key
@@ -141,6 +146,8 @@ public class WxController {
         String pageSize = json.get(WxProgramConstants.GET_PAGE_SIZE);
         // 第几页
         String pageIndex = json.get(WxProgramConstants.GET_PAGE_INDEX);
+
+        // 下拉列表只存在全部(1;1)、省级(1;0)、市级(0;1)这3个等级
         // 省级是否可见，0不可见；1可见
         String provinceFlag = json.get(WxProgramConstants.GET_PROVINCE_FLAG);
         // 市级是否可见，0不可见；1可见
@@ -155,7 +162,27 @@ public class WxController {
         String areaId = json.get(WxProgramConstants.GET_AREA_ID);
         //String openid = OpenIDCache.getCacheMap().get(dianToken).split("#")[0];
         try {
+            InfoPageEntity infoPageEntity = new InfoPageEntity();
+            infoPageEntity.setPageNumber(Integer.valueOf(pageIndex));
+            infoPageEntity.setPageSize(Integer.valueOf(pageSize));
+            // 全部
+            if (provinceFlag.equals("1") && cityFlag.equals("1")) {
+                // 全部的话将A传入，方便取省级，省级的话就是：areaId等于cityId或者areaId等于cityId取前2位而后加0000000000
+                infoPageEntity.setAreaFlag("A");
+                infoPageEntity.setAreaId(cityId);
 
+                // 省级
+            } else if (provinceFlag.equals("1") && cityFlag.equals("0")) {
+                infoPageEntity.setAreaFlag("1");
+                infoPageEntity.setAreaId(provinceId);
+
+                // 市级
+            } else if (provinceFlag.equals("0") && cityFlag.equals("1")) {
+                infoPageEntity.setAreaFlag("2");
+                infoPageEntity.setAreaId(cityId);
+
+            }
+            pageService.listPages(infoPageEntity);
         } catch(Exception e) {
         }
         return ret;

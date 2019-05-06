@@ -46,6 +46,17 @@
     <sql id="whereCause">
         <where>
             INFO_PAGE.DIS_FLAG = 0
+            <if test="areaFlag != null and areaFlag != ''">
+                <if test="areaFlag != 'A'">
+                    AND (INFO_PAGE.AREA_ID = #{areaId} or INFO_PAGE.AREA_ID = CONCAT(SUBSTR(#{areaId},1,2), '0000000000'))
+                </if>
+                <if test="areaFlag == '1' or areaFlag == '2'">
+                    AND INFO_PAGE.AREA_FLAG = #{areaFlag}
+                    <if test="areaId == null and areaId == ''">
+                        AND INFO_PAGE.AREA_ID = #{areaId}
+                    </if>
+                </if>
+            </if>
         </where>
     </sql>
 

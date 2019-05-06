@@ -50,11 +50,8 @@ app:
       useGlobalDataSourceStat: true
 
 log:
-  path:
-    all: log/app.log
-    error: log/error.log
   level:
-    app: DEBUG
+    app: INFO
     root: INFO
 
 upload:

@@ -1,4 +1,14 @@
 $(function () {
+
+    $("select").each(function(){
+        loadSelectData(this);
+    });
+
+    //外部js调用
+    laydate({
+        elem: '#createDateEnd',
+        event: 'focus'
+    });
     //初始化表格,动态从服务器加载数据
     $("#table_list").bootstrapTable({
         //使用get请求到服务器获取数据

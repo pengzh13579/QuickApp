@@ -67,6 +67,7 @@
     </logger>
 
     <root level="${root_log_level}">
+        <level value="${log_level}" />
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE_APP" />
         <appender-ref ref="FILE_ERROR" />
