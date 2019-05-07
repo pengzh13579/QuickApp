@@ -13,6 +13,13 @@ public interface DictionaryMapper {
     List<FixedDictionaryEntity> listDictionarys(FixedDictionaryEntity systemDictionaryEntity);
 
     /***
+     * 字典列表信息查询语句,列表排序
+     * @param systemDictionaryEntity 查询实体类
+     * @return 字典列表
+     */
+    List<FixedDictionaryEntity> listDictionarysOrder(FixedDictionaryEntity systemDictionaryEntity);
+
+    /***
      * 根据字典ID查询字典信息
      * @param id 字典ID
      * @return 字典信息

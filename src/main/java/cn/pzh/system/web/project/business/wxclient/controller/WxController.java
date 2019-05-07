@@ -167,8 +167,8 @@ public class WxController {
             infoPageEntity.setPageSize(Integer.valueOf(pageSize));
             // 全部
             if (provinceFlag.equals("1") && cityFlag.equals("1")) {
-                // 全部的话将A传入，方便取省级，省级的话就是：areaId等于cityId或者areaId等于cityId取前2位而后加0000000000
-                infoPageEntity.setAreaFlag("A");
+                // 全部的话将9传入，方便取省级，省级的话就是：areaId等于cityId或者areaId等于cityId取前2位而后加0000000000
+                infoPageEntity.setAreaFlag("9");
                 infoPageEntity.setAreaId(cityId);
 
                 // 省级

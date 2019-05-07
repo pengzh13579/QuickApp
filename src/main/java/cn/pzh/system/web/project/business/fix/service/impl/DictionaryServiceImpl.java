@@ -28,7 +28,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 
         if (null == fixedDictionaryEntity.getSortName() ||
                 "".equals(fixedDictionaryEntity.getSortName())) {
-            fixedDictionaryEntity.setSortName("id");
+            fixedDictionaryEntity.setSortName("sort");
         }
         // 默认从第pageNum开始，每页pageSize条
         PageHelper.startPage(fixedDictionaryEntity.getPageNumber(), fixedDictionaryEntity.getPageSize(),
@@ -112,6 +112,6 @@ public class DictionaryServiceImpl implements DictionaryService {
         fixedDictionary.setPid(pid);
 
         // 根据字典编码查询数据字典集合
-        return dictionaryMapper.listDictionarys(fixedDictionary);
+        return dictionaryMapper.listDictionarysOrder(fixedDictionary);
     }
 }

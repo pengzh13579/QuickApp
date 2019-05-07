@@ -18,4 +18,7 @@ public class InfoPageEntity extends CommonEntity implements Serializable {
     private String pageContent;
     private Date releaseDate;
     private String industryInfo;
+
+    private String releaseDateStart;
+    private String releaseDateEnd;
 }

@@ -116,3 +116,38 @@ function loadSelectData(ele) {
         $(ele).html(nameOpt);
     }
 }
+
+function loadSelectDataByUrl(ele, url, fun) {
+    var nameOpt = "";
+    $.ajax({
+        url: url,
+        type: "get",
+        async: false,
+        success: function(data){
+            if(data != ""){
+                nameOpt += "<option value='' selected='selected'>--请选择--</option>";
+                data = JSON.parse(data);
+                for (var i = 0; i < data.rows.length; i++) {
+                    nameOpt = fun(nameOpt, data.rows[i]);
+                }
+            }
+            $(ele).empty();
+            $(ele).html(nameOpt);
+        },
+        error: function(){}
+    });
+}
+
+function loadSelectDataProvinceList(ele, url) {
+    loadSelectDataByUrl(ele, url, function(nameOpt, data){
+        nameOpt += "<option value='" + data.provinceId + "' >" + data.provinceName + "</option>";
+        return nameOpt;
+    });
+}
+
+function loadSelectDataCityList(ele, url) {
+    loadSelectDataByUrl(ele, url, function(nameOpt, data){
+        nameOpt += "<option value='" + data.countyId + "' >" + data.countyName + "</option>";
+        return nameOpt;
+    });
+}

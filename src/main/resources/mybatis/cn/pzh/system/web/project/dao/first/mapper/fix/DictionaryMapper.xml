@@ -58,6 +58,15 @@
         <include refid="whereCause"></include>
     </select>
 
+    <!-- 字典列表信息查询语句 -->
+    <select id="listDictionarysOrder" parameterType="cn.pzh.system.web.project.dao.first.entity.fix.FixedDictionaryEntity" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM FIX_DICTIONARY
+        <include refid="whereCause"></include>
+        ORDER BY SORT ASC
+    </select>
+
     <!-- 根据字典CODE查询父字典信息 -->
     <select id="selectParentDictionaryByCode" parameterType="String" resultMap="BaseResultMap">
         SELECT
@@ -66,6 +75,7 @@
         WHERE FIX_DICTIONARY.DICTIONARY_CODE = #{dictionaryCode,jdbcType=VARCHAR}
         AND FIX_DICTIONARY.DIS_FLAG = 0
         AND FIX_DICTIONARY.PID = 0
+        ORDER BY SORT ASC
     </select>
 
     <!-- 根据字典ID查询字典信息 -->

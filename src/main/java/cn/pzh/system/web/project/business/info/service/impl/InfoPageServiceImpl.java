@@ -28,7 +28,7 @@ public class InfoPageServiceImpl implements InfoPageService {
 
         // 默认从第pageNum开始，每页pageSize条
         PageHelper.startPage(infoPageEntity.getPageNumber(), infoPageEntity.getPageSize(),
-                CommonFieldUtils.fieldNameToColumnName(infoPageEntity.getSortName()) + " " + infoPageEntity.getSortOrder());
+                        CommonFieldUtils.fieldNameToColumnName(infoPageEntity.getSortName()) + " " + infoPageEntity.getSortOrder());
 
         return pageMapper.listPages(infoPageEntity);
     }

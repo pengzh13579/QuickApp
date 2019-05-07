@@ -3,10 +3,16 @@ $(function () {
     $("select").each(function(){
         loadSelectData(this);
     });
-
-    //外部js调用
+    loadSelectDataProvinceList($("#provinceSearch"), "/provinceAreaController/provinceList");
+    $("#provinceSearch").change(function(){
+        loadSelectDataCityList($("#citySearch"), "/provinceAreaController/countyList/" + $('#provinceSearch').val());
+    });
     laydate({
-        elem: '#createDateEnd',
+        elem: '#releaseDateStart',
+        event: 'focus'
+    });
+    laydate({
+        elem: '#releaseDateEnd',
         event: 'focus'
     });
     //初始化表格,动态从服务器加载数据
@@ -35,11 +41,28 @@ $(function () {
         //设置为limit可以获取limit, offset, search, sort, order
         queryParamsType: "undefined",
         queryParams: function queryParams(params){
+            var areaId = "";
+            if ($("#areaFlagSearch").val() == "1") {
+                areaId = $("#provinceSearch").val();
+            } else if ($("#areaFlagSearch").val() == "2") {
+                areaId = $("#citySearch").val();
+            }
+            if ($("#provinceSearch").val() != "") {
+                areaId = $("#provinceSearch").val();
+            }
+            if ($("#citySearch").val() != "") {
+                areaId = $("#citySearch").val();
+            }
             var param = {
                 pageNumber: params.pageNumber,
                 pageSize: params.pageSize,
                 sortName: params.sortName,
-                sortOrder: params.sortOrder
+                sortOrder: params.sortOrder,
+                areaFlag: $("#areaFlagSearch").val(),
+                areaId: areaId,
+                releaseDateStart: $("#releaseDateStart").val(),
+                releaseDateEnd: $("#releaseDateEnd").val(),
+                pageTitle: $("#pageTitleSearch").val()
             };
             return param;
         },
@@ -107,6 +130,9 @@ $(function () {
                 return operateHtml;
             }
         }]
+    });
+    $("#searchBtn").click(function () {
+        $('#table_list').bootstrapTable('refresh');
     });
 });
 

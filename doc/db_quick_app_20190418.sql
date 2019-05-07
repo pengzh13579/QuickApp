@@ -429,6 +429,10 @@ INSERT INTO `fix_dictionary` VALUES (14, 0, 'industry_code', '行业代码', NUL
 INSERT INTO `fix_dictionary` VALUES (15, 14, 'industry_code', '全行业', 0, '0', 1, '行业代码-全行业', 0, '2019-04-22 14:37:27', '2019-04-22 14:37:27', 'admin', 'admin');
 INSERT INTO `fix_dictionary` VALUES (16, 14, 'industry_code', '互联网', 1, '0', 1, '行业代码-互联网', 0, '2019-04-22 14:37:45', '2019-04-22 14:37:45', 'admin', 'admin');
 INSERT INTO `fix_dictionary` VALUES (17, 14, 'industry_code', '工业', 2, '0', 2, '行业代码-工业', 0, '2019-04-22 15:52:14', '2019-04-22 15:52:14', 'admin', 'admin');
+INSERT INTO `fix_dictionary` VALUES (19, 18, '', '省级', 1, '0', 2, '政策等级-省级', 0, '2019-05-07 14:20:05', '2019-05-07 15:11:46', 'admin', 'admin');
+INSERT INTO `fix_dictionary` VALUES (20, 18, '', '市级', 2, '0', 3, '政策等级-市级', 0, '2019-05-07 14:20:21', '2019-05-07 15:11:51', 'admin', 'admin');
+INSERT INTO `fix_dictionary` VALUES (21, 18, 'page_level', '全部', 9, '0', 1, '政策等级-全部', 0, '2019-05-07 15:13:17', '2019-05-07 15:13:17', 'admin', 'admin');
+
 
 -- ----------------------------
 -- Table structure for FIX_DISTRICT
