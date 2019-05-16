@@ -10,6 +10,7 @@
         <result column="PAGE_TITLE" property="pageTitle" jdbcType="VARCHAR" />
         <result column="PAGE_DESCRIBED" property="pageDescribed" jdbcType="VARCHAR" />
         <result column="PAGE_CONTENT" property="pageContent" jdbcType="VARCHAR" />
+        <result column="PAGE_URL" property="pageUrl" jdbcType="VARCHAR" />
         <result column="RELEASE_DATE" property="releaseDate" jdbcType="DATE" />
         <result column="INDUSTRY_INFO" property="industryInfo" jdbcType="VARCHAR" />
         <result column="DIS_FLAG" property="disFlag" jdbcType="INTEGER" />
@@ -26,16 +27,8 @@
         INFO_PAGE.AREA_FLAG,
         INFO_PAGE.PAGE_TITLE,
         INFO_PAGE.PAGE_DESCRIBED,
+        INFO_PAGE.PAGE_URL,
         INFO_PAGE.RELEASE_DATE,
-        (
-            SELECT
-                GROUP_CONCAT(FIX_DICTIONARY.DICTIONARY_NAME ORDER BY FIX_DICTIONARY.DICTIONARY_VALUE ASC)
-            FROM FIX_DICTIONARY FIX_DICTIONARY
-            LEFT JOIN INFO_PAGE_INDUSTRY INFO_PAGE_INDUSTRY
-            ON FIX_DICTIONARY.DICTIONARY_VALUE = INFO_PAGE_INDUSTRY.INDUSTRY_ID
-            AND FIX_DICTIONARY.DICTIONARY_CODE='industry_code'
-            WHERE INFO_PAGE_INDUSTRY.PAGE_ID=INFO_PAGE.ID GROUP BY INFO_PAGE.ID
-        ) AS INDUSTRY_INFO,
         INFO_PAGE.DIS_FLAG,
         INFO_PAGE.CREATE_DATE,
         INFO_PAGE.UPDATE_DATE,
@@ -52,7 +45,7 @@
             <if test='areaFlag == "1"'>
                 AND INFO_PAGE.AREA_FLAG = #{areaFlag}
                 <if test='areaId != null and areaId != ""'>
-                    AND INFO_PAGE.AREA_ID = CONCAT(#{areaId}, '0000000000'))
+                    AND INFO_PAGE.AREA_ID = CONCAT(#{areaId}, '0000000000')
                 </if>
             </if>
             <if test='areaFlag == "2"'>
@@ -80,12 +73,15 @@
         CASE AREA_FLAG
         WHEN '1' THEN FIX_PROVINCE.PROVINCE_NAME
         WHEN '2' THEN FIX_COUNTY.COUNTY_NAME
-        END AREA_NAME
+        END AREA_NAME,
+        INFO_GOV.GOV_NAME AS INDUSTRY_INFO
         FROM INFO_PAGE INFO_PAGE
         LEFT JOIN FIX_PROVINCE FIX_PROVINCE
         ON INFO_PAGE.AREA_ID = CONCAT(FIX_PROVINCE.PROVINCE_ID, '0000000000')
         LEFT JOIN FIX_COUNTY FIX_COUNTY
         ON INFO_PAGE.AREA_ID = FIX_COUNTY.COUNTY_ID
+        LEFT JOIN INFO_GOV INFO_GOV
+        ON INFO_PAGE.INDUSTRY_INFO = INFO_GOV.GOV_CODE
         <include refid="whereCause"></include>
     </select>
 
@@ -97,12 +93,15 @@
         CASE AREA_FLAG
         WHEN '1' THEN fix_province.PROVINCE_NAME
         WHEN '2' THEN fix_county.COUNTY_NAME
-        END AREA_NAME
+        END AREA_NAME,
+        INFO_GOV.GOV_NAME AS INDUSTRY_INFO
         FROM INFO_PAGE INFO_PAGE
         LEFT JOIN FIX_PROVINCE FIX_PROVINCE
         ON INFO_PAGE.AREA_ID = CONCAT(FIX_PROVINCE.PROVINCE_ID, '0000000000')
         LEFT JOIN FIX_COUNTY FIX_COUNTY
         ON INFO_PAGE.AREA_ID = FIX_COUNTY.COUNTY_ID
+        LEFT JOIN INFO_GOV INFO_GOV
+        ON INFO_PAGE.INDUSTRY_INFO = INFO_GOV.GOV_CODE
         WHERE INFO_PAGE.ID = #{id,jdbcType=VARCHAR}
         AND INFO_PAGE.DIS_FLAG = 0
     </select>

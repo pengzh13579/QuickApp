@@ -1,6 +1,7 @@
 package cn.pzh.system.web.project.business.sys.service.impl;
 
 import cn.pzh.system.web.project.common.conf.schedule.DynamicScheduleTask;
+import cn.pzh.system.web.project.common.conf.schedule.python.PythonConfig;
 import cn.pzh.system.web.project.dao.first.entity.sys.SystemScheduleEntity;
 import cn.pzh.system.web.project.common.utils.CommonFieldUtils;
 import cn.pzh.system.web.project.dao.first.mapper.sys.SystemScheduleMapper;
@@ -16,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional (propagation = Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
 public class SystemScheduleServiceImpl implements SystemScheduleService {
+
+    @Autowired
+    private PythonConfig pythonConfig;
 
     @Autowired
     private SystemScheduleMapper scheduleMapper;
@@ -46,7 +50,7 @@ public class SystemScheduleServiceImpl implements SystemScheduleService {
     public int insert(SystemScheduleEntity schedule) throws SchedulerException {
         CommonFieldUtils.setAdminCommon(schedule, true);
 
-        DynamicScheduleTask.schedulerAdd(schedule.getScheduleName(), schedule.getScheduleCron(), schedule.getScheduleParam());
+        DynamicScheduleTask.schedulerAdd(schedule.getScheduleName(), schedule.getScheduleCron(), pythonConfig.getLocaltion() + schedule.getScheduleParam());
         return scheduleMapper.save(schedule);
     }
 
@@ -70,7 +74,7 @@ public class SystemScheduleServiceImpl implements SystemScheduleService {
     public int update(SystemScheduleEntity schedule) throws SchedulerException {
         CommonFieldUtils.setAdminCommon(schedule, false);
         DynamicScheduleTask.schedulerDelete(schedule.getScheduleName());
-        DynamicScheduleTask.schedulerAdd(schedule.getScheduleName(), schedule.getScheduleCron(), schedule.getScheduleParam());
+        DynamicScheduleTask.schedulerAdd(schedule.getScheduleName(), schedule.getScheduleCron(), pythonConfig.getLocaltion() + schedule.getScheduleParam());
         return scheduleMapper.update(schedule);
     }
 
@@ -96,7 +100,7 @@ public class SystemScheduleServiceImpl implements SystemScheduleService {
         schedule.setDisFlag(disFlag);
 
         if (disFlag == 0) {
-            DynamicScheduleTask.schedulerAdd(schedule.getScheduleName(), schedule.getScheduleCron(), schedule.getScheduleParam());
+            DynamicScheduleTask.schedulerAdd(schedule.getScheduleName(), schedule.getScheduleCron(), pythonConfig.getLocaltion() + schedule.getScheduleParam());
         } else if (disFlag == 1) {
             DynamicScheduleTask.schedulerDelete(schedule.getScheduleName());
         }

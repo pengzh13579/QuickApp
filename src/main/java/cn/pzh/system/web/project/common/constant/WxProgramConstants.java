@@ -10,6 +10,8 @@ public class WxProgramConstants {
     public final static String GET_PROVINCE_ID = "provinceId";
     public final static String GET_CITY_ID = "cityId";
     public final static String GET_AREA_ID = "areaId";
+    public final static String GET_TITLE = "title";
+    public final static String GET_DETAIL_ID = "id";
 
     public final static String GET_SESSION_KEY = "session_key";
     public final static String GET_OPEN_ID = "openid";

@@ -2,9 +2,11 @@ package cn.pzh.system.web.project.common.conf.init;
 
 import cn.pzh.system.web.project.business.sys.service.SystemScheduleService;
 import cn.pzh.system.web.project.common.conf.schedule.DynamicScheduleTask;
+import cn.pzh.system.web.project.common.conf.schedule.python.PythonConfig;
 import cn.pzh.system.web.project.dao.first.entity.sys.SystemScheduleEntity;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.ServletContextAware;
 import javax.annotation.Resource;
@@ -13,6 +15,9 @@ import java.util.List;
 
 @Service
 public class InitScheduleListener implements InitializingBean, ServletContextAware {
+
+    @Autowired
+    private PythonConfig pythonConfig;
 
     @Resource
     private SystemScheduleService scheduleService;
@@ -29,7 +34,7 @@ public class InitScheduleListener implements InitializingBean, ServletContextAwa
         List<SystemScheduleEntity> scheduleList = scheduleService.listSchedules(entity);
         for (SystemScheduleEntity info : scheduleList) {
             try {
-                DynamicScheduleTask.schedulerAdd(info.getScheduleName(), info.getScheduleCron(), info.getScheduleParam());
+                DynamicScheduleTask.schedulerAdd(info.getScheduleName(), info.getScheduleCron(), pythonConfig.getLocaltion() + info.getScheduleParam());
             } catch (SchedulerException e) {
                 e.printStackTrace();
             }

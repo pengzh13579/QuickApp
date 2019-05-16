@@ -16,6 +16,7 @@ import cn.pzh.system.web.project.dao.first.entity.fix.FixedProvinceEntity;
 import cn.pzh.system.web.project.dao.first.entity.info.InfoPageEntity;
 import cn.pzh.system.web.project.dao.first.entity.wx.WxUserEntity;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -136,7 +137,7 @@ public class WxController {
         return ret;
     }
 
-    @RequestMapping(value = "/getTaskList", consumes="application/json")
+    @RequestMapping(value = "/getTaskList", consumes="application/json", method =RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getTaskList(HttpServletRequest request,
                                            @RequestBody Map<String, String> json) {
@@ -158,13 +159,16 @@ public class WxController {
         String provinceId = json.get(WxProgramConstants.GET_PROVINCE_ID);
         // 所查市
         String cityId = json.get(WxProgramConstants.GET_CITY_ID);
-        // 所查地区
-        String areaId = json.get(WxProgramConstants.GET_AREA_ID);
+        // 标题
+        String title = json.get(WxProgramConstants.GET_TITLE);
         //String openid = OpenIDCache.getCacheMap().get(dianToken).split("#")[0];
         try {
             InfoPageEntity infoPageEntity = new InfoPageEntity();
             infoPageEntity.setPageNumber(Integer.valueOf(pageIndex));
             infoPageEntity.setPageSize(Integer.valueOf(pageSize));
+            if (title != null && !title.equals("")) {
+                infoPageEntity.setPageTitle(title);
+            }
             // 全部
             if (provinceFlag.equals("1") && cityFlag.equals("1")) {
                 // 全部的话将9传入，方便取省级，省级的话就是：areaId等于cityId或者areaId等于cityId取前2位而后加0000000000
@@ -182,10 +186,39 @@ public class WxController {
                 infoPageEntity.setAreaId(cityId);
 
             }
-            pageService.listPages(infoPageEntity);
+            infoPageEntity.setSortName("release_date");
+            infoPageEntity.setSortOrder("desc");
+            List<InfoPageEntity> list = pageService.listPages(infoPageEntity);
+            // 将列表信息绑定到pageInfo
+            PageInfo<InfoPageEntity> page = new PageInfo<InfoPageEntity>(list);
+
+            // total 存放总记录数
+            ret.put(KeyConstants.PAGE_RETURN_TOTAL, page.getTotal());
+
+            // rows存放每页记录 ，这里的两个参数名是固定的，必须为 total和 rows
+            ret.put(KeyConstants.PAGE_RETURN_ROWS, list);
+
         } catch(Exception e) {
+            e.printStackTrace();
         }
         return ret;
+    }
+
+    @RequestMapping(value = "/getDetail", consumes="application/json", method =RequestMethod.POST)
+    @ResponseBody
+    public InfoPageEntity getDetail(HttpServletRequest request,
+                                           @RequestBody Map<String, String> json) {
+
+        // 单击的ID
+        String detailId = json.get(WxProgramConstants.GET_DETAIL_ID);
+        try {
+            InfoPageEntity entity = pageService.get(detailId);
+            return entity;
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /***

@@ -1,5 +1,6 @@
 package cn.pzh.system.web.project.common.conf.schedule;
 
+import cn.pzh.system.web.project.common.conf.schedule.python.PythonConfig;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
