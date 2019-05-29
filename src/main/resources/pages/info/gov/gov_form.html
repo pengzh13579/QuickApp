@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>信息</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/font-awesome.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/animate.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet"/>
+
+</head>
+
+<body class="gray-bg">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="frm" method="post">
+                        <input type="hidden" id="id" name="id" th:value="${info?.id}"/>
+
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">机关编码</label>
+                                        <div class="col-xs-6">
+                                        <input id="govCode" name="govCode" class="form-control" type="text" th:value="${info?.govCode}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">机关名</label>
+                                        <div class="col-xs-6">
+                                        <input id="govName" name="govName" class="form-control" type="text" th:value="${info?.govName}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">所属省</label>
+                                        <div class="col-xs-6">
+                                        <input id="govProvince" name="govProvince" class="form-control" type="text" th:value="${info?.govProvince}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">所属市</label>
+                                        <div class="col-xs-6">
+                                        <input id="govCity" name="govCity" class="form-control" type="text" th:value="${info?.govCity}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">爬取内容结束时间</label>
+                                        <div class="col-xs-6">
+                                        <input id="scheduleEnd" name="scheduleEnd" class="form-control" type="text" th:value="${info?.scheduleEnd}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">删除标记：0：有效1：无效</label>
+                                        <div class="col-xs-6">
+                                        <input id="disFlag" name="disFlag" class="form-control" type="text" th:value="${info?.disFlag}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">创建日期</label>
+                                        <div class="col-xs-6">
+                                        <input id="createDate" name="createDate" class="form-control" type="text" th:value="${info?.createDate}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">更新日期</label>
+                                        <div class="col-xs-6">
+                                        <input id="updateDate" name="updateDate" class="form-control" type="text" th:value="${info?.updateDate}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">创建者</label>
+                                        <div class="col-xs-6">
+                                        <input id="createUser" name="createUser" class="form-control" type="text" th:value="${info?.createUser}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">更新者</label>
+                                        <div class="col-xs-6">
+                                        <input id="updateUser" name="updateUser" class="form-control" type="text" th:value="${info?.updateUser}"/>
+                                        </div>
+                                    </div>
+                        <div class="form-group">
+                            <div class="col-xs-5 col-xs-offset-3">
+                                <button class="btn btn-primary" type="submit">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script th:src="@{/assets/js/jquery.min.js}"></script>
+    <script th:src="@{/assets/js/bootstrap.min.js}"></script>
+
+    <!-- 自定义js -->
+    <script th:src="@{/assets/js/content.js}"></script>
+
+    <!-- jQuery Validation plugin javascript-->
+    <script th:src="@{/assets/js/plugins/validate/jquery.validate.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/validate/messages_zh.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/layer/layer.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/layer/laydate/laydate.js}"></script>
+    <script th:src="@{/assets/js/info/gov/gov_form.js}"></script>
+
+</body>
+
+</html>

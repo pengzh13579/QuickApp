@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>信息</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/font-awesome.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/animate.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet"/>
+
+</head>
+
+<body class="gray-bg">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="frm" method="post">
+                        <input type="hidden" id="id" name="id" th:value="${info?.id}"/>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">问卷ID</label>
+                            <div class="col-xs-6">
+                            <input id="questionId" name="questionId" class="form-control" type="text" th:value="${questionId == null ? info?.questionId : questionId}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">题目名</label>
+                            <div class="col-xs-6">
+                            <input id="itemQuestion" name="itemQuestion" class="form-control" type="text" th:value="${info?.itemQuestion}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">题目类型</label>
+                            <div class="col-xs-6">
+                            <input id="itemType" name="itemType" class="form-control" type="text" th:value="${info?.itemType}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">题目排序</label>
+                            <div class="col-xs-6">
+                            <input id="itemSort" name="itemSort" class="form-control" type="text" th:value="${info?.itemSort}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">是否多值</label>
+                            <div class="col-xs-6">
+                                <select id="itemMore" name="itemMore" class="form-control">
+                                    <option value="0" th:selected="${info?.itemMore=='0'}">否</option>
+                                    <option value="1" th:selected="${info?.itemMore=='1'}">是</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-5 col-xs-offset-3">
+                                <button class="btn btn-primary" type="submit">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 全局js -->
+    <script th:src="@{/assets/js/jquery.min.js}"></script>
+    <script th:src="@{/assets/js/bootstrap.min.js}"></script>
+
+    <!-- 自定义js -->
+    <script th:src="@{/assets/js/content.js}"></script>
+
+    <!-- jQuery Validation plugin javascript-->
+    <script th:src="@{/assets/js/plugins/validate/jquery.validate.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/validate/messages_zh.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/layer/layer.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/layer/laydate/laydate.js}"></script>
+    <script th:src="@{/assets/js/info/questionItem/questionItem_form.js}"></script>
+
+</body>
+
+</html>

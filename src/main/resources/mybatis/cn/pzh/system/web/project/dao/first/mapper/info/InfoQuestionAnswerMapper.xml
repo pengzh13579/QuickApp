@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.dao.first.mapper.info.InfoQuestionAnswerMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionAnswerEntity" >
+        <result column="ITEM_ID" property="itemId" jdbcType="INTEGER" />
+        <result column="ANSWER_INFO" property="answerInfo" jdbcType="VARCHAR" />
+        <result column="DIS_FLAG" property="disFlag" jdbcType="INTEGER" />
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+        <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <sql id="selectColumn">
+        INFO_QUESTION_ANSWER.ITEM_ID,
+        INFO_QUESTION_ANSWER.ANSWER_INFO,
+        INFO_QUESTION_ANSWER.DIS_FLAG,
+        INFO_QUESTION_ANSWER.CREATE_DATE,
+        INFO_QUESTION_ANSWER.UPDATE_DATE,
+        INFO_QUESTION_ANSWER.CREATE_USER,
+        INFO_QUESTION_ANSWER.UPDATE_USER
+    </sql>
+
+    <sql id="whereCause">
+        <where>
+            INFO_QUESTION_ANSWER.DIS_FLAG = 0
+        </where>
+    </sql>
+
+    <!-- 列表信息查询语句 -->
+    <select id="listQuestionAnswers" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionAnswerEntity" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM INFO_QUESTION_ANSWER
+        <include refid="whereCause"></include>
+    </select>
+
+    <!-- 根据ID查询信息 -->
+    <select id="selectQuestionAnswerById" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM INFO_QUESTION_ANSWER
+        WHERE INFO_QUESTION_ANSWER.ID = #{id,jdbcType=INTEGER}
+        AND INFO_QUESTION_ANSWER.DIS_FLAG = 0
+    </select>
+
+    <!-- 批量保存信息 -->
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO INFO_QUESTION_ANSWER (
+            ITEM_ID,
+            ANSWER_INFO,
+            DIS_FLAG,
+            CREATE_DATE,
+            UPDATE_DATE,
+            CREATE_USER,
+            UPDATE_USER
+        )
+        VALUES
+        <foreach collection="list" item="item" index= "index" separator =",">
+        (
+            #{item.itemId,jdbcType=INTEGER},
+            #{item.answerInfo,jdbcType=VARCHAR},
+            #{item.disFlag,jdbcType=INTEGER},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.updateDate,jdbcType=TIMESTAMP},
+            #{item.createUser,jdbcType=VARCHAR},
+            #{item.updateUser,jdbcType=VARCHAR}
+        )
+        </foreach>
+    </insert>
+
+    <!-- 保存信息 -->
+    <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionAnswerEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO INFO_QUESTION_ANSWER (
+            ITEM_ID,
+            ANSWER_INFO,
+            DIS_FLAG,
+            CREATE_DATE,
+            UPDATE_DATE,
+            CREATE_USER,
+            UPDATE_USER
+        )
+        VALUES (
+            #{itemId,jdbcType=INTEGER},
+            #{answerInfo,jdbcType=VARCHAR},
+            #{disFlag,jdbcType=INTEGER},
+            #{createDate,jdbcType=TIMESTAMP},
+            #{updateDate,jdbcType=TIMESTAMP},
+            #{createUser,jdbcType=VARCHAR},
+            #{updateUser,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!-- 更新信息 -->
+    <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionAnswerEntity">
+        UPDATE INFO_QUESTION_ANSWER
+        <trim prefix="set" suffixOverrides=",">
+            <if test="itemId != null">ITEM_ID=#{itemId,jdbcType=INTEGER},</if>
+            <if test="answerInfo != null">ANSWER_INFO=#{answerInfo,jdbcType=VARCHAR},</if>
+            <if test="disFlag != null">DIS_FLAG=#{disFlag,jdbcType=INTEGER},</if>
+            <if test="createDate != null">CREATE_DATE=#{createDate,jdbcType=TIMESTAMP},</if>
+            <if test="updateDate != null">UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP},</if>
+            <if test="createUser != null">CREATE_USER=#{createUser,jdbcType=VARCHAR},</if>
+            <if test="updateUser != null">UPDATE_USER=#{updateUser,jdbcType=VARCHAR},</if>
+
+        </trim>
+        WHERE ID=#{id,jdbcType=INTEGER}
+        AND INFO_QUESTION_ANSWER.DIS_FLAG = 0
+    </update>
+
+</mapper>

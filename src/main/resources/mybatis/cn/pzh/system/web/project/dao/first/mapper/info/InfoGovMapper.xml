@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.dao.first.mapper.info.InfoGovMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.info.InfoGovEntity" >
+        <result column="GOV_CODE" property="govCode" jdbcType="VARCHAR" />
+        <result column="GOV_NAME" property="govName" jdbcType="VARCHAR" />
+        <result column="GOV_PROVINCE" property="govProvince" jdbcType="VARCHAR" />
+        <result column="GOV_CITY" property="govCity" jdbcType="VARCHAR" />
+        <result column="SCHEDULE_END" property="scheduleEnd" jdbcType="TIMESTAMP" />
+        <result column="DIS_FLAG" property="disFlag" jdbcType="INTEGER" />
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+        <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <sql id="selectColumn">
+        INFO_GOV.GOV_CODE,
+        INFO_GOV.GOV_NAME,
+        INFO_GOV.GOV_PROVINCE,
+        INFO_GOV.GOV_CITY,
+        INFO_GOV.SCHEDULE_END,
+        INFO_GOV.DIS_FLAG,
+        INFO_GOV.CREATE_DATE,
+        INFO_GOV.UPDATE_DATE,
+        INFO_GOV.CREATE_USER,
+        INFO_GOV.UPDATE_USER
+    </sql>
+
+    <sql id="whereCause">
+        <where>
+            INFO_GOV.DIS_FLAG = 0
+        </where>
+    </sql>
+
+    <!-- 列表信息查询语句 -->
+    <select id="listGovs" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoGovEntity" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM INFO_GOV
+        <include refid="whereCause"></include>
+    </select>
+
+    <!-- 根据ID查询信息 -->
+    <select id="selectGovById" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM INFO_GOV
+        WHERE INFO_GOV.ID = #{id,jdbcType=INTEGER}
+        AND INFO_GOV.DIS_FLAG = 0
+    </select>
+
+    <!-- 批量保存信息 -->
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO INFO_GOV (
+            GOV_CODE,
+            GOV_NAME,
+            GOV_PROVINCE,
+            GOV_CITY,
+            SCHEDULE_END,
+            DIS_FLAG,
+            CREATE_DATE,
+            UPDATE_DATE,
+            CREATE_USER,
+            UPDATE_USER
+        )
+        VALUES
+        <foreach collection="list" item="item" index= "index" separator =",">
+        (
+            #{item.govCode,jdbcType=VARCHAR},
+            #{item.govName,jdbcType=VARCHAR},
+            #{item.govProvince,jdbcType=VARCHAR},
+            #{item.govCity,jdbcType=VARCHAR},
+            #{item.scheduleEnd,jdbcType=TIMESTAMP},
+            #{item.disFlag,jdbcType=INTEGER},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.updateDate,jdbcType=TIMESTAMP},
+            #{item.createUser,jdbcType=VARCHAR},
+            #{item.updateUser,jdbcType=VARCHAR}
+        )
+        </foreach>
+    </insert>
+
+    <!-- 保存信息 -->
+    <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoGovEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO INFO_GOV (
+            GOV_CODE,
+            GOV_NAME,
+            GOV_PROVINCE,
+            GOV_CITY,
+            SCHEDULE_END,
+            DIS_FLAG,
+            CREATE_DATE,
+            UPDATE_DATE,
+            CREATE_USER,
+            UPDATE_USER
+        )
+        VALUES (
+            #{govCode,jdbcType=VARCHAR},
+            #{govName,jdbcType=VARCHAR},
+            #{govProvince,jdbcType=VARCHAR},
+            #{govCity,jdbcType=VARCHAR},
+            #{scheduleEnd,jdbcType=TIMESTAMP},
+            #{disFlag,jdbcType=INTEGER},
+            #{createDate,jdbcType=TIMESTAMP},
+            #{updateDate,jdbcType=TIMESTAMP},
+            #{createUser,jdbcType=VARCHAR},
+            #{updateUser,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!-- 更新信息 -->
+    <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoGovEntity">
+        UPDATE INFO_GOV
+        <trim prefix="set" suffixOverrides=",">
+            <if test="govCode != null">GOV_CODE=#{govCode,jdbcType=VARCHAR},</if>
+            <if test="govName != null">GOV_NAME=#{govName,jdbcType=VARCHAR},</if>
+            <if test="govProvince != null">GOV_PROVINCE=#{govProvince,jdbcType=VARCHAR},</if>
+            <if test="govCity != null">GOV_CITY=#{govCity,jdbcType=VARCHAR},</if>
+            <if test="scheduleEnd != null">SCHEDULE_END=#{scheduleEnd,jdbcType=TIMESTAMP},</if>
+            <if test="disFlag != null">DIS_FLAG=#{disFlag,jdbcType=INTEGER},</if>
+            <if test="createDate != null">CREATE_DATE=#{createDate,jdbcType=TIMESTAMP},</if>
+            <if test="updateDate != null">UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP},</if>
+            <if test="createUser != null">CREATE_USER=#{createUser,jdbcType=VARCHAR},</if>
+            <if test="updateUser != null">UPDATE_USER=#{updateUser,jdbcType=VARCHAR},</if>
+
+        </trim>
+        WHERE ID=#{id,jdbcType=INTEGER}
+        AND INFO_GOV.DIS_FLAG = 0
+    </update>
+
+</mapper>

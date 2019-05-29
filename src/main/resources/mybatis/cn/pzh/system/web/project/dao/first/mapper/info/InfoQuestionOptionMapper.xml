@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.pzh.system.web.project.dao.first.mapper.info.InfoQuestionOptionMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionOptionEntity" >
+        <result column="ITEM_ID" property="itemId" jdbcType="INTEGER" />
+        <result column="OPTION_NAME" property="optionName" jdbcType="VARCHAR" />
+        <result column="OPTION_CD" property="optionCd" jdbcType="INTEGER" />
+
+    </resultMap>
+
+    <sql id="selectColumn">
+        INFO_QUESTION_OPTION.ITEM_ID,
+        INFO_QUESTION_OPTION.OPTION_NAME,
+        INFO_QUESTION_OPTION.OPTION_CD
+    </sql>
+
+    <sql id="whereCause">
+        <where>
+            INFO_QUESTION_OPTION.DIS_FLAG = 0
+        </where>
+    </sql>
+
+    <!-- 列表信息查询语句 -->
+    <select id="listQuestionOptions" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionOptionEntity" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM INFO_QUESTION_OPTION
+        <include refid="whereCause"></include>
+    </select>
+
+    <!-- 根据ID查询信息 -->
+    <select id="selectQuestionOptionById" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumn"></include>
+        FROM INFO_QUESTION_OPTION
+        WHERE INFO_QUESTION_OPTION.ID = #{id,jdbcType=INTEGER}
+        AND INFO_QUESTION_OPTION.DIS_FLAG = 0
+    </select>
+
+    <!-- 批量保存信息 -->
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO INFO_QUESTION_OPTION (
+            ITEM_ID,
+            OPTION_NAME,
+            OPTION_CD
+        )
+        VALUES
+        <foreach collection="list" item="item" index= "index" separator =",">
+        (
+            #{item.itemId,jdbcType=INTEGER},
+            #{item.optionName,jdbcType=VARCHAR},
+            #{item.optionCd,jdbcType=INTEGER}
+        )
+        </foreach>
+    </insert>
+
+    <!-- 保存信息 -->
+    <insert id="save" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionOptionEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO INFO_QUESTION_OPTION (
+            ITEM_ID,
+            OPTION_NAME,
+            OPTION_CD
+        )
+        VALUES (
+            #{itemId,jdbcType=INTEGER},
+            #{optionName,jdbcType=VARCHAR},
+            #{optionCd,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <!-- 更新信息 -->
+    <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionOptionEntity">
+        UPDATE INFO_QUESTION_OPTION
+        <trim prefix="set" suffixOverrides=",">
+            <if test="itemId != null">ITEM_ID=#{itemId,jdbcType=INTEGER},</if>
+            <if test="optionName != null">OPTION_NAME=#{optionName,jdbcType=VARCHAR},</if>
+            <if test="optionCd != null">OPTION_CD=#{optionCd,jdbcType=INTEGER},</if>
+
+        </trim>
+        WHERE ID=#{id,jdbcType=INTEGER}
+        AND INFO_QUESTION_OPTION.DIS_FLAG = 0
+    </update>
+
+</mapper>

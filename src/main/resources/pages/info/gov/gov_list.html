@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+
+    <title>列表</title>
+
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/font-awesome.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/plugins/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/animate.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet"/>
+
+
+</head>
+
+<body class="gray-bg">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <button class="btn btn-success" type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="toolbar">
+                                <form>
+                                    <div class="row">
+                                    </div>
+                                </form>
+                            </div>
+                            <table id="table_list"></table>
+                            <!-- End Example Card View -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script th:src="@{/assets/js/jquery.min.js}"></script>
+    <script th:src="@{/assets/js/bootstrap.min.js}"></script>
+
+    <!-- Bootstrap table -->
+    <script th:src="@{/assets/js/plugins/bootstrap-table/bootstrap-table.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+
+    <!-- Peity -->
+    <script th:src="@{/assets/js/plugins/peity/jquery.peity.min.js}"></script>
+
+    <script th:src="@{/assets/js/plugins/layer/layer.min.js}"></script>
+
+    <!-- 自定义js -->
+    <script th:src="@{/assets/js/common.js}"></script>
+    <script th:src="@{/assets/js/content.js}"></script>
+    <script th:src="@{/assets/js/info/gov/gov_list.js}"></script>
+
+</body>
+</html>
