@@ -29,8 +29,8 @@
         <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
         <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
         <!-- 题目信息-->
-        <collection property="infoQuestionOptionEntities" ofType="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionItemEntity">
-            <id column="QUESTION_ID" property="questionId" jdbcType="INTEGER" />
+        <collection property="infoQuestionItemEntities" ofType="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionItemEntity">
+            <result column="QUESTION_ID" property="questionId" jdbcType="INTEGER" />
             <result column="ID" property="id" jdbcType="INTEGER" />
             <result column="ITEM_QUESTION" property="itemQuestion" jdbcType="VARCHAR" />
             <result column="ITEM_TYPE" property="itemType" jdbcType="VARCHAR" />
@@ -39,18 +39,18 @@
             <result column="DIS_FLAG" property="disFlag" jdbcType="INTEGER" />
             <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
             <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP" />
-        <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
-        <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
-        <!-- 选项信息-->
-        <collection property="infoQuestionOptionEntities" ofType="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionOptionEntity">
-            <result column="ITEM_ID" property="itemId" jdbcType="INTEGER" />
-            <result column="OPTION_NAME" property="optionName" jdbcType="VARCHAR" />
-            <result column="OPTION_CD" property="optionCd" jdbcType="INTEGER" />
+            <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+            <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+            <!-- 选项信息-->
+            <collection property="infoQuestionOptionEntities" ofType="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionOptionEntity">
+                <result column="ITEM_ID" property="itemId" jdbcType="INTEGER" />
+                <result column="OPTION_NAME" property="optionName" jdbcType="VARCHAR" />
+                <result column="OPTION_CD" property="optionCd" jdbcType="INTEGER" />
+            </collection>
         </collection>
-    </collection>
-</resultMap>
+    </resultMap>
 
-<sql id="selectColumn">
+    <sql id="selectColumn">
         INFO_QUESTION.ID,
         INFO_QUESTION.QUESTION_CODE,
         INFO_QUESTION.QUESTION_NAME,
@@ -71,15 +71,16 @@
     </sql>
 
     <!-- 单一问卷全部信息查询语句 -->
-    <select id="getFullQuestion" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionEntity" resultMap="BaseResultMap">
+    <select id="getFullQuestion" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionEntity" resultMap="AllResultMap">
         SELECT
           INFO_QUESTION.*,
           INFO_QUESTION_ITEM.*,
           INFO_QUESTION_OPTION.*
-        FROM INFO_QUESTION,INFO_QUESTION_ITEM,INFO_QUESTION_OPTION
-        WHERE INFO_QUESTION.ID=INFO_QUESTION_ITEM.QUESTION_ID
-        AND INFO_QUESTION_ITEM.ID=INFO_QUESTION_OPTION.ITEM_ID
-
+        FROM INFO_QUESTION
+        LEFT JOIN INFO_QUESTION_ITEM
+        ON INFO_QUESTION.ID=INFO_QUESTION_ITEM.QUESTION_ID
+        LEFT JOIN INFO_QUESTION_OPTION
+        ON INFO_QUESTION_ITEM.ID=INFO_QUESTION_OPTION.ITEM_ID
     </select>
 
     <!-- 列表信息查询语句 -->
