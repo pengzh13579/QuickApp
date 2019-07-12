@@ -23,23 +23,30 @@
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="frm" method="post">
                         <input type="hidden" id="id" name="id" th:value="${info?.id}"/>
-                        <div class="form-group">
+                        <div class="form-group" style="display:none">
                             <label class="col-xs-3 control-label">问卷ID</label>
                             <div class="col-xs-6">
-                            <input id="questionId" name="questionId" class="form-control" type="text" th:value="${questionId == null ? info?.questionId : questionId}"/>
+                            <input id="questionId" name="questionId" type="hidden" th:value="${questionId == null ? info?.questionId : questionId}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-xs-3 control-label">题目名</label>
+                            <label class="col-xs-3 control-label">问卷名</label>
                             <div class="col-xs-6">
-                            <input id="itemQuestion" name="itemQuestion" class="form-control" type="text" th:value="${info?.itemQuestion}"/>
+                                <input id="questionName" disabled="disabled" name="questionName" class="form-control" type="text" th:value="${questionName == null ? info?.questionName : questionName}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-xs-3 control-label">题目类型</label>
-                            <div class="col-xs-6">
-                            <input id="itemType" name="itemType" class="form-control" type="text" th:value="${info?.itemType}"/>
+                                <label class="col-xs-3 control-label">题目名</label>
+                                <div class="col-xs-6">
+                                    <input id="itemQuestion" name="itemQuestion" class="form-control" type="text" th:value="${info?.itemQuestion}"/>
+                                </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">题目类型</label>
+                                <div class="col-xs-6">
+                                    <select name="itemType" id="itemType" dictionary-code="item_type" class="form-control" th:value="${info?.itemType}">
+                                    </select>
+                                </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-3 control-label">题目排序</label>
@@ -73,6 +80,7 @@
     <script th:src="@{/assets/js/bootstrap.min.js}"></script>
 
     <!-- 自定义js -->
+    <script th:src="@{/assets/js/common.js}"></script>
     <script th:src="@{/assets/js/content.js}"></script>
 
     <!-- jQuery Validation plugin javascript-->

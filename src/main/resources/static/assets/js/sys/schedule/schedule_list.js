@@ -138,7 +138,7 @@ function enable(id,scheduleNameCn){
             url: "/systemScheduleController/enable",
             data: {id : id},
             success: function(data){
-                layer.msg(data.message);
+                layer.msg(data.msg);
                 $('#table_list').bootstrapTable("refresh");
             }
         });
@@ -153,7 +153,7 @@ function disable(id,scheduleNameCn){
             url: "/systemScheduleController/disable",
             data: {id : id},
             success: function(data){
-                layer.msg(data.message);
+                layer.msg(data.msg);
                 $('#table_list').bootstrapTable("refresh");
             }
         });

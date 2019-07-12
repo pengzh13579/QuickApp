@@ -25,8 +25,9 @@ public class InfoQuestionOptionController {
      * 列表页面
      * @return 列表页面
      */
-    @RequestMapping("/list")
-    public String list() {
+    @RequestMapping("/list/{itemId}")
+    public String list(@PathVariable Integer itemId, Model model) {
+        model.addAttribute("itemId", itemId);
         return "/info/questionOption/questionOption_list";
     }
 
@@ -34,32 +35,31 @@ public class InfoQuestionOptionController {
      * 添加页面
      * @return 添加页面
      */
-    @RequestMapping("/add")
-    public String add() {
+    @RequestMapping("/add/{itemId}")
+    public String add(@PathVariable Integer itemId, Model model) {
+        model.addAttribute("itemId", itemId);
         return "/info/questionOption/questionOption_form";
     }
 
     /***
      * 修改页面
-     * @param id ID
      * @param model 模型
      * @return 修改页面
      */
-    @RequestMapping("/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
-        model.addAttribute("info", questionOptionService.get(id));
+    @RequestMapping("/edit/{itemId}/{optionCd}")
+    public String edit(@PathVariable Integer itemId, @PathVariable Integer optionCd, Model model) {
+        model.addAttribute("info", questionOptionService.get(itemId, optionCd));
         return "/info/questionOption/questionOption_form";
     }
 
     /***
      * 信息页面
-     * @param id ID
      * @param model 模型
      * @return 信息页面
      */
-    @RequestMapping("/info/{id}")
-    public String info(@PathVariable Integer id, Model model) {
-        model.addAttribute("info", questionOptionService.get(id));
+    @RequestMapping("/info/{itemId}/{optionCd}")
+    public String info(@PathVariable Integer itemId, @PathVariable Integer optionCd, Model model) {
+        model.addAttribute("info", questionOptionService.get(itemId, optionCd));
         return "/info/questionOption/questionOption_read_form";
     }
 
@@ -137,16 +137,16 @@ public class InfoQuestionOptionController {
 
     /***
      * 逻辑删除--将disFlag变为1
-     * @param id ID
      * @return 删除结果
      */
     @RequestMapping("/delete")
-    public AjaxJson delete(Integer id) {
+    @ResponseBody
+    public AjaxJson delete(Integer itemId, Integer optionCd) {
 
         AjaxJson j = new AjaxJson();
 
         // 逻辑删除
-        if (questionOptionService.delete(id) > 0) {
+        if (questionOptionService.delete(itemId, optionCd) > 0) {
             j.setMsg("删除成功");
             j.setSuccess(true);
             return j;

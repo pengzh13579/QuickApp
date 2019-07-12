@@ -24,36 +24,36 @@
                     <form class="form-horizontal m-t" id="frm" method="post">
                         <input type="hidden" id="id" name="id" th:value="${info?.id}"/>
 
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">问卷编号</label>
-                                        <div class="col-xs-6">
-                                        <input id="questionCode" name="questionCode" class="form-control" type="text" th:value="${info?.questionCode}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">问卷名</label>
-                                        <div class="col-xs-6">
-                                        <input id="questionName" name="questionName" class="form-control" type="text" th:value="${info?.questionName}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">问卷开始时间</label>
-                                        <div class="col-xs-6">
-                                        <input id="startDate" name="startDate" readonly="readonly" class="laydate-icon form-control layer-date" th:value="${info?.startDate}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">问卷结束时间</label>
-                                        <div class="col-xs-6">
-                                        <input id="endDate" name="endDate" readonly="readonly" class="laydate-icon form-control layer-date" th:value="${info?.endDate}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">问卷描述</label>
-                                        <div class="col-xs-6">
-                                        <input id="questionDescribed" name="questionDescribed" class="form-control" type="text" th:value="${info?.questionDescribed}"/>
-                                        </div>
-                                    </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">问卷编号</label>
+                            <div class="col-xs-6">
+                            <input id="questionCode" name="questionCode" class="form-control" type="text" th:value="${info?.questionCode}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">问卷名</label>
+                            <div class="col-xs-6">
+                            <input id="questionName" name="questionName" class="form-control" type="text" th:value="${info?.questionName}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">问卷开始时间</label>
+                            <div class="col-xs-6">
+                            <input id="startDate" name="startDate" readonly="readonly" class="laydate-icon form-control layer-date" th:value="${info?.startDateRtn}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">问卷结束时间</label>
+                            <div class="col-xs-6">
+                            <input id="endDate" name="endDate" readonly="readonly" class="laydate-icon form-control layer-date" th:value="${info?.endDateRtn}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">问卷描述</label>
+                            <div class="col-xs-6">
+                            <input id="questionDescribed" name="questionDescribed" class="form-control" type="text" th:value="${info?.questionDescribed}"/>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="col-xs-5 col-xs-offset-3">
                                 <button class="btn btn-primary" type="submit">提交</button>

@@ -4,20 +4,25 @@
 
     <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionOptionEntity" >
         <result column="ITEM_ID" property="itemId" jdbcType="INTEGER" />
+        <result column="ITEM_QUESTION" property="itemName" jdbcType="VARCHAR" />
         <result column="OPTION_NAME" property="optionName" jdbcType="VARCHAR" />
         <result column="OPTION_CD" property="optionCd" jdbcType="INTEGER" />
-
+        <result column="DIS_FLAG" property="disFlag" jdbcType="INTEGER" />
     </resultMap>
 
     <sql id="selectColumn">
         INFO_QUESTION_OPTION.ITEM_ID,
         INFO_QUESTION_OPTION.OPTION_NAME,
-        INFO_QUESTION_OPTION.OPTION_CD
+        INFO_QUESTION_OPTION.OPTION_CD,
+        INFO_QUESTION_OPTION.DIS_FLAG
     </sql>
 
     <sql id="whereCause">
         <where>
             INFO_QUESTION_OPTION.DIS_FLAG = 0
+            <if test="itemId != null">
+                AND INFO_QUESTION_OPTION.ITEM_Id = #{itemId}
+            </if>
         </where>
     </sql>
 
@@ -32,10 +37,22 @@
     <!-- 根据ID查询信息 -->
     <select id="selectQuestionOptionById" parameterType="Integer" resultMap="BaseResultMap">
         SELECT
-        <include refid="selectColumn"></include>
+        <include refid="selectColumn"></include>,
+        INFO_QUESTION_ITEM.ITEM_QUESTION
         FROM INFO_QUESTION_OPTION
-        WHERE INFO_QUESTION_OPTION.ID = #{id,jdbcType=INTEGER}
+        LEFT JOIN INFO_QUESTION_ITEM INFO_QUESTION_ITEM
+        ON INFO_QUESTION_ITEM.ID = INFO_QUESTION_OPTION.ITEM_ID
+        WHERE INFO_QUESTION_OPTION.ITEM_ID = #{itemId,jdbcType=INTEGER}
+        AND INFO_QUESTION_OPTION.OPTION_CD = #{optionCd,jdbcType=INTEGER}
         AND INFO_QUESTION_OPTION.DIS_FLAG = 0
+    </select>
+
+    <!-- 根据题目ID查询最大的选项cd -->
+    <select id="selectMaxOptionCd" parameterType="Integer" resultType="Integer">
+        SELECT
+            MAX(OPTION_CD)
+        FROM INFO_QUESTION_OPTION
+        WHERE INFO_QUESTION_OPTION.ITEM_ID = #{itemId,jdbcType=INTEGER}
     </select>
 
     <!-- 批量保存信息 -->
@@ -43,7 +60,8 @@
         INSERT INTO INFO_QUESTION_OPTION (
             ITEM_ID,
             OPTION_NAME,
-            OPTION_CD
+            OPTION_CD,
+            DIS_FLAG
         )
         VALUES
         <foreach collection="list" item="item" index= "index" separator =",">
@@ -73,12 +91,11 @@
     <update id="update" parameterType="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionOptionEntity">
         UPDATE INFO_QUESTION_OPTION
         <trim prefix="set" suffixOverrides=",">
-            <if test="itemId != null">ITEM_ID=#{itemId,jdbcType=INTEGER},</if>
             <if test="optionName != null">OPTION_NAME=#{optionName,jdbcType=VARCHAR},</if>
-            <if test="optionCd != null">OPTION_CD=#{optionCd,jdbcType=INTEGER},</if>
-
+            <if test="disFlag != null">DIS_FLAG=#{disFlag,jdbcType=NUMERIC},</if>
         </trim>
-        WHERE ID=#{id,jdbcType=INTEGER}
+        WHERE INFO_QUESTION_OPTION.ITEM_ID = #{itemId,jdbcType=INTEGER}
+        AND INFO_QUESTION_OPTION.OPTION_CD = #{optionCd,jdbcType=INTEGER}
         AND INFO_QUESTION_OPTION.DIS_FLAG = 0
     </update>
 

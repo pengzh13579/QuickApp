@@ -143,7 +143,7 @@ function del(id){
             url: "/infoGovController/delete",
             data: {id : id},
             success: function(data){
-                layer.msg(data.message);
+                layer.msg(data.msg);
                 $('#table_list').bootstrapTable("refresh");
             }
         });

@@ -9,6 +9,7 @@ import cn.pzh.system.web.project.dao.CommonEntity;
 @EqualsAndHashCode (callSuper = true)
 public class InfoQuestionOptionEntity extends CommonEntity implements Serializable {
     private Integer itemId;
+    private String itemName;
     private String optionName;
     private Integer optionCd;
 }

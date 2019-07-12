@@ -73,7 +73,7 @@ public class InfoDishesController {
     public String listDishess(InfoDishesEntity infoDishesEntity) {
 
         // 根据查询实体类得到列表
-        List<InfoDishesEntity> list = dishesService.listDishess(infoDishesEntity);
+        List<InfoDishesEntity> list = dishesService.listDishes(infoDishesEntity);
 
         // 将列表信息绑定到pageInfo
         PageInfo<InfoDishesEntity> page = new PageInfo<InfoDishesEntity>(list);
@@ -141,6 +141,7 @@ public class InfoDishesController {
      * @return 删除结果
      */
     @RequestMapping("/delete")
+    @ResponseBody
     public AjaxJson delete(Integer id) {
 
         AjaxJson j = new AjaxJson();

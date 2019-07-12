@@ -12,6 +12,7 @@ import cn.pzh.system.web.project.dao.CommonEntity;
 public class InfoQuestionItemEntity extends CommonEntity implements Serializable {
     private Integer id;
     private Integer questionId;
+    private String questionName;
     private String itemQuestion;
     private String itemType;
     private String itemSort;

@@ -10,7 +10,7 @@ public interface InfoDishesMapper {
      * @param infoDishesEntity 查询实体类
      * @return 列表
      */
-    List<InfoDishesEntity> listDishess(InfoDishesEntity infoDishesEntity);
+    List<InfoDishesEntity> listDishes(InfoDishesEntity infoDishesEntity);
 
     /***
      * 根据ID查询信息

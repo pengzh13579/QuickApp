@@ -141,6 +141,7 @@ public class InfoGovController {
      * @return 删除结果
      */
     @RequestMapping("/delete")
+    @ResponseBody
     public AjaxJson delete(Integer id) {
 
         AjaxJson j = new AjaxJson();

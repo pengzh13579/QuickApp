@@ -24,13 +24,13 @@ public class InfoDishesServiceImpl implements InfoDishesService {
      * @return 列表信息
      */
     @Override
-    public List<InfoDishesEntity> listDishess(InfoDishesEntity infoDishesEntity) {
+    public List<InfoDishesEntity> listDishes(InfoDishesEntity infoDishesEntity) {
 
         // 默认从第pageNum开始，每页pageSize条
         PageHelper.startPage(infoDishesEntity.getPageNumber(), infoDishesEntity.getPageSize(),
                 CommonFieldUtils.fieldNameToColumnName(infoDishesEntity.getSortName()) + " " + infoDishesEntity.getSortOrder());
 
-        return dishesMapper.listDishess(infoDishesEntity);
+        return dishesMapper.listDishes(infoDishesEntity);
     }
 
     /***

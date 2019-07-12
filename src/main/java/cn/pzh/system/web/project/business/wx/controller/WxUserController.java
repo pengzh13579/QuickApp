@@ -141,6 +141,7 @@ public class WxUserController {
      * @return 删除结果
      */
     @RequestMapping("/delete")
+    @ResponseBody
     public AjaxJson delete(String openid) {
 
         AjaxJson j = new AjaxJson();

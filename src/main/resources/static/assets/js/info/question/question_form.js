@@ -43,7 +43,6 @@ $(function () {
         url: url,
         data: $(form).serialize(),
         success: function (data) {
-          data = $.parseJSON(data);
           layer.msg(data.msg, {time: 2000}, function () {
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             if (data.success) {

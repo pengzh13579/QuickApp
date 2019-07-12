@@ -82,13 +82,6 @@ $(function () {
             },
             sortable: true
         },{
-          title: "更新时间",
-          field: "updateDate",
-          formatter: function (value, row, index) {
-            return changeDateFormat(value)
-          },
-          sortable: true
-        },{
             title: "操作",
             field: "empty",
             formatter: function (value, row, index) {
@@ -153,7 +146,19 @@ $(function () {
                 },{
                     title: "题目类型",
                     field: "itemType",
-                    sortable: true
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (value == '1') {
+                            return '<span class="label label-warning">单选</span>';
+                        }
+                        if (value == '2') {
+                            return '<span class="label label-danger">多选</span>';
+                        }
+                        if (value == '3') {
+                            return '<span class="label label-success">文本框</span>';
+                        }
+                        return '<span class="label label-primary">多行文本框</span>';
+                    }
                 },{
                     title: "题目排序",
                     field: "itemSort",
@@ -168,13 +173,6 @@ $(function () {
                         }
                         return '<span class="label label-primary">否</span>';
                     }
-                },{
-                    title: "更新时间",
-                    field: "updateDate",
-                    formatter: function (value, row, index) {
-                        return changeDateFormat(value)
-                    },
-                    sortable: true
                 },{
                     title: "操作",
                     field: "empty",
@@ -238,7 +236,7 @@ function del(id){
             url: "/infoQuestionController/delete",
             data: {id : id},
             success: function(data){
-                layer.msg(data.message);
+                layer.msg(data.msg);
                 $('#table_list').bootstrapTable("refresh");
             }
         });
@@ -291,9 +289,33 @@ function delItem(id){
             url: "/infoQuestionItemController/delete",
             data: {id : id},
             success: function(data){
-                layer.msg(data.message);
+                layer.msg(data.msg);
                 $('#item_table_list').bootstrapTable("refresh");
             }
         });
+    });
+}
+
+function relatedOption(){
+    var selections = $("#item_table_list").bootstrapTable('getSelections');
+
+    if (selections.length > 1) {
+        layer.msg("只能选择一个题目");
+        return;
+    }
+    if (selections.length <= 0) {
+        layer.msg("请选择一个题目");
+        return;
+    }
+    layer.open({
+        type: 2,
+        title: '浏览选项',
+        shadeClose: true,
+        shade: false,
+        area: ['820px', '580px'],
+        content: '/infoQuestionOptionController/list/' + selections[0].id,
+        end: function(index){
+            $('#table_list').bootstrapTable("refresh");
+        }
     });
 }

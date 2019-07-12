@@ -148,7 +148,7 @@ function del(code) {
       url: "/systemMenuController/delete",
       data: {code : code},
       success: function (data) {
-        layer.msg(data.message);
+        layer.msg(data.msg);
         $('#table_list').bootstrapTable("refresh");
       }
     });

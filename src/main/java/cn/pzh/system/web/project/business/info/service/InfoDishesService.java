@@ -10,7 +10,7 @@ public interface InfoDishesService {
      * @param infoDishesEntity 查询实体类
      * @return 列表信息
      */
-    List<InfoDishesEntity> listDishess(InfoDishesEntity infoDishesEntity);
+    List<InfoDishesEntity> listDishes(InfoDishesEntity infoDishesEntity);
 
     /***
      * 添加信息

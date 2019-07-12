@@ -1,4 +1,5 @@
 $(function () {
+
     //初始化表格,动态从服务器加载数据
     $("#table_list").bootstrapTable({
         //使用get请求到服务器获取数据
@@ -29,7 +30,8 @@ $(function () {
                 pageNumber: params.pageNumber,
                 pageSize: params.pageSize,
                 sortName: params.sortName,
-                sortOrder: params.sortOrder
+                sortOrder: params.sortOrder,
+                itemId: $('#itemId').val()
             };
             return param;
         },
@@ -47,38 +49,28 @@ $(function () {
               shadeClose: true,
               shade: false,
               area: ['420px', '280px'],
-              content: '/infoQuestionOptionController/info/' + row.id,
+              content: '/infoQuestionOptionController/info/' + row.itemId + '/' + row.optionCd,
               end: function(index){
               }
             });
         },
         //数据列
         columns: [{
-          title: "id",
-          field: "id",
-          visible: false
-        },{
             title: "问卷题目ID",
-            field: "itemId"
+            field: "itemId",
+            visible: false
         },{
             title: "选项名",
             field: "optionName"
         },{
-            title: "选项值(逻辑自增)",
+            title: "选项值",
             field: "optionCd"
-        },{
-          title: "更新时间",
-          field: "updateDate",
-          formatter: function (value, row, index) {
-            return changeDateFormat(value)
-          },
-          sortable: true
         },{
             title: "操作",
             field: "empty",
             formatter: function (value, row, index) {
-                var operateHtml = '<button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;';
-                operateHtml = operateHtml + '<button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button>';
+                var operateHtml = '<button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.itemId+'\',\''+row.optionCd+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;';
+                operateHtml = operateHtml + '<button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.itemId+'\',\''+row.optionCd+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button>';
                 return operateHtml;
             }
         }]
@@ -86,14 +78,14 @@ $(function () {
 });
 
 
-function edit(id){
+function edit(itemId, optionCd){
     layer.open({
         type: 2,
         title: '修改',
         shadeClose: true,
         shade: false,
         area: ['420px', '280px'],
-        content: '/infoQuestionOptionController/edit/' + id,
+        content: '/infoQuestionOptionController/edit/' + itemId + '/' + optionCd,
         end: function(index){
             $('#table_list').bootstrapTable("refresh");
         }
@@ -107,22 +99,22 @@ function add(){
         shadeClose: true,
         shade: false,
         area: ['420px', '280px'],
-        content: '/infoQuestionOptionController/add',
+        content: '/infoQuestionOptionController/add/' + $('#itemId').val(),
         end: function(index){
             $('#table_list').bootstrapTable("refresh");
         }
     });
 }
 
-function del(id){
+function del(itemId, optionCd){
     layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: "/infoQuestionOptionController/delete",
-            data: {id : id},
+            url: '/infoQuestionOptionController/delete',
+            data: {itemId : itemId,optionCd : optionCd},
             success: function(data){
-                layer.msg(data.message);
+                layer.msg(data.msg);
                 $('#table_list').bootstrapTable("refresh");
             }
         });

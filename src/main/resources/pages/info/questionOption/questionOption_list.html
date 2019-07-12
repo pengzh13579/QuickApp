@@ -26,11 +26,12 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-7">
-                            <button class="btn btn-success" type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
+                            <button class="btn btn-success" type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加选项</button>
                         </div>
                     </div>
                     <hr/>
                     <div class="row">
+                        <input id="itemId" name="itemId" type="hidden" th:value="${itemId}"/>
                         <div class="col-sm-12">
                             <div id="toolbar">
                                 <form>
@@ -38,8 +39,8 @@
                                     </div>
                                 </form>
                             </div>
-                            <table id="table_list"></table>
-                            <!-- End Example Card View -->
+                        <table id="table_list"></table>
+                        <!-- End Example Card View -->
                         </div>
                     </div>
                 </div>

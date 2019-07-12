@@ -133,7 +133,7 @@ function del(openid){
             url: "/wxUserController/delete",
             data: {openid : openid},
             success: function(data){
-                layer.msg(data.message);
+                layer.msg(data.msg);
                 $('#table_list').bootstrapTable("refresh");
             }
         });

@@ -1,6 +1,8 @@
 package cn.pzh.system.web.project.business.info.controller;
 
+import cn.pzh.system.web.project.business.info.service.InfoQuestionService;
 import cn.pzh.system.web.project.common.constant.KeyConstants;
+import cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionEntity;
 import cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionItemEntity;
 import cn.pzh.system.web.project.common.model.AjaxJson;
 import cn.pzh.system.web.project.business.info.service.InfoQuestionItemService;
@@ -21,6 +23,9 @@ public class InfoQuestionItemController {
     @Autowired
     private InfoQuestionItemService questionItemService;
 
+    @Autowired
+    private InfoQuestionService questionService;
+
     /***
      * 列表页面
      * @return 列表页面
@@ -37,6 +42,8 @@ public class InfoQuestionItemController {
     @RequestMapping("/add/{questionId}")
     public String add(@PathVariable Integer questionId, Model model) {
         model.addAttribute("questionId", questionId);
+        InfoQuestionEntity question = questionService.get(questionId);
+        model.addAttribute("questionName", question.getQuestionName());
         return "/info/questionItem/questionItem_form";
     }
 
@@ -142,6 +149,7 @@ public class InfoQuestionItemController {
      * @return 删除结果
      */
     @RequestMapping("/delete")
+    @ResponseBody
     public AjaxJson delete(Integer id) {
 
         AjaxJson j = new AjaxJson();

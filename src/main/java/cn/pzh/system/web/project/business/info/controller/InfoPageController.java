@@ -142,6 +142,7 @@ public class InfoPageController {
      * @return 删除结果
      */
     @RequestMapping("/delete")
+    @ResponseBody
     public AjaxJson delete(String id) {
 
         AjaxJson j = new AjaxJson();

@@ -48,7 +48,10 @@ public class InfoQuestionController {
      */
     @RequestMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
-        model.addAttribute("info", questionService.get(id));
+        InfoQuestionEntity question = questionService.get(id);
+        question.setStartDateRtn(DateUtil.formatDate(question.getStartDate(), "yyyy-MM-dd"));
+        question.setEndDateRtn(DateUtil.formatDate(question.getEndDate(), "yyyy-MM-dd"));
+        model.addAttribute("info", question);
         return "/info/question/question_form";
     }
 
@@ -158,6 +161,7 @@ public class InfoQuestionController {
      * @return 删除结果
      */
     @RequestMapping("/delete")
+    @ResponseBody
     public AjaxJson delete(Integer id) {
 
         AjaxJson j = new AjaxJson();

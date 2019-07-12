@@ -1,9 +1,9 @@
 $(function () {
+  $("select").each(function(){
+    loadSelectData(this);
+  });
   $("#frm").validate({
     rules: {
-      questionId: {
-        required: true
-      },
       itemQuestion: {
         required: true,
         maxlength: 300

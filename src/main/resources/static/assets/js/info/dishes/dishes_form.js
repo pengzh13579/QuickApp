@@ -1,9 +1,6 @@
 $(function () {
   $("#frm").validate({
     rules: {
-      id: {
-        required: true
-      },
       dishesType: {
       },
       dishesName: {
@@ -23,23 +20,6 @@ $(function () {
       },
       dishesLevel: {
         maxlength: 1
-      },
-      disFlag: {
-        required: true
-      },
-      createDate: {
-        required: true
-      },
-      updateDate: {
-        required: true
-      },
-      createUser: {
-        required: true,
-        maxlength: 20
-      },
-      updateUser: {
-        required: true,
-        maxlength: 20
       }
     },
     messages: {},

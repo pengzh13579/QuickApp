@@ -216,6 +216,7 @@ public class FixedDictionaryController {
      * @return 字典删除结果
      */
     @RequestMapping ("/delete")
+    @ResponseBody
     public AjaxJson delete(Integer id) {
 
         AjaxJson j = new AjaxJson();

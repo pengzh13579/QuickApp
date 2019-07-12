@@ -58,9 +58,6 @@ $(function () {
           field: "id",
           visible: false
         },{
-            title: "菜品ID",
-            field: "id"
-        },{
             title: "菜品分类",
             field: "dishesType"
         },{
@@ -70,8 +67,15 @@ $(function () {
             title: "菜品金额",
             field: "dishesPrice"
         },{
-            title: "菜品是否折扣：0不折扣，1折扣",
-            field: "dishesDiscount"
+            title: "是否折扣",
+            field: "dishesDiscount",
+            sortable: true,
+            formatter: function (value, row, index) {
+                if (value == '1') {
+                    return '<span class="label label-warning">折扣</span>';
+                }
+                return '<span class="label label-primary">不折扣</span>';
+            }
         },{
             title: "折扣后金额",
             field: "dishesPay"
@@ -84,28 +88,6 @@ $(function () {
         },{
             title: "菜品口味程度",
             field: "dishesLevel"
-        },{
-            title: "删除标记：0：有效1：无效",
-            field: "disFlag"
-        },{
-            title: "创建日期",
-            field: "createDate"
-        },{
-            title: "更新日期",
-            field: "updateDate"
-        },{
-            title: "创建者",
-            field: "createUser"
-        },{
-            title: "更新者",
-            field: "updateUser"
-        },{
-          title: "更新时间",
-          field: "updateDate",
-          formatter: function (value, row, index) {
-            return changeDateFormat(value)
-          },
-          sortable: true
         },{
             title: "操作",
             field: "empty",
@@ -155,7 +137,7 @@ function del(id){
             url: "/infoDishesController/delete",
             data: {id : id},
             success: function(data){
-                layer.msg(data.message);
+                layer.msg(data.msg);
                 $('#table_list').bootstrapTable("refresh");
             }
         });

@@ -5,6 +5,7 @@
     <resultMap id="BaseResultMap" type="cn.pzh.system.web.project.dao.first.entity.info.InfoQuestionItemEntity" >
         <result column="ID" property="id" jdbcType="INTEGER" />
         <result column="QUESTION_ID" property="questionId" jdbcType="INTEGER" />
+        <result column="QUESTION_NAME" property="questionName" jdbcType="VARCHAR" />
         <result column="ITEM_QUESTION" property="itemQuestion" jdbcType="VARCHAR" />
         <result column="ITEM_TYPE" property="itemType" jdbcType="VARCHAR" />
         <result column="ITEM_SORT" property="itemSort" jdbcType="VARCHAR" />
@@ -24,16 +25,19 @@
         INFO_QUESTION_ITEM.ITEM_TYPE,
         INFO_QUESTION_ITEM.ITEM_SORT,
         INFO_QUESTION_ITEM.ITEM_MORE,
-        INFO_QUESTION.DIS_FLAG,
-        INFO_QUESTION.CREATE_DATE,
-        INFO_QUESTION.UPDATE_DATE,
-        INFO_QUESTION.CREATE_USER,
-        INFO_QUESTION.UPDATE_USER
+        INFO_QUESTION_ITEM.DIS_FLAG,
+        INFO_QUESTION_ITEM.CREATE_DATE,
+        INFO_QUESTION_ITEM.UPDATE_DATE,
+        INFO_QUESTION_ITEM.CREATE_USER,
+        INFO_QUESTION_ITEM.UPDATE_USER
     </sql>
 
     <sql id="whereCause">
         <where>
             INFO_QUESTION_ITEM.DIS_FLAG = 0
+            <if test="questionId != null">
+                AND INFO_QUESTION_ITEM.QUESTION_ID = #{questionId}
+            </if>
         </where>
     </sql>
 
@@ -49,7 +53,10 @@
     <select id="selectQuestionItemById" parameterType="Integer" resultMap="BaseResultMap">
         SELECT
         <include refid="selectColumn"></include>
+        ,INFO_QUESTION.QUESTION_NAME
         FROM INFO_QUESTION_ITEM
+        LEFT JOIN INFO_QUESTION INFO_QUESTION
+        ON INFO_QUESTION_ITEM.QUESTION_ID = INFO_QUESTION.ID
         WHERE INFO_QUESTION_ITEM.ID = #{id,jdbcType=INTEGER}
         AND INFO_QUESTION_ITEM.DIS_FLAG = 0
     </select>
@@ -61,7 +68,7 @@
             ITEM_QUESTION,
             ITEM_TYPE,
             ITEM_SORT,
-            ITEM_MORE，
+            ITEM_MORE,
             DIS_FLAG,
             CREATE_DATE,
             UPDATE_DATE,

@@ -41,18 +41,24 @@ public class InfoQuestionOptionServiceImpl implements InfoQuestionOptionService 
     @Override
     @Transactional (readOnly = false)
     public int insert(InfoQuestionOptionEntity questionOption) {
-        CommonFieldUtils.setAdminCommon(questionOption, true);
+        questionOption.setDisFlag(0);
+        Integer maxCd = questionOptionMapper.selectMaxOptionCd(questionOption.getItemId());
+        if (maxCd == null) {
+            maxCd = 0;
+        }
+        questionOption.setOptionCd((maxCd + 1));
         return questionOptionMapper.save(questionOption);
     }
 
     /***
      * 根据ID获得信息
-     * @param id ID
+     * @param itemId ID
+     * @param optionCd
      * @return 信息
      */
     @Override
-    public InfoQuestionOptionEntity get(Integer id) {
-        return questionOptionMapper.selectQuestionOptionById(id);
+    public InfoQuestionOptionEntity get(Integer itemId, Integer optionCd) {
+        return questionOptionMapper.selectQuestionOptionById(itemId, optionCd);
     }
 
     /***
@@ -63,24 +69,23 @@ public class InfoQuestionOptionServiceImpl implements InfoQuestionOptionService 
     @Override
     @Transactional (readOnly = false)
     public int update(InfoQuestionOptionEntity questionOption) {
-        CommonFieldUtils.setAdminCommon(questionOption, false);
         return questionOptionMapper.update(questionOption);
     }
 
     /***
      * 删除--将disFlag变为1
-     * @param id ID
+     * @param itemId ID
      * @return 修改记录数
      */
     @Override
     @Transactional (readOnly = false)
-    public int delete(Integer id) {
+    public int delete(Integer itemId, Integer optionCd) {
 
         // 根据ID获得信息
-        InfoQuestionOptionEntity questionOption = questionOptionMapper.selectQuestionOptionById(id);
+        InfoQuestionOptionEntity questionOption = questionOptionMapper.selectQuestionOptionById(itemId, optionCd);
 
         // 将disFlag变为1
-        CommonFieldUtils.setDeleteCommon(questionOption);
+        questionOption.setDisFlag(1);
 
         // 更新信息
         return questionOptionMapper.update(questionOption);

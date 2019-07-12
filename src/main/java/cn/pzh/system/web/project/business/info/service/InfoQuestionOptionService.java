@@ -21,10 +21,11 @@ public interface InfoQuestionOptionService {
 
     /***
      * 根据ID获得信息
-     * @param id ID
+     * @param itemId ID
+     * @param optionCd
      * @return 信息
      */
-    InfoQuestionOptionEntity get(Integer id);
+    InfoQuestionOptionEntity get(Integer itemId, Integer optionCd);
 
     /***
      * 修改信息
@@ -35,8 +36,8 @@ public interface InfoQuestionOptionService {
 
     /***
      * 删除--将disFlag变为1
-     * @param id ID
+     * @param itemId ID
      * @return 删除记录数
      */
-    int delete(Integer id);
+    int delete(Integer itemId, Integer optionCd);
 }
